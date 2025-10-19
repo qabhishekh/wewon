@@ -147,7 +147,7 @@ export default function FilterColleges() {
   }
 
   return (
-    <div className="min-h-screen p-6 md:p-8 lg:p-12">
+    <div className="min-h-screen container mx-auto py-6 md:py-8 lg:py-12">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
         <h1

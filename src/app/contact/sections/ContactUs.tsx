@@ -181,8 +181,7 @@ export default function ContactUs({
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full py-4 rounded-xl text-white font-semibold text-lg hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: "var(--primary)" }}
+              className="w-full py-4 rounded-xl text-white font-semibold text-lg hover:bg-[var(--accent)] transition-all bg-[var(--primary)] cursor-pointer"
             >
               Submit
             </button>

@@ -37,7 +37,7 @@ const features = [
 const FeaturesSection = () => {
   return (
     <Sections>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto">
         
         {/* Section Header */}
         <div className="text-center mx-auto">

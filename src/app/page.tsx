@@ -4,6 +4,7 @@ import HowItWorks from "@/components/home/HowItWorks";
 import PersonalizedMentorship from "@/components/home/PersonalizedMentorship";
 import StudentStoryTestimonial from "@/components/home/StudentStoryTestimonial";
 import CollegesSlider from "@/components/home/TopCollegesSlider";
+import CallToAction from "@/components/sections/CallToAction";
 import HeroSection from "@/components/sections/HeroSection";
 import Image from "next/image";
 
@@ -29,6 +30,7 @@ export default function Home() {
       <div className="container mx-auto">
         <StudentStoryTestimonial />
       </div>
+      <CallToAction />
     </>
   );
 }

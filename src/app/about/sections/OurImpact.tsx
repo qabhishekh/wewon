@@ -16,7 +16,7 @@ export default function OurImpact({impacts}:{impacts:Impacts[]}) {
       style={{ fontFamily: "Poppins, sans-serif" }}
     >
       <MainHeading top={"Our Impact"} />
-      <div className="max-w-7xl mx-auto mt-14">
+      <div className="container mx-auto mt-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {impacts.map((impact, index) => {
             const Icon = impact.icon;

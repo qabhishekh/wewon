@@ -8,7 +8,7 @@ const FeaturedVideos = () => {
     <Sections>
       <Heading centered={true} text="Featured Videos" />
 
-      <div className="mt-12 px-2 px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="">
           <div className="aspect-video rounded-2xl overflow-hidden shadow">
             <iframe

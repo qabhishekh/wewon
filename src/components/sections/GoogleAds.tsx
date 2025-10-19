@@ -1,26 +1,29 @@
-import React from 'react';
+import React from "react";
 
 interface GoogleAdsProps {
   text?: string;
   backgroundColor?: string;
 }
 
-export default function GoogleAds({ 
+export default function GoogleAds({
   text = "Google Ads",
-  backgroundColor = "#D1D5DB"
+  backgroundColor = "#D1D5DB",
 }: GoogleAdsProps) {
   return (
-    <div className="w-full px-4 md:px-12 pt-14" style={{ fontFamily: 'Poppins, sans-serif' }}>
-      <div 
-        className="w-full rounded-3xl flex items-center justify-center"
-        style={{ 
-          backgroundColor: backgroundColor,
-          minHeight: '460px'
-        }}
+    <div className="container mx-auto">
+      <div
+        className="w-full pt-14"
+        style={{ fontFamily: "Poppins, sans-serif" }}
       >
-        <h2 className="text-4xl md:text-5xl text-black">
-          {text}
-        </h2>
+        <div
+          className="w-full rounded-3xl flex items-center justify-center"
+          style={{
+            backgroundColor: backgroundColor,
+            minHeight: "460px",
+          }}
+        >
+          <h2 className="text-4xl md:text-5xl text-black">{text}</h2>
+        </div>
       </div>
     </div>
   );

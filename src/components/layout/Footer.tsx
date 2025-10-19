@@ -57,7 +57,7 @@ const bottomRowLinks = [
 const Footer = () => {
   return (
     <footer className="bg-[var(--primary)] text-white font-sans rounded-t-4xl">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
+      <div className="container mx-auto pt-16 pb-8">
         {/* Main content section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-x-8 gap-y-12">
           {/* Brand Info - spans 2 columns on large screens */}
