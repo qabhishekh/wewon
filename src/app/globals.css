@@ -7,6 +7,7 @@
   --border: #D9D9D9;
   --primary: #0D3A66;
   --accent: #7CCC56;
+  --muted-text:#848e97;
 }
 
 @theme inline {

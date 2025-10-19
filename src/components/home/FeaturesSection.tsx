@@ -1,0 +1,90 @@
+import React from 'react';
+import { BrainCog, TrendingUp, Lightbulb } from 'lucide-react'; // Icons from lucide-react
+import Heading from './heading';
+import Sections from './sections';
+
+// Data array to manage the content of the feature cards
+const features = [
+  {
+    icon: BrainCog,
+    title: "AI College Predictor",
+    description: "Advanced AI algorithms analyze your rank and predict your chances at top colleges with 95% accuracy",
+    buttonText: "Predict Now",
+    buttonLink: "#",
+    // Style for the 1st and 3rd cards
+    className: "bg-white shadow-lg", 
+  },
+  {
+    icon: TrendingUp,
+    title: "Rank Analysis",
+    description: "Detailed analysis of your rank performance across different categories and reservation quotas",
+    buttonText: "View Analysis",
+    buttonLink: "#",
+    // Style for the "featured" middle card
+    className: "bg-white shadow-lg", 
+  },
+  {
+    icon: Lightbulb,
+    title: "Expert Mentorship",
+    description: "Get personalized guidance from IIT/NIT alumni, and admission counselling expert",
+    buttonText: "Book a Session",
+    buttonLink: "#",
+    // Style for the 1st and 3rd cards
+    className: "bg-white shadow-lg",
+  }
+];
+
+const FeaturesSection = () => {
+  return (
+    <Sections>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Section Header */}
+        <div className="text-center mx-auto">
+          <Heading text="Every Need for Your Admission Journey" />
+          <p className="mt-4 text-lg text-gray-500">
+            Comprehensive tools and insights to help you make the best college choices
+          </p>
+        </div>
+
+        {/* Features Grid */}
+        <div className="mt-16 grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {features.map((feature) => (
+            <div 
+              key={feature.title}
+              // Base styles + dynamic class for the background/shadow
+              className={`flex flex-col items-center text-center p-8 rounded-2xl border border-gray-200 ${feature.className}`}
+            >
+              {/* Icon */}
+              <feature.icon 
+                className="h-12 w-12 text-[var(--accent)]" 
+                strokeWidth={1.5} // Thinner stroke width to match image
+              />
+              
+              {/* Card Title */}
+              <h3 className="mt-6 text-2xl font-bold text-[var(--primary)]">
+                {feature.title}
+              </h3>
+              
+              {/* Card Description */}
+              <p className="mt-3 text-base text-gray-500 flex-grow">
+                {feature.description}
+              </p>
+              
+              {/* Button */}
+              <a
+                href={feature.buttonLink}
+                className="mt-8 inline-block bg-[var(--accent)] text-[var(--background)] font-semibold px-8 py-3 rounded-full 
+                           hover:bg-[var(--primary)] transition-colors"
+              >
+                {feature.buttonText}
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Sections>
+  );
+};
+
+export default FeaturesSection;

@@ -5,11 +5,21 @@ import { Facebook, Instagram, Linkedin, Youtube } from "lucide-react";
 const topRowLinks = [
   {
     title: "Company",
-    links: ["About Us", "Careers", "Blog", "Contact Us"],
+    links: [
+      { label: "About Us", href: "/about" },
+      { label: "Careers", href: "/careers" },
+      { label: "Blog", href: "/blog" },
+      { label: "Contact Us", href: "/contact" },
+    ],
   },
   {
     title: "Resources",
-    links: ["College Predictor", "Rank Analysis", "Mentorship", "Exam Alerts"],
+    links: [
+      { label: "College Predictor", href: "/tools/college-predictor" },
+      { label: "Rank Analysis", href: "/tools/rank-analysis" },
+      { label: "Mentorship", href: "/mentorship" },
+      { label: "Exam Alerts", href: "/alerts" },
+    ],
   },
 ];
 
@@ -17,24 +27,29 @@ const bottomRowLinks = [
   {
     title: "Colleges",
     links: [
-      "Statewise Colleges",
-      "Colleges in Delhi NCR",
-      "Explore All IITs",
-      "Explore All NITs",
-      "Explore All IIITs",
+      { label: "Statewise Colleges", href: "/colleges/statewise" },
+      { label: "Colleges in Delhi NCR", href: "/colleges/delhi-ncr" },
+      { label: "Explore All IITs", href: "/colleges/iits" },
+      { label: "Explore All NITs", href: "/colleges/nits" },
+      { label: "Explore All IIITs", href: "/colleges/iiits" },
     ],
   },
   {
     title: "Exams",
-    links: ["JEE (Main)", "JEE (Advanced)", "BITSAT", "MHT-CET"],
+    links: [
+      { label: "JEE (Main)", href: "/exams/jee-main" },
+      { label: "JEE (Advanced)", href: "/exams/jee-advanced" },
+      { label: "BITSAT", href: "/exams/bitsat" },
+      { label: "MHT-CET", href: "/exams/mht-cet" },
+    ],
   },
   {
     title: "Tools",
     links: [
-      "College Finder",
-      "JEE (Main) Rank Predictor",
-      "JEE (Main) College Predictor",
-      "JEE (Advanced) College Predictor",
+      { label: "College Finder", href: "/tools/college-finder" },
+      { label: "JEE (Main) Rank Predictor", href: "/tools/jee-main-rank-predictor" },
+      { label: "JEE (Main) College Predictor", href: "/tools/jee-main-college-predictor" },
+      { label: "JEE (Advanced) College Predictor", href: "/tools/jee-advanced-college-predictor" },
     ],
   },
 ];
@@ -90,22 +105,10 @@ const Footer = () => {
             {
               title: "Support",
               links: [
-                <span key="email">Email: support@gmail.com</span>,
-                <span key="phone">Phone: +91-XXXX-XXXXXX</span>,
-                <a
-                  key="terms"
-                  href="#"
-                  className="hover:text-white transition-colors"
-                >
-                  Terms of Service
-                </a>,
-                <a
-                  key="privacy"
-                  href="#"
-                  className="hover:text-white transition-colors"
-                >
-                  Privacy Policy
-                </a>,
+                { label: "Email: support@gmail.com", href: "mailto:support@gmail.com" },
+                { label: "Phone: +91-XXXX-XXXXXX", href: "tel:+911234567890" },
+                { label: "Terms of Service", href: "/terms" },
+                { label: "Privacy Policy", href: "/privacy" },
               ],
             },
             ...bottomRowLinks,
@@ -115,27 +118,26 @@ const Footer = () => {
                 {section.title}
               </h3>
               <ul className="mt-4 space-y-3">
-                {section.links.map((link, i) => (
-                  <li
-                    key={typeof link === "string" ? link : i}
-                    className={
-                      section.title === "Support" && i < 2
-                        ? "text-gray-300"
-                        : ""
-                    }
-                  >
-                    {typeof link === "string" ? (
-                      <a
-                        href="#"
-                        className="text-gray-300 hover:text-white transition-colors"
-                      >
-                        {link}
-                      </a>
-                    ) : (
-                      link
-                    )}
-                  </li>
-                ))}
+                {section.links.map((link, i) => {
+                  const isObject = typeof link === 'object' && 'label' in link && 'href' in link;
+                  const label = isObject ? (link as any).label : link;
+                  const href = isObject ? (link as any).href : '#';
+                  return (
+                    <li
+                      key={typeof label === 'string' ? label : i}
+                      className={section.title === 'Support' && i < 2 ? 'text-gray-300' : ''}
+                    >
+                      {isObject ? (
+                        <a href={href} className="text-gray-300 hover:text-white transition-colors">
+                          {label}
+                        </a>
+                      ) : (
+                        // fallback for React elements (if any)
+                        label
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}
