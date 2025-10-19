@@ -1,19 +1,19 @@
 import MainHeading from "@/components/sections/MainHeading";
 import React from "react";
-import FilterColleges from "./sections/FilterCollege";
+import FilterExams from "./sections/FilterExams";
 import GoogleAds from "@/components/sections/GoogleAds";
-import Recommended from "@/components/sections/Recommended";
+import Popular from "@/components/sections/Popular";
 
 const page = () => {
   return (
     <div>
       <MainHeading
-        top={"Find The Best Colleges"}
-        bottom={"That Fit Your Goals"}
+        top={"Stay Updated With Upcoming"}
+        bottom={"Exams And Results"}
       />
-      <FilterColleges />
+      <FilterExams />
       <GoogleAds />
-      <Recommended />
+      <Popular />
     </div>
   );
 };

@@ -10,7 +10,7 @@ export default function GoogleAds({
   backgroundColor = "#D1D5DB"
 }: GoogleAdsProps) {
   return (
-    <div className="w-full px-4 md:px-12 py-14 mt-14" style={{ fontFamily: 'Poppins, sans-serif' }}>
+    <div className="w-full px-4 md:px-12 pt-14" style={{ fontFamily: 'Poppins, sans-serif' }}>
       <div 
         className="w-full rounded-3xl flex items-center justify-center"
         style={{ 

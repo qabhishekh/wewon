@@ -3,136 +3,100 @@ import React, { useState } from "react";
 import {
   Search,
   Filter,
+  Calendar,
+  MapPin,
+  GraduationCap,
+  ArrowRight,
 } from "lucide-react";
 import Pagination from "@/components/sections/Pagination";
 import { useRouter } from "next/navigation";
-import CollegeCard from "@/components/cards/CollegeCard";
+import ExamCard from "@/components/cards/ExamCard";
 
-interface College {
+interface Exams {
   id: string;
   name: string;
-  location: string;
-  city: string;
-  established: string;
-  nirf: string;
-  naac: string;
+  description: string;
   image: string;
 }
 
-export default function FilterColleges() {
+export default function FilterExams() {
   const router = useRouter();
 
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 8;
 
-  const colleges: College[] = [
+  const exams: Exams[] = [
     {
       id: "1",
-      name: "IIT, BHUBANESWAR",
-      location: "Bhubaneswar, Odisha",
-      city: "Bhubaneswar",
-      established: "Estd. 1885",
-      nirf: "Top 5 NIRF",
-      naac: "NAAC A++",
+      name: "JEE Advanced",
+      description: "The IIT JEE Advanced exam is held annually for admission to the 23 IITs in India",
       image:
         "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
     },
     {
       id: "2",
-      name: "IIT, BHUBANESWAR",
-      location: "Bhubaneswar, Odisha",
-      city: "Bhubaneswar",
-      established: "Estd. 1885",
-      nirf: "Top 5 NIRF",
-      naac: "NAAC A++",
+      name: "JEE Advanced",
+      description: "The IIT JEE Advanced exam is held annually for admission to the 23 IITs in India",
       image:
         "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
     },
     {
       id: "3",
-      name: "IIT, BHUBANESWAR",
-      location: "Bhubaneswar, Odisha",
-      city: "Bhubaneswar",
-      established: "Estd. 1885",
-      nirf: "Top 5 NIRF",
-      naac: "NAAC A++",
+      name: "JEE Advanced",
+      description: "The IIT JEE Advanced exam is held annually for admission to the 23 IITs in India",
       image:
         "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
     },
     {
       id: "4",
-      name: "IIT, BHUBANESWAR",
-      location: "Bhubaneswar, Odisha",
-      city: "Bhubaneswar",
-      established: "Estd. 1885",
-      nirf: "Top 5 NIRF",
-      naac: "NAAC A++",
+      name: "JEE Advanced",
+      description: "The IIT JEE Advanced exam is held annually for admission to the 23 IITs in India",
       image:
         "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
     },
     {
       id: "5",
-      name: "IIT, BHUBANESWAR",
-      location: "Bhubaneswar, Odisha",
-      city: "Bhubaneswar",
-      established: "Estd. 1885",
-      nirf: "Top 5 NIRF",
-      naac: "NAAC A++",
+      name: "JEE Advanced",
+      description: "The IIT JEE Advanced exam is held annually for admission to the 23 IITs in India",
       image:
         "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
     },
     {
       id: "6",
-      name: "IIT, BHUBANESWAR",
-      location: "Bhubaneswar, Odisha",
-      city: "Bhubaneswar",
-      established: "Estd. 1885",
-      nirf: "Top 5 NIRF",
-      naac: "NAAC A++",
+      name: "JEE Advanced",
+      description: "The IIT JEE Advanced exam is held annually for admission to the 23 IITs in India",
       image:
         "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
     },
     {
       id: "7",
-      name: "IIT, BHUBANESWAR",
-      location: "Bhubaneswar, Odisha",
-      city: "Bhubaneswar",
-      established: "Estd. 1885",
-      nirf: "Top 5 NIRF",
-      naac: "NAAC A++",
+      name: "JEE Advanced",
+      description: "The IIT JEE Advanced exam is held annually for admission to the 23 IITs in India",
       image:
         "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
     },
     {
       id: "8",
-      name: "IIT, BHUBANESWAR",
-      location: "Bhubaneswar, Odisha",
-      city: "Bhubaneswar",
-      established: "Estd. 1885",
-      nirf: "Top 5 NIRF",
-      naac: "NAAC A++",
+      name: "JEE Advanced",
+      description: "The IIT JEE Advanced exam is held annually for admission to the 23 IITs in India",
       image:
         "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
     },
     // Add more colleges to see pagination in action
     ...Array.from({ length: 72 }, (_, i) => ({
       id: `${i + 9}`,
-      name: `IIT, BHUBANESWAR ${i + 9}`,
-      location: "Bhubaneswar, Odisha",
-      city: "Bhubaneswar",
-      established: "Estd. 1885",
-      nirf: "Top 5 NIRF",
-      naac: "NAAC A++",
+      name: `JEE Advanced ${i + 9}`,
+      description: "The IIT JEE Advanced exam is held annually for admission to the 23 IITs in India",
       image:
         "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
     })),
   ];
   
-  const totalPages = Math.ceil(colleges.length / itemsPerPage);
+  const totalPages = Math.ceil(exams.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentColleges = colleges.slice(startIndex, endIndex);
+  const currentExams = exams.slice(startIndex, endIndex);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -140,7 +104,7 @@ export default function FilterColleges() {
   };
 
   const handleKnowMore = (collegeId: string) => {
-    router.push(`/colleges/${collegeId}`);
+    router.push(`/exams/${collegeId}`);
   };
 
   return (
@@ -151,7 +115,7 @@ export default function FilterColleges() {
           className="text-3xl md:text-4xl font-bold"
           style={{ color: "#0D3A66" }}
         >
-          Filter Colleges
+          Filter Exams
         </h1>
 
         {/* Search and Filter */}
@@ -164,7 +128,7 @@ export default function FilterColleges() {
             />
             <input
               type="text"
-              placeholder="Search for colleges"
+              placeholder="Search for Exams"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full py-3 pl-12 pr-4 rounded-lg outline-none transition-all"
@@ -194,8 +158,8 @@ export default function FilterColleges() {
 
       {/* College Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {currentColleges.map((college) => (
-          <CollegeCard college={college} key={college.id} handleKnowMore={handleKnowMore} />
+        {currentExams.map((exam) => (
+          <ExamCard exam={exam} key={exam.id} handleKnowMore={handleKnowMore} />
         ))}
       </div>
 

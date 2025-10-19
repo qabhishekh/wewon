@@ -10,7 +10,7 @@ export default function CallToAction() {
 
   return (
     <div
-      className="flex items-center justify-center p-6 mb-14"
+      className="flex items-center justify-center p-6 my-14"
       style={{ backgroundColor: "var(--background)" }}
     >
       <div
