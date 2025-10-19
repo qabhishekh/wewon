@@ -146,13 +146,6 @@ export default function FilterExams() {
           >
             <Search size={20} style={{ color: "#ffffff" }} />
           </button>
-
-          <button
-            className="p-3 rounded-lg transition-all hover:opacity-90"
-            style={{ backgroundColor: "#0D3A66" }}
-          >
-            <Filter size={20} style={{ color: "#ffffff" }} />
-          </button>
         </div>
       </div>
 

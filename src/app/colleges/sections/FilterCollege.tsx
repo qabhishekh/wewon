@@ -1,12 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import {
-  Search,
-  Filter,
-} from "lucide-react";
+import { Search, Filter } from "lucide-react";
 import Pagination from "@/components/sections/Pagination";
 import { useRouter } from "next/navigation";
 import CollegeCard from "@/components/cards/CollegeCard";
+import FilterModal from "@/components/filter/FilterModal";
 
 interface College {
   id: string;
@@ -21,7 +19,7 @@ interface College {
 
 export default function FilterColleges() {
   const router = useRouter();
-
+  const [isFilterOpen, setIsFilterOpen] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 8;
@@ -128,7 +126,7 @@ export default function FilterColleges() {
         "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
     })),
   ];
-  
+
   const totalPages = Math.ceil(colleges.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -142,6 +140,11 @@ export default function FilterColleges() {
   const handleKnowMore = (collegeId: string) => {
     router.push(`/colleges/${collegeId}`);
   };
+
+  const handleApplyFilter = (filters: any) => {
+    console.log(filters);
+    
+  }
 
   return (
     <div className="min-h-screen p-6 md:p-8 lg:p-12">
@@ -186,6 +189,7 @@ export default function FilterColleges() {
           <button
             className="p-3 rounded-lg transition-all hover:opacity-90"
             style={{ backgroundColor: "#0D3A66" }}
+            onClick={() => setIsFilterOpen(true)}
           >
             <Filter size={20} style={{ color: "#ffffff" }} />
           </button>
@@ -195,9 +199,19 @@ export default function FilterColleges() {
       {/* College Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {currentColleges.map((college) => (
-          <CollegeCard college={college} key={college.id} handleKnowMore={handleKnowMore} />
+          <CollegeCard
+            college={college}
+            key={college.id}
+            handleKnowMore={handleKnowMore}
+          />
         ))}
       </div>
+
+      <FilterModal
+      handleApplyFilter={handleApplyFilter}
+        isOpen={isFilterOpen}
+        onClose={() => setIsFilterOpen(false)}
+      />
 
       {/* Pagination */}
       <Pagination
