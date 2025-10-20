@@ -1,4 +1,5 @@
 import CounselingCard from "@/components/cards/CounselingCard";
+import NewsSection from "@/components/home/FeaturedNews";
 import FeatureCounselling from "@/components/home/FeatureCounselling";
 import FeaturedVideos from "@/components/home/FeaturedVideos";
 import FeaturesSection from "@/components/home/FeaturesSection";
@@ -35,6 +36,9 @@ export default function Home() {
       </div>
       <div className="container mx-auto">
         <FeatureCounselling />
+      </div>
+      <div className="bg-[var(--muted-background)]">
+        <NewsSection />
       </div>
       <div className="container mx-auto">
         <StudentStoryTestimonial />
