@@ -70,10 +70,7 @@ export default function CallToAction() {
 
             <button
               onClick={handleClick}
-              className="w-full sm:w-auto px-8 md:px-10 py-3 md:py-4 rounded-full font-semibold text-sm md:text-base transition-all hover:bg-[var(--accent)] whitespace-nowrap bg-[var(--background)] cursor-pointer"
-              style={{
-                color: "var(--primary)",
-              }}
+              className="w-full sm:w-auto px-8 md:px-10 py-3 md:py-4 rounded-full font-semibold text-sm md:text-base transition-all hover:bg-[var(--accent)] hover:text-white whitespace-nowrap bg-[var(--background)] cursor-pointer text-[var(--primary)]"
             >
               Join Us
             </button>
