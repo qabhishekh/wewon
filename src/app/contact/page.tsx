@@ -35,9 +35,11 @@ const Page = () => {
         setFormData={setFormData}
         onSubmit={handleSubmit}
       />
-      <MainHeading top="Our Location"/>
+      <MainHeading top="Our Location" />
       <GoogleMap />
-      <GoogleAds />
+      <div className="pb-18 md:pb-24">
+        <GoogleAds />
+      </div>
       <CallToAction />
     </div>
   );
