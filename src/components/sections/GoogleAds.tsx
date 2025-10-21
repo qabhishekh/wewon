@@ -10,7 +10,7 @@ export default function GoogleAds({
   backgroundColor = "#D1D5DB",
 }: GoogleAdsProps) {
   return (
-    <div className="container mx-auto">
+    <div className="mx-auto p-6 lg:p-12">
       <div
         className="w-full pt-14"
         style={{ fontFamily: "Poppins, sans-serif" }}
