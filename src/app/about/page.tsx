@@ -153,20 +153,20 @@ const About = () => {
         bottom={"Our Journey and Purpose"}
       />
       <BentoGridT
-        whoWeAre={{
+        leftHead={{
           title: "Who We Are",
           description: [
             "We Won Academy is a one-stop education and career guidance platform designed to empower students with accurate information, smart tools, and personalized mentorship.",
             "We help students make confident decisions about their college admissions, entrance exams, and career goals — all in one place.",
           ],
         }}
-        ourVision={{
+        rightHead={{
           title: "Our Vision",
           description: [
             "To become India's most trusted student guidance ecosystem that empowers every learner to make informed, confident, and successful career decisions.",
           ],
         }}
-        ourStory={{
+        bottomHead={{
           title: "Our Story",
           description: [
             "We Won Academy was founded with a simple belief — every student deserves the right information at the right time.",

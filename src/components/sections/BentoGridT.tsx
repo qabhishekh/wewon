@@ -11,9 +11,9 @@ interface Section {
 }
 
 interface BentoGridProps {
-  whoWeAre: Section;
-  ourVision: Section;
-  ourStory: Section;
+  leftHead: Section;
+  rightHead: Section;
+  bottomHead: Section;
   showEmployees?: boolean;
   employees?: Employee[];
   primaryColor?: string;
@@ -21,9 +21,9 @@ interface BentoGridProps {
 }
 
 const BentoGridT: React.FC<BentoGridProps> = ({
-  whoWeAre,
-  ourVision,
-  ourStory,
+  leftHead,
+  rightHead,
+  bottomHead,
   showEmployees = false,
   employees = [],
   primaryColor = "var(--primary)",
@@ -62,11 +62,11 @@ const BentoGridT: React.FC<BentoGridProps> = ({
               </svg>
             </div>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-white">
-              {whoWeAre.title}
+              {leftHead.title}
             </h2>
           </div>
 
-          {whoWeAre.description.map((text, idx) => (
+          {leftHead.description.map((text, idx) => (
             <p
               key={idx}
               className="text-white text-sm md:text-base lg:text-lg leading-relaxed mb-4 md:mb-6 opacity-90"
@@ -123,9 +123,9 @@ const BentoGridT: React.FC<BentoGridProps> = ({
             style={{ backgroundColor: primaryColor }}
           >
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-white mb-4 md:mb-6">
-              {ourVision.title}
+              {rightHead.title}
             </h2>
-            {ourVision.description.map((text, idx) => (
+            {rightHead.description.map((text, idx) => (
               <p
                 key={idx}
                 className="text-white text-sm md:text-base lg:text-lg leading-relaxed opacity-90"
@@ -144,9 +144,9 @@ const BentoGridT: React.FC<BentoGridProps> = ({
               className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 md:mb-6"
               style={{ color: primaryColor }}
             >
-              {ourStory.title}
+              {bottomHead.title}
             </h2>
-            {ourStory.description.map((text, idx) => (
+            {bottomHead.description.map((text, idx) => (
               <p
                 key={idx}
                 className="text-sm md:text-base lg:text-lg leading-relaxed"
