@@ -1,5 +1,8 @@
+import Counslings from "@/components/counseling/Counslings";
 import SearchInput from "@/components/counseling/Search";
+import GoogleAds from "@/components/sections/GoogleAds";
 import MainHeading from "@/components/sections/MainHeading";
+import Recommended from "@/components/sections/Recommended";
 import React from "react";
 
 export default function page() {
@@ -12,15 +15,21 @@ export default function page() {
         />
       </div>
       <div className="container mx-auto mt-10 px-4 sm:px-0">
-        <div className="mb-4 flex justify-between items-center">
+        <div className="mb-4 flex justify-between items-center mb-8">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-[var(--primary)]">
             Search Counselling
           </h2>
           <SearchInput />
         </div>
       </div>
-      <div>
-        
+      <div className="container mx-auto">
+        <Counslings />
+      </div>
+      <div className="container mx-auto pb-16 pt-12 sm:pb-24 px-4 md:px-0">
+        <GoogleAds />
+      </div>
+      <div className="container mx-auto pb-16 sm:pb-24 px-4 md:px-0">
+        <Recommended />
       </div>
     </>
   );
