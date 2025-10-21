@@ -10,11 +10,11 @@ interface InternsMember {
 export default function Interns({ interns }: { interns: InternsMember[] }) {
   return (
     <div
-      className="px-4 md:px-12 bg-white mb-14"
+      className="mx-auto p-6 lg:p-12"
       style={{ fontFamily: "Poppins, sans-serif" }}
     >
       <MainHeading top={"2025 Selected Intern Students"} />
-      <div className="container mx-auto mt-14">
+      <div className="mx-auto mt-14">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {interns.map((member, index) => (
             <div

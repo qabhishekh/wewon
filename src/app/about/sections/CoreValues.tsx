@@ -10,11 +10,11 @@ type Value = {
 export default function CoreValues({ values }: { values: Value[] }) {
   return (
     <div
-      className="px-4 md:px-8 pb-10 md:pb-14"
+      className="mx-auto p-6 lg:p-12"
       style={{ backgroundColor: "#F9FAFB", fontFamily: "Poppins, sans-serif" }}
     >
       <MainHeading top={"Our Core Values"} />
-      <div className="container mx-auto mt-8 md:mt-14">
+      <div className="mt-8 md:mt-14">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
           {values.map((value, index) => (
             <div

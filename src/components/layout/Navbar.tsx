@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react'; // Using Lucide icons for menu toggle
 import Image from 'next/image';
+import Link from 'next/link';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false); // State for mobile menu
@@ -28,13 +29,13 @@ const Navbar = () => {
           {/* Desktop Navigation Links */}
           <div className="hidden xl:flex items-center space-x-4 h-full">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.name}
                 href={link.href}
                 className="text-[var(--primary)] text-sm font-semibold hover:text-[var(--accent)] transition-colors h-full flex items-center"
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
           </div>
 

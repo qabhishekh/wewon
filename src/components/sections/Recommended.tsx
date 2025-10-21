@@ -69,7 +69,7 @@ const Recommended = () => {
   };
   return (
 
-    <div className="py-6 md:py-8 lg:py-12 container mx-auto">
+    <div className="p-6 md:py-8 lg:p-12 ">
       <MainHeading top="Recommended Colleges" align={"left"} />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-14">
         {RecommendedColleges.map((college) => (
