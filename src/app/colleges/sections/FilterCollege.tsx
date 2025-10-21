@@ -19,7 +19,7 @@ interface College {
 
 export default function FilterColleges() {
   const router = useRouter();
-  const [isFilterOpen, setIsFilterOpen] = useState<boolean>(true);
+  const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 8;
@@ -142,8 +142,8 @@ export default function FilterColleges() {
   };
 
   const handleApplyFilter = (filters: any) => {
-    console.log(filters);
-    
+
+    setIsFilterOpen(false);
   }
 
   return (

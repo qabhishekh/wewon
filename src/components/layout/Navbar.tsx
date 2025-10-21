@@ -8,11 +8,11 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false); // State for mobile menu
 
   const navLinks = [
-    { name: "College Predictors", href: "#" },
-    { name: "Counseling", href: "#" },
-    { name: "Colleges", href: "#" },
-    { name: "Exams", href: "#" },
-    { name: "Mentorship", href: "#" },
+    { name: "College Predictors", href: "/predictors" },
+    { name: "Counseling", href: "/counseling" },
+    { name: "Colleges", href: "/colleges" },
+    { name: "Exams", href: "/exams" },
+    { name: "Mentorship", href: "/mentorship" },
   ];
 
   return (
@@ -20,9 +20,9 @@ const Navbar = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 w-full flex justify-between items-center">
         {/* Logo Section */}
         <div className="flex items-center h-full">
-          <div className="h-full py-2">
+          <a href='/' className="h-full py-2">
             <Image src="/logo.svg" alt="We Won Academy Logo" width={70} height={30} className="h-full object-contain" />
-          </div>
+          </a>
         </div>
         <div className='flex gap-6 items-center'>
           {/* Desktop Navigation Links */}
