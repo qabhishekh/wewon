@@ -46,7 +46,7 @@ export default function CallToAction() {
           <div className="flex flex-col sm:flex-row gap-3 md:gap-4 items-center justify-center px-2">
             <div className="relative flex-1 w-full sm:max-w-md">
               <div className="absolute left-4 md:left-5 top-1/2 -translate-y-1/2 pointer-events-none">
-                <Mail className="w-5 h-5 text-[var(--primary)]" />
+                <MailIcon color="rgba(13, 58, 102, 0.5)"  />
               </div>
               <input
                 type="email"

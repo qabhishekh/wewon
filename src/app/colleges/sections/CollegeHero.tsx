@@ -38,16 +38,13 @@ export default function CollegeHero({
 }: CollegeHeroProps) {
   return (
     <div
-      className="w-full py-6 md:py-8 lg:py-12"
+      className="w-full px- pt-6 md:px-8 lg:px-12 md:pt-8 lg:pt-12"
       style={{ fontFamily: "Poppins, sans-serif" }}
     >
       {/* Hero Image */}
       <div className="border rounded-3xl overflow-hidden border-[var(--border)]">
         <div className="relative w-full">
-          <div
-            className=""
-            style={{ height: "480px" }}
-          >
+          <div className="" style={{ height: "480px" }}>
             <img
               src={image}
               alt={name}
@@ -56,7 +53,7 @@ export default function CollegeHero({
           </div>
         </div>
         {/* Info Card */}
-        <div className="bg-white rounded-3xl shadow-lg p-6 md:p-6 ">
+        <div className="bg-white rounded-3xl shadow-lg p-4 md:p-4 ">
           <div className="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between mb-6">
             <div className="flex gap-4 md:gap-6 items-start flex-1">
               {/* Logo */}
@@ -137,11 +134,11 @@ export default function CollegeHero({
 
           {/* Navigation Tabs */}
           <div className="border-t border-gray-200 pt-4 overflow-x-auto">
-            <div className="flex gap-6 min-w-max">
+            <div className="flex gap-6 min-w-max justify-between">
               {tabs.map((tab, index) => (
                 <button
                   key={index}
-                  className="text-sm md:text-base font-medium text-gray-600 hover:text-primary whitespace-nowrap pb-2 border-b-2 border-transparent hover:border-primary transition-colors"
+                  className="text-sm md:text-base font-medium text-gray-600 hover:text-primary whitespace-nowrap border-b-2 border-transparent hover:border-primary transition-colors"
                 >
                   {tab}
                 </button>
