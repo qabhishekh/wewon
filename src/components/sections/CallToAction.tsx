@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import MainHeading from "./MainHeading";
-import { Mail } from "lucide-react";
+import { Mail, MailIcon } from "lucide-react";
 
 export default function CallToAction() {
   const [email, setEmail] = useState<string>("");
@@ -45,29 +45,7 @@ export default function CallToAction() {
           <div className="flex flex-col sm:flex-row gap-3 md:gap-4 items-center justify-center px-2">
             <div className="relative flex-1 w-full sm:max-w-md">
               <div className="absolute left-4 md:left-5 top-1/2 -translate-y-1/2 pointer-events-none">
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="md:w-5 md:h-5"
-                >
-                  <path
-                    d="M3.33334 3.33334H16.6667C17.5833 3.33334 18.3333 4.08334 18.3333 5.00001V15C18.3333 15.9167 17.5833 16.6667 16.6667 16.6667H3.33334C2.41668 16.6667 1.66668 15.9167 1.66668 15V5.00001C1.66668 4.08334 2.41668 3.33334 3.33334 3.33334Z"
-                    stroke="rgba(13, 58, 102, 0.5)"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M18.3333 5L10 10.8333L1.66666 5"
-                    stroke="rgba(13, 58, 102, 0.5)"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                <MailIcon color="rgba(13, 58, 102, 0.5)"  />
               </div>
               <input
                 type="email"
