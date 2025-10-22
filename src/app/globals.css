@@ -8,6 +8,7 @@
   --primary: #0D3A66;
   --accent: #7CCC56;
   --muted-text:#848e97;
+  --muted-background:#f6f6f6;
 }
 
 @theme inline {

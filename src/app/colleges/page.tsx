@@ -11,9 +11,15 @@ const page = () => {
         top={"Find The Best Colleges"}
         bottom={"That Fit Your Goals"}
       />
-      <FilterColleges />
-      <GoogleAds />
-      <Recommended />
+      <div className="container mx-auto pb-16 pt-12 sm:pb-24 px-4">
+        <FilterColleges />
+      </div>
+      <div className="container mx-auto pb-16 pt-12 sm:pb-24 px-4">
+        <GoogleAds />
+      </div>
+      <div className="container mx-auto pb-16 sm:pb-24 px-4">
+        <Recommended />
+      </div>
     </div>
   );
 };

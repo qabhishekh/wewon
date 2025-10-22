@@ -11,9 +11,15 @@ const page = () => {
         top={"Stay Updated With Upcoming"}
         bottom={"Exams And Results"}
       />
-      <FilterExams />
-      <GoogleAds />
-      <Popular />
+      <div className="container mx-auto px-4">
+        <FilterExams />
+      </div>
+      <div className="container mx-auto px-4">
+        <GoogleAds />
+      </div>
+      <div className="container mx-auto px-4">
+        <Popular />
+      </div>
     </div>
   );
 };

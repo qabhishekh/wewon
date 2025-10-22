@@ -1,7 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import MainHeading from "./MainHeading";
-import { Mail, MailIcon } from "lucide-react";
+import { Mail } from "lucide-react";
+import Heading from "../home/heading";
 
 export default function CallToAction() {
   const [email, setEmail] = useState<string>("");
@@ -12,18 +13,18 @@ export default function CallToAction() {
 
   return (
     <div
-      className="flex items-center justify-center p-4 md:p-6 my-8 md:my-14"
+      className="flex items-center justify-center pb-18 sm:pb-24"
       style={{ backgroundColor: "var(--background)" }}
     >
       <div
-        className="w-full max-w-7xl rounded-3xl md:rounded-3xl p-8 md:p-12 lg:p-16 xl:p-20"
+        className="w-full container rounded-3xl md:rounded-3xl p-8 md:p-12 lg:p-16 xl:p-20"
         style={{
           backgroundColor: "var(--primary)",
           boxShadow: "0 20px 60px rgba(13, 58, 102, 0.3)",
         }}
       >
         <div className="mx-auto text-center">
-          <h1
+          {/* <h1
             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 md:mb-6 leading-tight px-2"
             style={{ color: "#ffffff" }}
           >
@@ -31,11 +32,11 @@ export default function CallToAction() {
             <br className="hidden sm:block" />
             <span className="sm:hidden"> </span>
             We Won Academy
-          </h1>
-
+          </h1> */}
+          <Heading text="Your Game Plan for a Top Rank" centered className="text-white" />
+          <Heading text="We Won Academy" centered className="text-white" />
           <p
-            className="text-sm sm:text-base md:text-lg lg:text-xl mb-8 md:mb-10 leading-relaxed px-2 max-w-3xl mx-auto"
-            style={{ color: "rgba(255, 255, 255, 0.9)" }}
+            className="text-sm sm:text-base md:text-lg lg:text-xl mb-8 md:mb-10  px-2 max-w-3xl mx-auto mt-4 text-[var(--muted-text)]"
           >
             Use our College Predictor tool to explore the 2025 admission
             cutoffs. Seeing the goalposts clearly is the first step to scoring
@@ -69,11 +70,7 @@ export default function CallToAction() {
 
             <button
               onClick={handleClick}
-              className="w-full sm:w-auto px-8 md:px-10 py-3 md:py-4 rounded-full font-semibold text-sm md:text-base transition-all hover:scale-105 hover:shadow-lg whitespace-nowrap"
-              style={{
-                backgroundColor: "#ffffff",
-                color: "var(--primary)",
-              }}
+              className="w-full sm:w-auto px-8 md:px-10 py-3 md:py-4 rounded-full font-semibold text-sm md:text-base transition-all hover:bg-[var(--accent)] hover:text-white whitespace-nowrap bg-[var(--background)] cursor-pointer text-[var(--primary)]"
             >
               Join Us
             </button>
