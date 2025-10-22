@@ -27,21 +27,30 @@ const MainHeading = ({
       setTypedBottom("");
       let i = 0;
       let j = 0;
+      let typingBottomStarted = false;
       const typeTop = setInterval(() => {
         if (isCancelled) return clearInterval(typeTop);
         setTypedTop(top.slice(0, i));
         i++;
-        if (i > top.length) clearInterval(typeTop);
+        if (i > top.length) {
+          clearInterval(typeTop);
+          typingBottomStarted = true;
+          // Wait a short moment before starting bottom typing for smoothness
+          setTimeout(() => {
+            const typeBottom = setInterval(() => {
+              if (isCancelled) return clearInterval(typeBottom);
+              setTypedBottom((bottom || "").slice(0, j));
+              j++;
+              if (j > (bottom ? bottom.length : 0)) {
+                clearInterval(typeBottom);
+                setTimeout(() => {
+                  if (!isCancelled) startTyping();
+                }, pauseAfter);
+              }
+            }, typeSpeed);
+          }, 300);
+        }
       }, typeSpeed);
-      const typeBottom = setInterval(() => {
-        if (isCancelled) return clearInterval(typeBottom);
-        setTypedBottom((bottom || "").slice(0, j));
-        j++;
-        if (j > (bottom ? bottom.length : 0)) clearInterval(typeBottom);
-      }, typeSpeed);
-      setTimeout(() => {
-        if (!isCancelled) startTyping();
-      }, Math.max(top.length, bottom ? bottom.length : 0) * typeSpeed + pauseAfter);
     };
     startTyping();
     return () => {
@@ -67,8 +76,11 @@ const MainHeading = ({
         transition={{ duration: 0.3 }}
         style={{ whiteSpace: "pre" }}
       >
-        {typedBottom}
-        {bottom && typedBottom.length < bottom.length && <span className="inline-block animate-pulse">|</span>}
+        {/* Reserve space for bottom line until typing starts */}
+        {typedTop.length < top.length
+          ? <span className="opacity-0 select-none">{bottom || " "}</span>
+          : typedBottom}
+        {bottom && typedTop.length === top.length && typedBottom.length < bottom.length && <span className="inline-block animate-pulse">|</span>}
       </motion.span>
     </h1>
   );
