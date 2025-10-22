@@ -38,7 +38,7 @@ export default function CollegeHero({
 }: CollegeHeroProps) {
   return (
     <div
-      className="w-full p-6 md:p-8 lg:p-12"
+      className="w-full py-6 md:py-8 lg:py-12"
       style={{ fontFamily: "Poppins, sans-serif" }}
     >
       {/* Hero Image */}

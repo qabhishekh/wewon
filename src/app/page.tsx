@@ -43,7 +43,10 @@ export default function Home() {
       <div className="container mx-auto">
         <StudentStoryTestimonial />
       </div>
+      <div className="px-4">
+
       <CallToAction />
+      </div>
     </>
   );
 }

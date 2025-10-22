@@ -11,13 +11,13 @@ const page = () => {
         top={"Find The Best Colleges"}
         bottom={"That Fit Your Goals"}
       />
-      <div className="container mx-auto pb-16 pt-12 sm:pb-24 px-4 md:px-0">
+      <div className="container mx-auto pb-16 pt-12 sm:pb-24 px-4">
         <FilterColleges />
       </div>
-      <div className="container mx-auto pb-16 pt-12 sm:pb-24 px-4 md:px-0">
+      <div className="container mx-auto pb-16 pt-12 sm:pb-24 px-4">
         <GoogleAds />
       </div>
-      <div className="container mx-auto pb-16 sm:pb-24 px-4 md:px-0">
+      <div className="container mx-auto pb-16 sm:pb-24 px-4">
         <Recommended />
       </div>
     </div>

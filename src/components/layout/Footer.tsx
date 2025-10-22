@@ -1,5 +1,6 @@
 import React from "react";
 import { Facebook, Instagram, Linkedin, Youtube } from "lucide-react";
+import { div } from "framer-motion/client";
 
 // Data is separated into two rows to match the image layout perfectly
 const topRowLinks = [
@@ -47,17 +48,26 @@ const bottomRowLinks = [
     title: "Tools",
     links: [
       { label: "College Finder", href: "/tools/college-finder" },
-      { label: "JEE (Main) Rank Predictor", href: "/tools/jee-main-rank-predictor" },
-      { label: "JEE (Main) College Predictor", href: "/tools/jee-main-college-predictor" },
-      { label: "JEE (Advanced) College Predictor", href: "/tools/jee-advanced-college-predictor" },
+      {
+        label: "JEE (Main) Rank Predictor",
+        href: "/tools/jee-main-rank-predictor",
+      },
+      {
+        label: "JEE (Main) College Predictor",
+        href: "/tools/jee-main-college-predictor",
+      },
+      {
+        label: "JEE (Advanced) College Predictor",
+        href: "/tools/jee-advanced-college-predictor",
+      },
     ],
   },
 ];
 
 const Footer = () => {
   return (
-    <footer className="bg-[var(--primary)] px-4 md:px-0 text-white font-sans rounded-t-4xl">
-      <div className="container mx-auto pt-16 pb-8">
+    <footer className="bg-[var(--primary)] px-4 text-white font-sans rounded-t-4xl">
+      <div className="container mx-auto pt-16 pb-8 px-2">
         {/* Main content section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-x-8 gap-y-12">
           {/* Brand Info - spans 2 columns on large screens */}
@@ -73,28 +83,44 @@ const Footer = () => {
                 aria-label="Facebook"
                 className="w-10 h-10 bg-[var(--accent)] rounded-full flex items-center justify-center text-[#0D2847]  transition-colors"
               >
-                <Facebook size={20} color="transparent" fill="var(--background)"/>
+                <Facebook
+                  size={20}
+                  color="transparent"
+                  fill="var(--background)"
+                />
               </a>
               <a
                 href="#"
                 aria-label="Instagram"
                 className="w-10 h-10 bg-[var(--accent)] rounded-full flex items-center justify-center text-[#0D2847]  transition-colors"
               >
-                <Instagram size={20} color="var(--accent)" fill="var(--background)"/>
+                <Instagram
+                  size={20}
+                  color="var(--accent)"
+                  fill="var(--background)"
+                />
               </a>
               <a
                 href="#"
                 aria-label="LinkedIn"
                 className="w-10 h-10 bg-[var(--accent)] rounded-full flex items-center justify-center text-[#0D2847]  transition-colors"
               >
-                <Linkedin size={20} color="transparent" fill="var(--background)"/>
+                <Linkedin
+                  size={20}
+                  color="transparent"
+                  fill="var(--background)"
+                />
               </a>
               <a
                 href="#"
                 aria-label="YouTube"
                 className="w-10 h-10 bg-[var(--accent)] rounded-full flex items-center justify-center text-[#0D2847]  transition-colors"
               >
-                <Youtube size={20} color="var(--accent)" fill="var(--background)"/>
+                <Youtube
+                  size={20}
+                  color="var(--accent)"
+                  fill="var(--background)"
+                />
               </a>
             </div>
           </div>
@@ -105,8 +131,14 @@ const Footer = () => {
             {
               title: "Support",
               links: [
-                { label: "Email: support@gmail.com", href: "mailto:support@gmail.com" },
-                { label: "Phone: +91-XXXX-XXXXXX", href: "tel:+911234567890" },
+                {
+                  label: "Email: support@gmail.com",
+                  href: "mailto:support@gmail.com",
+                },
+                {
+                  label: "Phone: +91-XXXX-XXXXXX",
+                  href: "tel:+911234567890",
+                },
                 { label: "Terms of Service", href: "/terms" },
                 { label: "Privacy Policy", href: "/privacy" },
               ],
@@ -119,16 +151,26 @@ const Footer = () => {
               </h3>
               <ul className="mt-4 space-y-3">
                 {section.links.map((link, i) => {
-                  const isObject = typeof link === 'object' && 'label' in link && 'href' in link;
+                  const isObject =
+                    typeof link === "object" &&
+                    "label" in link &&
+                    "href" in link;
                   const label = isObject ? (link as any).label : link;
-                  const href = isObject ? (link as any).href : '#';
+                  const href = isObject ? (link as any).href : "#";
                   return (
                     <li
-                      key={typeof label === 'string' ? label : i}
-                      className={section.title === 'Support' && i < 2 ? 'text-gray-300' : ''}
+                      key={typeof label === "string" ? label : i}
+                      className={
+                        section.title === "Support" && i < 2
+                          ? "text-gray-300"
+                          : ""
+                      }
                     >
                       {isObject ? (
-                        <a href={href} className="text-gray-300 hover:text-white transition-colors">
+                        <a
+                          href={href}
+                          className="text-gray-300 hover:text-white transition-colors"
+                        >
                           {label}
                         </a>
                       ) : (
