@@ -1,3 +1,4 @@
+"use client";
 import React from 'react'
 import Sections from './sections'
 import Heading from './heading'
@@ -49,9 +50,11 @@ export default function FeatureCounselling() {
                 title={service.title}
                 description={service.description}
                 imageUrl={service.imageUrl}
+                imageAlt={service.title}
                 originalPrice={service.originalPrice}
                 currentPrice={service.currentPrice}
                 buttonText={service.buttonText}
+                href="#"
               />
             ))}
         </div>
