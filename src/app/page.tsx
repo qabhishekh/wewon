@@ -10,7 +10,6 @@ import TopColleges from "@/components/home/TopColleges";
 import CollegesSlider from "@/components/home/TopCollegesSlider";
 import CallToAction from "@/components/sections/CallToAction";
 import HeroSection from "@/components/sections/HeroSection";
-import Image from "next/image";
 
 export default function Home() {
   return (
