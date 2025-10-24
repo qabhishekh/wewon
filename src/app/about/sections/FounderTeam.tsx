@@ -1,4 +1,4 @@
-import MainHeading from "@/components/sections/MainHeading";
+import SubHeading from "@/components/sections/SubHeading";
 import React from "react";
 
 interface TeamMember {
@@ -13,7 +13,7 @@ export default function FounderTeam({ team }: { team: TeamMember[] }) {
       className="mx-auto p-6 lg:p-12"
       style={{ fontFamily: "Poppins, sans-serif" }}
     >
-      <MainHeading top={"Founder & Team"} />
+      <SubHeading top={"Founder & Team"} />
       <div className="mx-auto mt-14">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {team.map((member, index) => (

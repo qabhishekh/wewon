@@ -1,5 +1,5 @@
 import DynamicTable from "@/components/sections/DynamicTable";
-import MainHeading from "@/components/sections/MainHeading";
+import SubHeading from "@/components/sections/SubHeading";
 import React, { useState } from "react";
 import {
   BarChart,
@@ -108,7 +108,7 @@ export default function PlacementStatistics({
     >
       <div className="w-full mx-auto">
         {/* Title */}
-        <MainHeading top="Placements" align="left" />
+        <SubHeading top="Placements" align="left" />
         <div className="bg-white rounded-2xl border border-[var(--border)] p-2 mb-6 overflow-x-auto mt-10">
           <div className="flex gap-2 min-w-max">
             {yearsData.map((yearData, index) => (
@@ -271,7 +271,7 @@ export default function PlacementStatistics({
           ))}
 
           {activeYear?.median && (
-            <MainHeading
+            <SubHeading
               top="Median Package Offered (Branchwise)"
               align="left"
             />
@@ -291,7 +291,7 @@ export default function PlacementStatistics({
           ))}
 
           {activeYear?.highest && (
-            <MainHeading
+            <SubHeading
               top="Highest Package Offered (Branchwise)"
               align="left"
             />
@@ -311,7 +311,7 @@ export default function PlacementStatistics({
           ))}
 
           {activeYear?.average && (
-            <MainHeading
+            <SubHeading
               top="Average Package Offered (Branchwise)"
               align="left"
             />

@@ -1,6 +1,5 @@
 import React from "react";
-
-import MainHeading from "@/components/sections/MainHeading";
+import SubHeading from "@/components/sections/SubHeading";
 
 interface Impacts {
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -15,7 +14,7 @@ export default function OurImpact({impacts}:{impacts:Impacts[]}) {
       className="mx-auto p-6 lg:p-12"
       style={{ fontFamily: "Poppins, sans-serif" }}
     >
-      <MainHeading top={"Our Impact"} />
+      <SubHeading top={"Our Impact"} />
       <div className="mx-auto mt-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {impacts.map((impact, index) => {

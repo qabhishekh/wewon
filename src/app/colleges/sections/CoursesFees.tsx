@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Star, Download, BookOpen } from "lucide-react";
-import MainHeading from "@/components/sections/MainHeading";
+import SubHeading from "@/components/sections/SubHeading";
 
 interface Course {
   id: string;
@@ -72,7 +72,7 @@ export default function CoursesFees({
       className="w-full px-6 lg:px-12"
       style={{ fontFamily: "Poppins, sans-serif" }}
     >
-      <MainHeading top={"Courses & Fees"} align="left" />
+      <SubHeading top={"Courses & Fees"} align="left" />
       <div className="w-full mx-auto mt-10">
         {/* Tabs */}
         <div className="bg-white rounded-2xl border border-[var(--border)] p-2 mb-6 overflow-x-auto">

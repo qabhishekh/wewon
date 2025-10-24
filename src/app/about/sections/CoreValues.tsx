@@ -1,4 +1,4 @@
-import MainHeading from "@/components/sections/MainHeading";
+import SubHeading from "@/components/sections/SubHeading";
 import React from "react";
 
 type Value = {
@@ -14,7 +14,7 @@ export default function CoreValues({ values }: { values: Value[] }) {
       style={{ backgroundColor: "#F9FAFB", fontFamily: "Poppins, sans-serif" }}
     >
       <div className="container mx-auto">
-        <MainHeading top={"Our Core Values"} />
+        <SubHeading top={"Our Core Values"} />
         <div className="mt-8 md:mt-14">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
             {values.map((value, index) => (

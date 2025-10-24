@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import MainHeading from "./MainHeading";
 import { useRouter } from "next/navigation";
 import ExamCard from "../cards/ExamCard";
+import SubHeading from "./SubHeading";
 
 interface Exams {
   id: string;
@@ -54,7 +54,7 @@ const Popular = () => {
   };
   return (
     <div className="py-6 md:py-8 lg:py-12">
-      <MainHeading top="Popular Exams" align={"left"} />
+      <SubHeading top="Popular Exams" align={"left"} />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-14">
         {PopularExams.map((exam) => (
           <ExamCard key={exam.id} exam={exam} handleKnowMore={handleKnowMore} />
