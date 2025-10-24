@@ -1,4 +1,3 @@
-import CounselingCard from "@/components/cards/CounselingCard";
 import NewsSection from "@/components/home/FeaturedNews";
 import FeatureCounselling from "@/components/home/FeatureCounselling";
 import FeaturedVideos from "@/components/home/FeaturedVideos";
