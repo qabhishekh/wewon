@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import MainHeading from "@/components/sections/MainHeading";
 import DynamicTable from "@/components/sections/DynamicTable";
+import SubHeading from "@/components/sections/SubHeading";
 
 interface FilterOption {
   label: string;
@@ -99,7 +99,7 @@ export default function CutOffsFilter({
       className="w-full px-6 lg:px-12"
       style={{ fontFamily: "Poppins, sans-serif" }}
     >
-      <MainHeading top="Cutoffs" align="left" />
+      <SubHeading top="Cutoffs" align="left" />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-10">
         {/* Category Dropdown */}
         <div className="relative">

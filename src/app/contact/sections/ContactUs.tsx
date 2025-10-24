@@ -41,7 +41,7 @@ export default function ContactUs({
       className="pt-8 md:pt-12 bg-background px-4 md:px-0"
       style={{ fontFamily: "Poppins, sans-serif" }}
     >
-      <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left Side - Contact Info */}
         <div
           className="rounded-3xl md:rounded-r-3xl md:rounded-l-none p-6 md:p-8 lg:p-12 text-white"

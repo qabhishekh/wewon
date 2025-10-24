@@ -112,7 +112,7 @@ export default function FilterExams() {
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
         <h1
-          className="text-3xl md:text-4xl font-bold"
+          className="text-3xl md:text-4xl font-semibold"
           style={{ color: "#0D3A66" }}
         >
           Filter Exams

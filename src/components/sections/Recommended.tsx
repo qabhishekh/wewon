@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import MainHeading from "./MainHeading";
 import CollegeCard from "../cards/CollegeCard";
 import { useRouter } from "next/navigation";
+import SubHeading from "./SubHeading";
 
 interface College {
   id: string;
@@ -70,7 +70,7 @@ const Recommended = () => {
   return (
 
     <div>
-      <MainHeading top="Recommended Colleges" align={"left"} />
+      <SubHeading top="Recommended Colleges" align={"left"} />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-14">
         {RecommendedColleges.map((college) => (
           <CollegeCard

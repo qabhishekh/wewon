@@ -5,6 +5,7 @@ import ContactUs from "./sections/ContactUs";
 import GoogleMap from "./sections/GoogleMap";
 import GoogleAds from "@/components/sections/GoogleAds";
 import CallToAction from "@/components/sections/CallToAction";
+import SubHeading from "@/components/sections/SubHeading";
 
 export interface FormData {
   firstName: string;
@@ -35,7 +36,7 @@ const Page = () => {
         setFormData={setFormData}
         onSubmit={handleSubmit}
       />
-      <MainHeading top="Our Location" />
+      <SubHeading top="Our Location" />
       <GoogleMap />
       <div className="pb-18 md:pb-24">
         <GoogleAds />
