@@ -59,7 +59,9 @@ const MainHeading = ({
   }, [top, bottom]);
 
   return (
-    <h1 className={`text-2xl sm:text-3xl md:text-5xl font-bold text-[var(--primary)] leading-tight md:leading-tight pt-14 pb-2 text-${align} ${className}`}>
+    <h1
+      className={`text-2xl sm:text-3xl md:text-5xl font-bold text-[var(--primary)] leading-tight md:leading-tight pt-14 pb-2 text-${align} ${className}`}
+    >
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -67,7 +69,9 @@ const MainHeading = ({
         style={{ whiteSpace: "pre" }}
       >
         {typedTop}
-        {typedTop.length < top.length && <span className="inline-block animate-pulse">|</span>}
+        {typedTop.length < top.length && (
+          <span className="inline-block animate-pulse">|</span>
+        )}
       </motion.span>
       <br />
       <motion.span
@@ -77,10 +81,16 @@ const MainHeading = ({
         style={{ whiteSpace: "pre" }}
       >
         {/* Reserve space for bottom line until typing starts */}
-        {typedTop.length < top.length
-          ? <span className="opacity-0 select-none">{bottom || " "}</span>
-          : typedBottom}
-        {bottom && typedTop.length === top.length && typedBottom.length < bottom.length && <span className="inline-block animate-pulse">|</span>}
+        {typedTop.length < top.length ? (
+          <span className="opacity-0 select-none">{bottom || " "}</span>
+        ) : (
+          typedBottom
+        )}
+        {bottom &&
+          typedTop.length === top.length &&
+          typedBottom.length < bottom.length && (
+            <span className="inline-block animate-pulse">|</span>
+          )}
       </motion.span>
     </h1>
   );

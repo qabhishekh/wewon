@@ -148,10 +148,12 @@ const About = () => {
   ];
   return (
     <>
-      <MainHeading
-        top={"Learn More About"}
-        bottom={"Our Journey and Purpose"}
-      />
+      <div className="container mx-auto">
+        <MainHeading
+          top={"Learn More About"}
+          bottom={"Our Journey and Purpose"}
+        />
+      </div>
       <BentoGridT
         leftHead={{
           title: "Who We Are",
@@ -188,12 +190,13 @@ const About = () => {
           },
         ]}
       />
-
       <CoreValues values={values} />
-      <GoogleAds />
-      <OurImpact impacts={impacts} />
-      <FounderTeam team={team} />
-      <Interns interns={interns} />
+      <div className="container mx-auto">
+        <GoogleAds />
+        <OurImpact impacts={impacts} />
+        <FounderTeam team={team} />
+        <Interns interns={interns} />
+      </div>
     </>
   );
 };
