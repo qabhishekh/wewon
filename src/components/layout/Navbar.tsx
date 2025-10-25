@@ -9,7 +9,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false); // State for mobile menu
 
   const navLinks = [
-    { name: "College Predictors", href: "/predictors" },
+    { name: "College Predictor", href: "/predictor" },
     { name: "Counseling", href: "/counseling" },
     { name: "Colleges", href: "/colleges" },
     { name: "Exams", href: "/exams" },
@@ -78,14 +78,14 @@ const Navbar = () => {
             >
               <div className="flex-1 flex flex-col gap-3 px-5 py-8">
                 {navLinks.map((link) => (
-                  <a
+                  <Link
                     key={link.name}
                     href={link.href}
                     className="text-[var(--primary)] text-base font-semibold hover:text-[var(--accent)] transition-colors py-3 px-4 rounded-xl bg-white/5 shadow-sm text-left w-full"
                     onClick={() => setIsOpen(false)}
                   >
                     {link.name}
-                  </a>
+                  </Link>
                 ))}
                 <button className="bg-[var(--accent)] text-[var(--background)] text-base font-semibold px-8 py-3 rounded-2xl shadow-lg hover:bg-[var(--primary)] transition-colors mt-4 w-full"
                   onClick={() => setIsOpen(false)}>
