@@ -1,4 +1,4 @@
-import Counslings from "@/components/counseling/Counslings";
+import Counslings from "@/components/counseling/Counselings";
 import SearchInput from "@/components/counseling/Search";
 import GoogleAds from "@/components/sections/GoogleAds";
 import MainHeading from "@/components/sections/MainHeading";
@@ -15,11 +15,11 @@ export default function page() {
         />
       </div>
       <div className="container mx-auto mt-10 px-4 ">
-        <div className="mb-4 flex justify-between items-center mb-8">
+        <div className="flex justify-between items-center mb-8">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-[var(--primary)]">
             Search Counselling
           </h2>
-          <SearchInput />
+          <SearchInput placeholder="Counselling" />
         </div>
       </div>
       <div className="container mx-auto px-4">

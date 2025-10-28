@@ -433,10 +433,30 @@ const page = () => {
           rating={4.5}
           image="https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2086"
           logo="https://images.unsplash.com/photo-1738464024478-2a60ac914513?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y29sbGVnZSUyMGxvZ298ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=900"
-          type="Public/Government University"
-          established="1961"
-          onSave={() => console.log("Saved!")}
-          onDownloadBrochure={() => console.log("Downloading...")}
+          tags={["Public/Government University", "Estd. 1961"]}
+          tabs={[
+            "Info & Courses",
+            "Seats",
+            "Cut-Offs",
+            "Fee Structure",
+            "Placement",
+            "How to Reach",
+            "Ranking",
+            "Mode of Admission",
+            "Placements",
+          ]}
+          buttons={[
+            {
+              label: "Save",
+              icon: "Bookmark",
+              function: () => console.log("Saved!"),
+            },
+            {
+              label: "Brochure",
+              icon: "Download",
+              function: () => console.log("Downloading..."),
+            },
+          ]}
         />
       </div>
 

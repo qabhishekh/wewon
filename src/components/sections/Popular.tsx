@@ -53,7 +53,7 @@ const Popular = () => {
     router.push(`/colleges/${collegeId}`);
   };
   return (
-    <div className="py-6 md:py-8 lg:py-12">
+    <div className="">
       <SubHeading top="Popular Exams" align={"left"} />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-14">
         {PopularExams.map((exam) => (

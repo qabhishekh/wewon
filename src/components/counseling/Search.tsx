@@ -2,7 +2,7 @@
 import React from "react";
 import { Search } from "lucide-react";
 
-export default function SearchInput() {
+export default function SearchInput({ placeholder }: { placeholder?: string }) {
   const [searchQuery, setSearchQuery] = React.useState("");
   return (
     <div className="flex gap-2 max-w-sm">
@@ -14,7 +14,7 @@ export default function SearchInput() {
         />
         <input
           type="text"
-          placeholder="Search for colleges"
+          placeholder={`Search for ${placeholder || "College"}`}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full py-3 pl-12 pr-4 rounded-lg outline-none transition-all"
