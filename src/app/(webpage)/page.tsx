@@ -9,11 +9,12 @@ import TopColleges from "@/components/home/TopColleges";
 import CollegesSlider from "@/components/home/TopCollegesSlider";
 import CallToAction from "@/components/sections/CallToAction";
 import HeroSection from "@/components/sections/HeroSection";
+import Newsletter from "@/components/Newsletter";
 
 export default function Home() {
   return (
     <>
-      <div className="container mx-auto px-2 px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <HeroSection />
       </div>
       <CollegesSlider />
@@ -42,9 +43,9 @@ export default function Home() {
         <StudentStoryTestimonial />
       </div>
       <div className="px-4">
-
-      <CallToAction />
+        <CallToAction />
       </div>
+      <Newsletter />
     </>
   );
 }

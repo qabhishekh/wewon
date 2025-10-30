@@ -1,15 +1,15 @@
 "use client";
 
-import React from 'react';
+import React from "react";
 // Import Swiper React components
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
 // @ts-ignore
-import 'swiper/css';
+import "swiper/css";
 
 // import required modules
-import { Autoplay } from 'swiper/modules';
+import { Autoplay } from "swiper/modules";
 
 // --- Data for the slider ---
 // I'll use placeholder images. Replace with your actual data.
@@ -73,20 +73,22 @@ const CollegesSlider = () => {
         >
           {colleges.map((college, index) => (
             <SwiperSlide key={index} className="rounded-2xl overflow-hidden">
-              <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-lg">
+              <div className="relative w-full aspect-[3/2] rounded-2xl overflow-hidden shadow-lg">
                 <img
                   src={college.imageUrl}
                   alt={college.name}
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
-                
+
                 {/* Gradient overlay for text readability */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-                
+
                 {/* College Name Text */}
                 <div className="absolute w-full bottom-0 left-0 p-6">
-                  <h3 className="text-white text-center text-sm font-semibold">{college.name}</h3>
+                  <h3 className="text-white text-center text-sm font-semibold">
+                    {college.name}
+                  </h3>
                 </div>
               </div>
             </SwiperSlide>
