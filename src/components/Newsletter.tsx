@@ -79,7 +79,7 @@ export default function Newsletter() {
         {/* --- Actions --- */}
         <div className="mt-6 flex flex-col gap-3">
           <button
-            onClick={() => router.push('/college-predictor')}
+            onClick={() => router.push('/predictor')}
             className="inline-flex w-full items-center justify-center rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             aria-label="Open College predictor"
           >
