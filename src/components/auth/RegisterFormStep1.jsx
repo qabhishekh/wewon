@@ -3,17 +3,52 @@
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 
-export default function RegisterFormStep1({ onNext }) {
+export default function RegisterFormStep1({
+  name,
+  setName,
+  email,
+  setEmail,
+  password,
+  setPassword,
+  onNext,
+  loading,
+  error,
+}) {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // In a real app, you'd validate these fields before moving to the next step
+    // Basic client-side validation (optional)
+    if (!name || !email || !password) return;
     onNext();
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* show server error */}
+      {error && (
+        <div className="text-sm text-red-600 bg-red-50 p-2 rounded">{error}</div>
+      )}
+
+      {/* Name */}
+      <div>
+        <label
+          htmlFor="name"
+          className="block text-sm font-medium text-[var(--foreground)] mb-1.5"
+        >
+          Full name
+        </label>
+        <input
+          type="text"
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Enter your full name"
+          className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
+          required
+        />
+      </div>
+
       {/* Email Address */}
       <div>
         <label
@@ -25,24 +60,9 @@ export default function RegisterFormStep1({ onNext }) {
         <input
           type="email"
           id="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter your Email Address"
-          className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
-          required
-        />
-      </div>
-
-      {/* Username */}
-      <div>
-        <label
-          htmlFor="regUsername"
-          className="block text-sm font-medium text-[var(--foreground)] mb-1.5"
-        >
-          User name
-        </label>
-        <input
-          type="text"
-          id="regUsername"
-          placeholder="Enter your User name"
           className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
           required
         />
@@ -60,6 +80,8 @@ export default function RegisterFormStep1({ onNext }) {
           <input
             type={showPassword ? "text" : "password"}
             id="regPassword"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your Password"
             className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)] pr-10"
             required
@@ -69,11 +91,7 @@ export default function RegisterFormStep1({ onNext }) {
             onClick={() => setShowPassword(!showPassword)}
             className="absolute inset-y-0 right-0 pr-3 flex items-center text-[var(--muted-text)] hover:text-[var(--primary)]"
           >
-            {showPassword ? (
-              <EyeOff className="h-5 w-5" />
-            ) : (
-              <Eye className="h-5 w-5" />
-            )}
+            {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
           </button>
         </div>
       </div>
@@ -82,9 +100,10 @@ export default function RegisterFormStep1({ onNext }) {
       <div>
         <button
           type="submit"
-          className="w-full bg-[var(--primary)] text-white font-semibold p-3.5 rounded-lg shadow-md hover:opacity-90 transition-opacity"
+          disabled={loading}
+          className="w-full bg-[var(--primary)] text-white font-semibold p-3.5 rounded-lg shadow-md hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Next
+          {loading ? "Sending OTP..." : "Next"}
         </button>
       </div>
     </form>

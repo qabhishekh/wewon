@@ -1,31 +1,53 @@
 "use client";
 
-import { Eye, EyeOff } from "lucide-react"; // Import Lucide icons
+import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 
-export default function LoginForm() {
+export default function LoginForm({
+  handleLogin,
+  email,
+  setEmail,
+  password,
+  setPassword,
+  loading,
+  error,
+}: {
+  handleLogin: () => void;
+  email: string;
+  setEmail: (v: string) => void;
+  password: string;
+  setPassword: (v: string) => void;
+  loading?: boolean;
+  error?: string | null;
+}) {
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Login attempt!");
-    // Handle login logic here
+    handleLogin();
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Username */}
+      {/* show server error */}
+      {error && (
+        <div className="text-sm text-red-600 bg-red-50 p-2 rounded">{error}</div>
+      )}
+
+      {/* Email */}
       <div>
         <label
-          htmlFor="username"
+          htmlFor="email"
           className="block text-sm font-medium text-[var(--foreground)] mb-1.5"
         >
-          User name
+          Email
         </label>
         <input
-          type="text"
-          id="username"
-          placeholder="Enter your User name"
+          type="email"
+          id="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter your email"
           className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
           required
         />
@@ -43,6 +65,8 @@ export default function LoginForm() {
           <input
             type={showPassword ? "text" : "password"}
             id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your Password"
             className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)] pr-10"
             required
@@ -52,11 +76,7 @@ export default function LoginForm() {
             onClick={() => setShowPassword(!showPassword)}
             className="absolute inset-y-0 right-0 pr-3 flex items-center text-[var(--muted-text)] hover:text-[var(--primary)]"
           >
-            {showPassword ? (
-              <EyeOff className="h-5 w-5" />
-            ) : (
-              <Eye className="h-5 w-5" />
-            )}
+            {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
           </button>
         </div>
       </div>
@@ -74,7 +94,10 @@ export default function LoginForm() {
             Remember me
           </label>
         </div>
-        <a href="#" className="font-medium text-[var(--primary)] hover:underline">
+        <a
+          href="#"
+          className="font-medium text-[var(--primary)] hover:underline"
+        >
           Forgot Password ?
         </a>
       </div>
@@ -83,9 +106,10 @@ export default function LoginForm() {
       <div>
         <button
           type="submit"
-          className="w-full bg-[var(--primary)] text-white font-semibold p-3.5 rounded-lg shadow-md hover:opacity-90 transition-opacity"
+          disabled={loading}
+          className="w-full bg-[var(--primary)] text-white font-semibold p-3.5 rounded-lg shadow-md hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Login
+          {loading ? "Logging in..." : "Login"}
         </button>
       </div>
     </form>

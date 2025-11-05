@@ -40,7 +40,7 @@ export default function BottomNavigation({
       style={{ fontFamily: "Poppins, sans-serif" }}
     >
       <div
-        className="bg-white rounded-full shadow-2xl px-8 py-4 flex items-center gap-8"
+        className="bg-white rounded-full shadow-2xl lg:px-8 lg:py-4 px-4 py-2 flex items-center lg:gap-8 gap-4"
         style={{
           boxShadow: "0 10px 40px rgba(0, 0, 0, 0.15)",
           border: "1px solid rgba(0, 0, 0, 0.05)",
