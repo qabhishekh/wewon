@@ -7,9 +7,14 @@ import LoginForm from "./LoginForm";
 import RegisterFormStep1 from "./RegisterFormStep1";
 import OTPForm from "./OTPForm";
 import apiClient from "../../hooks/Axios";
+import { toast } from "sonner";
+import { loginUser } from "@/store/auth/authThunk";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store/store";
 
 export default function AuthForm() {
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
   const [activeTab, setActiveTab] = useState<"login" | "register">("login");
   const [registerStep, setRegisterStep] = useState<number>(1);
 
@@ -27,12 +32,10 @@ export default function AuthForm() {
   const [error, setError] = useState<string | null>(null);
 
   const [otpLoading, setOtpLoading] = useState(false);
-  const [otpError, setOtpError] = useState<string | null>(null);
   const [resendLoading, setResendLoading] = useState(false);
 
   // Login UX state
   const [loginLoading, setLoginLoading] = useState(false);
-  const [loginError, setLoginError] = useState<string | null>(null);
 
   // Step 1: send register request (server sends OTP)
   const handleNextStep = async () => {
@@ -61,7 +64,7 @@ export default function AuthForm() {
   // Allow resending OTP from OTPForm
   const handleResend = async () => {
     setResendLoading(true);
-    setOtpError(null);
+
     try {
       await apiClient.post("/api/auth/register", {
         name,
@@ -71,7 +74,7 @@ export default function AuthForm() {
       // keep user on OTP step; show a small notice (alert used for brevity)
       alert("OTP resent to your email");
     } catch (err: any) {
-      setOtpError(
+      toast.error(
         err?.response?.data?.message || err?.message || "Resend failed"
       );
     } finally {
@@ -81,16 +84,12 @@ export default function AuthForm() {
 
   // Step 2: verify OTP
   const handleOTPSubmit = async (otp: string) => {
-    setOtpError(null);
     setOtpLoading(true);
     try {
-      const res = await apiClient.post(
-        "/api/auth/verify-otp",
-        {
-          email,
-          otp,
-        }
-      );
+      const res = await apiClient.post("/api/auth/verify-otp", {
+        email,
+        otp,
+      });
 
       // Expected: { message, token, user }
       const token = res?.data?.token;
@@ -108,7 +107,7 @@ export default function AuthForm() {
       setActiveTab("login");
       router.push("/");
     } catch (err: any) {
-      setOtpError(
+      toast.error(
         err?.response?.data?.message ||
           err?.message ||
           "OTP verification failed"
@@ -120,26 +119,17 @@ export default function AuthForm() {
 
   // Login handler (password-based)
   const handleLogin = async () => {
-    setLoginError(null);
     setLoginLoading(true);
     try {
-      const res = await apiClient.post("/api/auth/login", {
-        email: loginEmail,
-        password: loginPassword,
-      });
-
-      const token = res?.data?.token;
-      if (token) {
-        try {
-          localStorage.setItem("token", token);
-        } catch (e) {}
-      }
-
-      alert(res?.data?.message || "Login successful");
+      const { user } = await dispatch(
+        loginUser({ email: loginEmail, password: loginPassword })
+      ).unwrap();
+      toast.success(`Welcome back, ${user.name}!`);
       router.push("/");
+
     } catch (err: any) {
-      setLoginError(
-        err?.response?.data?.message || err?.message || "Login failed"
+      toast.error(
+        err?.response?.data?.message || err?.message || err || "Login failed"
       );
     } finally {
       setLoginLoading(false);
@@ -207,7 +197,6 @@ export default function AuthForm() {
               password={loginPassword}
               setPassword={setLoginPassword}
               loading={loginLoading}
-              error={loginError}
             />
           ) : (
             <>
@@ -228,7 +217,6 @@ export default function AuthForm() {
                 <OTPForm
                   onSubmit={handleOTPSubmit}
                   loading={otpLoading}
-                  error={otpError}
                   onResend={handleResend}
                   resendLoading={resendLoading}
                 />

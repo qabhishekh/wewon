@@ -2,6 +2,7 @@
 
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function RegisterFormStep1({
   name,
@@ -13,23 +14,42 @@ export default function RegisterFormStep1({
   onNext,
   loading,
   error,
+}: {
+  name: string;
+  setName: (name: string) => void;
+  email: string;
+  setEmail: (email: string) => void;
+  password: string;
+  setPassword: (password: string) => void;
+  onNext: () => void;
+  loading: boolean;
+  error: string | null;
 }) {
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Basic client-side validation (optional)
-    if (!name || !email || !password) return;
+
+    // Clear server-side error toast if exists
+    if (error) toast.error(error);
+
+    // Basic client-side validation
+    if (!name.trim() || !email.trim() || !password.trim()) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+
+    // ✅ Password length validation
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters long.");
+      return;
+    }
+
     onNext();
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* show server error */}
-      {error && (
-        <div className="text-sm text-red-600 bg-red-50 p-2 rounded">{error}</div>
-      )}
-
       {/* Name */}
       <div>
         <label
@@ -91,7 +111,11 @@ export default function RegisterFormStep1({
             onClick={() => setShowPassword(!showPassword)}
             className="absolute inset-y-0 right-0 pr-3 flex items-center text-[var(--muted-text)] hover:text-[var(--primary)]"
           >
-            {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+            {showPassword ? (
+              <EyeOff className="h-5 w-5" />
+            ) : (
+              <Eye className="h-5 w-5" />
+            )}
           </button>
         </div>
       </div>

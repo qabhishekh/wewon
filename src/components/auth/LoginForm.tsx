@@ -1,6 +1,6 @@
 "use client";
 
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useState } from "react";
 
 export default function LoginForm({
@@ -10,7 +10,6 @@ export default function LoginForm({
   password,
   setPassword,
   loading,
-  error,
 }: {
   handleLogin: () => void;
   email: string;
@@ -18,7 +17,6 @@ export default function LoginForm({
   password: string;
   setPassword: (v: string) => void;
   loading?: boolean;
-  error?: string | null;
 }) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -29,10 +27,6 @@ export default function LoginForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* show server error */}
-      {error && (
-        <div className="text-sm text-red-600 bg-red-50 p-2 rounded">{error}</div>
-      )}
 
       {/* Email */}
       <div>
@@ -109,7 +103,8 @@ export default function LoginForm({
           disabled={loading}
           className="w-full bg-[var(--primary)] text-white font-semibold p-3.5 rounded-lg shadow-md hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {loading ? "Logging in..." : "Login"}
+          {loading && <Loader2 className="animate-spin inline-block mr-2" /> }
+          Login
         </button>
       </div>
     </form>

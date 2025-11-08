@@ -1,6 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import { Home, FileText, Monitor, BarChart3, User } from "lucide-react";
+import { Home, FileText, Monitor, BarChart3, LogOut, User } from "lucide-react";
+import { logout } from "@/store/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useRouter } from "next/navigation";
 
 interface NavItem {
   id: string;
@@ -8,31 +11,35 @@ interface NavItem {
   label: string;
 }
 
-interface BottomNavigationProps {
-  items?: NavItem[];
-  onItemClick?: (itemId: string) => void;
-  defaultActive?: string;
-}
+export default function BottomNavigation() {
+  const dispatch = useAppDispatch();
+  const route = useRouter();
+  const [activeItem, setActiveItem] = useState("home");
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
 
-export default function BottomNavigation({
-  items = [
+  const handleItemClick = (itemId: string) => {
+    setActiveItem(itemId);
+  };
+
+  const handleRedirect = () => {
+    if (isAuthenticated) {
+      route.replace("/profile");
+    } else {
+      route.replace("/auth");
+    }
+  };
+  const items = [
     { id: "home", icon: Home, label: "Home" },
     { id: "docs", icon: FileText, label: "Docs" },
     { id: "monitor", icon: Monitor, label: "Monitor" },
     { id: "stats", icon: BarChart3, label: "Stats" },
-    { id: "profile", icon: User, label: "Profile" },
-  ],
-  onItemClick,
-  defaultActive = "home",
-}: BottomNavigationProps) {
-  const [activeItem, setActiveItem] = useState(defaultActive);
-
-  const handleItemClick = (itemId: string) => {
-    setActiveItem(itemId);
-    if (onItemClick) {
-      onItemClick(itemId);
-    }
-  };
+    {
+      id: isAuthenticated ? "profile" : "login",
+      icon: User,
+      label: isAuthenticated ? "profile" : "Login",
+      function: handleRedirect,
+    },
+  ];
 
   return (
     <div
@@ -53,7 +60,7 @@ export default function BottomNavigation({
           return (
             <button
               key={item.id}
-              onClick={() => handleItemClick(item.id)}
+              onClick={item.function}
               className="relative flex flex-col items-center justify-center transition-all duration-200 hover:scale-110 group"
               aria-label={item.label}
             >
@@ -61,7 +68,6 @@ export default function BottomNavigation({
                 className={`p-3 rounded-2xl transition-all duration-200 ${
                   isActive ? "scale-110" : "group-hover:bg-gray-50"
                 }`}
-
               >
                 <Icon
                   className={`w-6 h-6 transition-colors duration-200 text-primary`}
