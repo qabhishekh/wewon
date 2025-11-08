@@ -83,11 +83,17 @@ const PersonalizedMentorship = () => {
               />
             </div>
             <div className="relative md:max-w-xl rounded-2xl overflow-hidden shadow-2xl mx-auto">
-              <img
-                src="/howitworks/1.png" // <-- REPLACE WITH YOUR IMAGE
-                alt="Mentorship session"
-                className="w-full h-full object-cover aspect-[9/16]" // Responsive aspect ratio
-              />
+              <div className="w-full aspect-[9/16] bg-black flex items-center justify-center">
+                {/* Responsive YouTube embed, no absolute positioning */}
+                <iframe
+                  src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&rel=0&playsinline=1"
+                  title="Mentorship session video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="w-full h-full rounded-2xl border-0"
+                  style={{ minHeight: 240 }}
+                ></iframe>
+              </div>
               <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
                 <p className="text-white text-xl text-center font-semibold">
                   Personal Advice

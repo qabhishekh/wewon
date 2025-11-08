@@ -1,0 +1,20 @@
+import BottomNavigation from "@/components/layout/BottomNavigation";
+import Footer from "@/components/layout/Footer";
+import Navbar from "@/components/layout/Navbar";
+
+
+export default function WebpageLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <>
+      <Navbar />
+
+      {children}
+      <BottomNavigation />
+      <Footer />
+    </>
+  );
+}

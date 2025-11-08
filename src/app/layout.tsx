@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
+import { Toaster } from "sonner";
 // @ts-ignore
 import "./globals.css";
-import Footer from "@/components/layout/Footer";
-import Navbar from "@/components/layout/Navbar";
+import StoreProvider from "./StoreProvider";
+import UserInitializer from "./auth/UserInitializer";
+import Loader from "@/components/loader/Loader";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -24,9 +26,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} antialiased`}>
-        <Navbar />
+        <Loader />
+
+        <Toaster position="top-right" richColors />
+        <StoreProvider>
+          <UserInitializer />
+
           {children}
-        <Footer />
+        </StoreProvider>
       </body>
     </html>
   );

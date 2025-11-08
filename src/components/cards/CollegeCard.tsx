@@ -1,12 +1,18 @@
+"use client";
 import React from "react";
-import { Calendar, MapPin, GraduationCap, ArrowRight } from "lucide-react";
+import {
+  Calendar,
+  MapPin,
+  GraduationCap,
+  CircleChevronRight,
+} from "lucide-react";
 
 const CollegeCard = ({
   college,
   handleKnowMore,
 }: {
   college: any;
-  handleKnowMore: (id: string) => void;
+  handleKnowMore?: (id: string) => void;
 }) => {
   return (
     <div
@@ -62,15 +68,15 @@ const CollegeCard = ({
 
         {/* Know More Button */}
         <button
-          onClick={() => handleKnowMore(college?.id)}
-          className="w-full py-3 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-all hover:opacity-90"
+          onClick={() => handleKnowMore && handleKnowMore(college?.id)}
+          className="w-full py-3 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-all hover:opacity-90 cursor-pointer"
           style={{
             backgroundColor: "var(--light-blue)",
             color: "#0D3A66",
           }}
         >
           Know More
-          <ArrowRight size={16} />
+          <CircleChevronRight size={16} />
         </button>
       </div>
     </div>
