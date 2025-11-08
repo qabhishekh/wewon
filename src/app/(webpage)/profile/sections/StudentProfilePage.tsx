@@ -12,12 +12,14 @@ import {
   Calendar,
   GraduationCap,
   MapPin,
+  LogOut,
 } from "lucide-react";
 import { useAppDispatch } from "@/store/hooks";
 import { toast } from "sonner";
 import { User as UserTypes } from "@/store/auth/types";
 import EditProfileModal from "./EditProfileModal";
 import { updateStudentProfile } from "@/store/auth/authThunk";
+import { logout } from "@/store/auth/authSlice";
 
 interface StudentProfilePageProps {
   profileData: UserTypes;
@@ -67,7 +69,7 @@ export default function StudentProfilePage({
       <div>
         {/* Header */}
         <div className="bg-white rounded-2xl shadow-sm p-6 md:p-8 mb-6">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between">
             <div className="flex items-center gap-6">
               {/* Avatar */}
               <div className="relative">
@@ -120,14 +122,24 @@ export default function StudentProfilePage({
             </div>
 
             {/* Edit Button */}
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: "var(--primary)" }}
-            >
-              <Edit2 className="w-5 h-5" />
-              Edit Profile
-            </button>
+            <div className="flex gap-6">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white hover:opacity-90 transition-opacity"
+                style={{ backgroundColor: "var(--primary)" }}
+              >
+                <Edit2 className="w-5 h-5" />
+                Edit Profile
+              </button>
+              <button
+                onClick={() => dispatch(logout())}
+                className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white hover:opacity-90 transition-opacity"
+                style={{ backgroundColor: "var(--destructive)" }}
+              >
+                <LogOut className="w-5 h-5" />
+                Logout
+              </button>
+            </div>
           </div>
         </div>
 

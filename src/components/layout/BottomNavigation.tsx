@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import { Home, FileText, Monitor, BarChart3, LogOut, User } from "lucide-react";
-import { logout } from "@/store/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useRouter } from "next/navigation";
 
