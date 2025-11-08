@@ -35,7 +35,7 @@ const initialState: AuthState = {
     updatedAt: "",
   },
   token: null,
-  loading: false,
+  loading: true,
   btnloading: false,
   error: null,
   isAuthenticated: false,

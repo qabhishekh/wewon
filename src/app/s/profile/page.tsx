@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 
 import StudentProfilePage from "./sections/StudentProfilePage";
@@ -7,22 +5,12 @@ import { Loader2 } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
 
 const Page = () => {
-  const { user, loading, isAuthenticated } = useAppSelector(
-    (state) => state.auth
-  );
+  const { user, loading } = useAppSelector((state) => state.auth);
 
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <Loader2 className="w-10 h-10 text-[var(--primary)] animate-spin" />
-      </div>
-    );
-  }
-
-  if (!isAuthenticated || !user) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50 text-gray-600">
-        <p>Please log in to view your profile.</p>
       </div>
     );
   }
@@ -57,7 +45,7 @@ const Page = () => {
   };
 
   return (
-    <div className="container mx-auto">
+    <div className="w-full">
       <StudentProfilePage
         profileData={profileData} // getting error in this line
         onEditAvatar={() => console.log("Avatar edit triggered")}

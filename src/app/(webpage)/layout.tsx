@@ -1,7 +1,7 @@
 import BottomNavigation from "@/components/layout/BottomNavigation";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
-import UserInitializer from "../auth/UserInitializer";
+
 
 export default function WebpageLayout({
   children,
@@ -11,7 +11,6 @@ export default function WebpageLayout({
   return (
     <>
       <Navbar />
-      <UserInitializer />
 
       {children}
       <BottomNavigation />

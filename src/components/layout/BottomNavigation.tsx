@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Home, FileText, Monitor, BarChart3, LogOut, User } from "lucide-react";
+import { Home, FileText, Monitor, BarChart3, User } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useRouter } from "next/navigation";
 
@@ -22,7 +22,7 @@ export default function BottomNavigation() {
 
   const handleRedirect = () => {
     if (isAuthenticated) {
-      route.replace("/profile");
+      route.replace("/s/dashboard");
     } else {
       route.replace("/auth");
     }

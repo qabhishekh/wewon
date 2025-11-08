@@ -19,7 +19,6 @@ import { toast } from "sonner";
 import { User as UserTypes } from "@/store/auth/types";
 import EditProfileModal from "./EditProfileModal";
 import { updateStudentProfile } from "@/store/auth/authThunk";
-import { logout } from "@/store/auth/authSlice";
 
 interface StudentProfilePageProps {
   profileData: UserTypes;
@@ -130,14 +129,6 @@ export default function StudentProfilePage({
               >
                 <Edit2 className="w-5 h-5" />
                 Edit Profile
-              </button>
-              <button
-                onClick={() => dispatch(logout())}
-                className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white hover:opacity-90 transition-opacity"
-                style={{ backgroundColor: "var(--destructive)" }}
-              >
-                <LogOut className="w-5 h-5" />
-                Logout
               </button>
             </div>
           </div>

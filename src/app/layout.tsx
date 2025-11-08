@@ -27,8 +27,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${poppins.variable} antialiased`}>
         <Loader />
+
         <Toaster position="top-right" richColors />
-        <StoreProvider>{children}</StoreProvider>
+        <StoreProvider>
+          <UserInitializer />
+
+          {children}
+        </StoreProvider>
       </body>
     </html>
   );
