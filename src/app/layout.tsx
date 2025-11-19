@@ -31,7 +31,6 @@ export default function RootLayout({
         <Toaster position="top-right" richColors />
         <StoreProvider>
           <UserInitializer />
-
           {children}
         </StoreProvider>
       </body>

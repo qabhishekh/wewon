@@ -1,13 +1,13 @@
-"use client"
+"use client";
 import React from "react";
-
 import StudentProfilePage from "./sections/StudentProfilePage";
 import { Loader2 } from "lucide-react";
 import { useAppSelector } from "@/store/hooks";
+import { User } from "@/store/types";
 
 const Page = () => {
-  const { user, loading } = useAppSelector((state) => state.auth);
-
+  const { loading, user } = useAppSelector((state) => state.auth);
+  const typedUser = user as User;
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
@@ -18,31 +18,31 @@ const Page = () => {
 
   const profileData = {
     userId: {
-      _id: user.userId?._id || "unknown-id",
-      name: user.userId?.name || "Unknown",
-      email: user.userId?.email || "N/A",
-      phone: user.userId?.phone || "",
+      _id: typedUser.userId?._id || "unknown-id",
+      name: typedUser.userId?.name || "Unknown",
+      email: typedUser.userId?.email || "N/A",
+      phone: typedUser.userId?.phone || "",
       avatar:
-        user.userId?.avatar ||
+        typedUser.userId?.avatar ||
         "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
-      role: user.userId?.role || "student",
-      verified: user.userId?.role === "student" ? true : false,
+      role: typedUser.userId?.role || "student",
+      verified: typedUser.userId?.role === "student" ? true : false,
     },
-    academics: user.academics || {
+    academics: typedUser.academics || {
       tenth: undefined,
       twelfth: undefined,
     },
-    exams: user.exams || [],
+    exams: typedUser.exams || [],
 
-    preferences: user.preferences || {
+    preferences: typedUser.preferences || {
       stream: "",
       courseType: "",
-      preferredStates: ["MP", "UP"],
+      preferredStates: [],
       preferredCollegeType: "any",
     },
 
-    savedColleges: user.savedColleges || [],
-    appliedColleges: user.appliedColleges || [],
+    savedColleges: typedUser.savedColleges || [],
+    appliedColleges: typedUser.appliedColleges || [],
   };
 
   return (

@@ -8,7 +8,7 @@ import RegisterFormStep1 from "./RegisterFormStep1";
 import OTPForm from "./OTPForm";
 import apiClient from "../../hooks/Axios";
 import { toast } from "sonner";
-import { loginUser } from "@/store/auth/authThunk";
+import { fetchUserProfile, loginUser } from "@/store/auth/authThunk";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
 
@@ -125,8 +125,11 @@ export default function AuthForm() {
         loginUser({ email: loginEmail, password: loginPassword })
       ).unwrap();
       toast.success(`Welcome back, ${user.name}!`);
+      const token = localStorage.getItem("token");
+      if (token) {
+        await dispatch(fetchUserProfile()).unwrap();
+      }
       router.push("/");
-
     } catch (err: any) {
       toast.error(
         err?.response?.data?.message || err?.message || err || "Login failed"

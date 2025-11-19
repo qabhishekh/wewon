@@ -1,5 +1,6 @@
+// Main Types
 export interface AuthState {
-  user: User;
+  user: User | Counsellor;
   token: string | null;
   loading: boolean;
   btnloading: boolean;
@@ -7,6 +8,30 @@ export interface AuthState {
   isAuthenticated: boolean;
 }
 
+export interface Counsellor {
+  userId: UserId;
+  _id?: string;
+  bio: string;
+  specialization: string[];
+  experience: number;
+  qualifications: Qualifications[];
+  languages: string[];
+  rating: {
+    average: number;
+    totalReviews: number;
+  };
+  sessionsCompleted: number;
+  profileVideo?: string;
+  verified: boolean;
+
+  socialLinks?: {
+    linkedin?: string;
+    youtube?: string;
+    website?: string;
+  };
+  createdAt?: string;
+  updatedAt?: string;
+}
 export interface User {
   userId: UserId;
   _id?: string;
@@ -24,6 +49,13 @@ export interface User {
   updatedAt?: string;
 }
 
+// Sub Types
+
+interface Qualifications {
+  degree: string;
+  institution: string;
+  year: number;
+}
 interface AcademicRecord {
   board?: string;
   year?: number;

@@ -28,21 +28,26 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { logout } from "@/store/auth/authSlice";
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Link from "next/link";
 import Image from "next/image";
 
 // Menu items.
-const items = [
-  { title: "Home", url: "/s/dashboard", icon: Home },
-  { title: "Inbox", url: "#", icon: Inbox },
-  { title: "Calendar", url: "#", icon: Calendar },
-  { title: "Search", url: "#", icon: Search },
-  { title: "Settings", url: "#", icon: Settings },
-];
 
 export function AppSidebar() {
   const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.auth);
+  const items = [
+    {
+      title: "Home",
+      url: `/${user.userId.role === "student" ? "s" : "c"}/dashboard`,
+      icon: Home,
+    },
+    { title: "Inbox", url: "#", icon: Inbox },
+    { title: "Calendar", url: "#", icon: Calendar },
+    { title: "Search", url: "#", icon: Search },
+    { title: "Settings", url: "#", icon: Settings },
+  ];
   const handleLogout = () => {
     dispatch(logout());
   };
@@ -51,10 +56,12 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu className="py-4 flex justify-center items-center w-full border-b">
-              <Image src={"/logo.svg"} height={50} width={70} alt="" />
-              <h4 className="font-semibold">We Won Academy</h4>
-            </SidebarMenu>
+            <Link href={"/"}>
+              <SidebarMenu className="py-4 flex justify-center items-center w-full border-b">
+                <Image src={"/logo.svg"} height={50} width={70} alt="" />
+                <h4 className="font-semibold">We Won Academy</h4>
+              </SidebarMenu>
+            </Link>
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
@@ -92,7 +99,11 @@ export function AppSidebar() {
                 side="right"
                 className="w-[--radix-popper-anchor-width]"
               >
-                <Link href={"/s/profile"}>
+                <Link
+                  href={`/${
+                    user.userId.role === "student" ? "s" : "c"
+                  }/profile`}
+                >
                   <DropdownMenuItem>Account</DropdownMenuItem>
                 </Link>
                 <DropdownMenuItem onClick={handleLogout}>
