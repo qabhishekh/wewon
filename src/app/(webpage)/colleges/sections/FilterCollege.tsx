@@ -1,140 +1,67 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Search, Filter } from "lucide-react";
 import Pagination from "@/components/sections/Pagination";
 import { useRouter } from "next/navigation";
 import CollegeCard from "@/components/cards/CollegeCard";
 import FilterModal from "@/components/filter/FilterModal";
-
-interface College {
-  id: string;
-  name: string;
-  location: string;
-  city: string;
-  established: string;
-  nirf: string;
-  naac: string;
-  image: string;
-}
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { fetchColleges } from "@/store/college/collegeThunk";
+import {
+  selectColleges,
+  selectCollegesLoading,
+  selectCollegesError,
+  selectTotalPages,
+  selectCurrentPage,
+  selectTotalColleges,
+} from "@/store/college/collegeSlice";
 
 export default function FilterColleges() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  // Redux state
+  const colleges = useAppSelector(selectColleges);
+  const loading = useAppSelector(selectCollegesLoading);
+  const error = useAppSelector(selectCollegesError);
+  const totalPages = useAppSelector(selectTotalPages);
+  const currentPage = useAppSelector(selectCurrentPage);
+  const totalColleges = useAppSelector(selectTotalColleges);
+
+  // Local state
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 8;
+  const [debouncedSearch, setDebouncedSearch] = useState<string>("");
+  const itemsPerPage = 10;
 
-  const colleges: College[] = [
-    {
-      id: "1",
-      name: "IIT, BHUBANESWAR",
-      location: "Bhubaneswar, Odisha",
-      city: "Bhubaneswar",
-      established: "Estd. 1885",
-      nirf: "Top 5 NIRF",
-      naac: "NAAC A++",
-      image:
-        "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
-    },
-    {
-      id: "2",
-      name: "IIT, BHUBANESWAR",
-      location: "Bhubaneswar, Odisha",
-      city: "Bhubaneswar",
-      established: "Estd. 1885",
-      nirf: "Top 5 NIRF",
-      naac: "NAAC A++",
-      image:
-        "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
-    },
-    {
-      id: "3",
-      name: "IIT, BHUBANESWAR",
-      location: "Bhubaneswar, Odisha",
-      city: "Bhubaneswar",
-      established: "Estd. 1885",
-      nirf: "Top 5 NIRF",
-      naac: "NAAC A++",
-      image:
-        "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
-    },
-    {
-      id: "4",
-      name: "IIT, BHUBANESWAR",
-      location: "Bhubaneswar, Odisha",
-      city: "Bhubaneswar",
-      established: "Estd. 1885",
-      nirf: "Top 5 NIRF",
-      naac: "NAAC A++",
-      image:
-        "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
-    },
-    {
-      id: "5",
-      name: "IIT, BHUBANESWAR",
-      location: "Bhubaneswar, Odisha",
-      city: "Bhubaneswar",
-      established: "Estd. 1885",
-      nirf: "Top 5 NIRF",
-      naac: "NAAC A++",
-      image:
-        "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
-    },
-    {
-      id: "6",
-      name: "IIT, BHUBANESWAR",
-      location: "Bhubaneswar, Odisha",
-      city: "Bhubaneswar",
-      established: "Estd. 1885",
-      nirf: "Top 5 NIRF",
-      naac: "NAAC A++",
-      image:
-        "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
-    },
-    {
-      id: "7",
-      name: "IIT, BHUBANESWAR",
-      location: "Bhubaneswar, Odisha",
-      city: "Bhubaneswar",
-      established: "Estd. 1885",
-      nirf: "Top 5 NIRF",
-      naac: "NAAC A++",
-      image:
-        "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
-    },
-    {
-      id: "8",
-      name: "IIT, BHUBANESWAR",
-      location: "Bhubaneswar, Odisha",
-      city: "Bhubaneswar",
-      established: "Estd. 1885",
-      nirf: "Top 5 NIRF",
-      naac: "NAAC A++",
-      image:
-        "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
-    },
-    // Add more colleges to see pagination in action
-    ...Array.from({ length: 72 }, (_, i) => ({
-      id: `${i + 9}`,
-      name: `IIT, BHUBANESWAR ${i + 9}`,
-      location: "Bhubaneswar, Odisha",
-      city: "Bhubaneswar",
-      established: "Estd. 1885",
-      nirf: "Top 5 NIRF",
-      naac: "NAAC A++",
-      image:
-        "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
-    })),
-  ];
+  // Debounce search query
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+    }, 500);
 
-  const totalPages = Math.ceil(colleges.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentColleges = colleges.slice(startIndex, endIndex);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  // Fetch colleges on mount and when page or search changes
+  useEffect(() => {
+    dispatch(
+      fetchColleges({
+        page: currentPage,
+        limit: itemsPerPage,
+        searchQuery: debouncedSearch,
+      })
+    );
+  }, [dispatch, currentPage, debouncedSearch]);
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    // window.scrollTo({ top: 0, behavior: "smooth" });
+    dispatch(
+      fetchColleges({
+        page,
+        limit: itemsPerPage,
+        searchQuery: debouncedSearch,
+      })
+    );
   };
 
   const handleKnowMore = (collegeId: string) => {
@@ -142,12 +69,30 @@ export default function FilterColleges() {
   };
 
   const handleApplyFilter = (filters: any) => {
-
     setIsFilterOpen(false);
-  }
+    // TODO: Implement filter logic with API
+  };
+
+  const handleSearch = () => {
+    // Trigger immediate search
+    setDebouncedSearch(searchQuery);
+  };
+
+  // Map API college data to CollegeCard format
+  const mappedColleges = colleges.map((college) => ({
+    id: college._id,
+    name: college.Abbreviation || college.Name,
+    location: `${college.City}, ${college.State}`,
+    city: college.City,
+    established: `Estd. ${college.Est_Year}`,
+    nirf: "N/A", // Not available in API
+    naac: "N/A", // Not available in API
+    image:
+      "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
+  }));
 
   return (
-    <div className="min-h-screen">
+    <div className="">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
         <h1
@@ -155,6 +100,11 @@ export default function FilterColleges() {
           style={{ color: "#0D3A66" }}
         >
           Filter Colleges
+          {totalColleges > 0 && (
+            <span className="text-lg font-normal ml-2 opacity-60">
+              ({totalColleges} colleges)
+            </span>
+          )}
         </h1>
 
         {/* Search and Filter */}
@@ -170,6 +120,7 @@ export default function FilterColleges() {
               placeholder="Search for colleges"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && handleSearch()}
               className="w-full py-3 pl-12 pr-4 rounded-lg outline-none transition-all"
               style={{
                 border: "1px solid rgba(13, 58, 102, 0.2)",
@@ -182,6 +133,7 @@ export default function FilterColleges() {
           <button
             className="p-3 rounded-lg transition-all hover:opacity-90"
             style={{ backgroundColor: "#0D3A66" }}
+            onClick={handleSearch}
           >
             <Search size={20} style={{ color: "#ffffff" }} />
           </button>
@@ -196,29 +148,84 @@ export default function FilterColleges() {
         </div>
       </div>
 
+      {/* Loading State */}
+      {loading && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {Array.from({ length: 8 }).map((_, index) => (
+            <div
+              key={index}
+              className="animate-pulse bg-gray-200 rounded-lg h-80"
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Error State */}
+      {error && !loading && (
+        <div
+          className="p-6 rounded-lg text-center"
+          style={{
+            backgroundColor: "rgba(239, 68, 68, 0.1)",
+            border: "1px solid rgba(239, 68, 68, 0.3)",
+          }}
+        >
+          <p style={{ color: "#DC2626" }} className="font-medium">
+            {error}
+          </p>
+          <button
+            onClick={() =>
+              dispatch(
+                fetchColleges({
+                  page: currentPage,
+                  limit: itemsPerPage,
+                  searchQuery: debouncedSearch,
+                })
+              )
+            }
+            className="mt-4 px-6 py-2 rounded-lg transition-all hover:opacity-90"
+            style={{ backgroundColor: "#0D3A66", color: "#ffffff" }}
+          >
+            Retry
+          </button>
+        </div>
+      )}
+
+      {/* Empty State */}
+      {!loading && !error && mappedColleges.length === 0 && (
+        <div className="text-center py-12">
+          <p style={{ color: "#0D3A66" }} className="text-lg opacity-60">
+            No colleges found. Try adjusting your search.
+          </p>
+        </div>
+      )}
+
       {/* College Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {currentColleges.map((college) => (
-          <CollegeCard
-            college={college}
-            key={college.id}
-            handleKnowMore={handleKnowMore}
-          />
-        ))}
-      </div>
+      {!loading && !error && mappedColleges.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {mappedColleges.map((college) => (
+            <CollegeCard
+              college={college}
+              key={college.id}
+              handleKnowMore={handleKnowMore}
+            />
+          ))}
+        </div>
+      )}
 
       <FilterModal
-      handleApplyFilter={handleApplyFilter}
+        handleApplyFilter={handleApplyFilter}
         isOpen={isFilterOpen}
         onClose={() => setIsFilterOpen(false)}
       />
 
       {/* Pagination */}
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-      />
+      {!loading && !error && totalPages > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
     </div>
   );
 }
