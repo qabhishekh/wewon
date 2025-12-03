@@ -323,3 +323,89 @@ export interface CounselingState {
   selectedProductLoading: boolean;
   selectedProductError: string | null;
 }
+
+// Coupon Types
+export interface Coupon {
+  _id: string;
+  code: string;
+  discountType: "percentage" | "flat";
+  discountValue: number;
+  minPurchaseAmount: number;
+  maxDiscountAmount: number;
+  validFrom: string;
+  validUntil: string;
+  usageLimit: number;
+  perUserLimit: number;
+  applicableProducts: string[];
+  isActive: boolean;
+  usedCount?: number;
+}
+
+export interface CouponValidationResponse {
+  couponCode: string;
+  discountAmount: number;
+  finalPrice: number;
+  originalPrice: number;
+}
+
+export interface CouponState {
+  availableCoupons: Coupon[];
+  validatedCoupon: CouponValidationResponse | null;
+  loading: boolean;
+  error: string | null;
+}
+
+// Order Types
+export interface Order {
+  _id: string;
+  userId: string;
+  productId: string;
+  productType: "counseling" | "mentorship";
+  originalAmount: number;
+  discountAmount: number;
+  finalAmount: number;
+  coupon?: string;
+  paymentStatus: "pending" | "completed" | "failed";
+  razorpayOrderId?: string;
+  razorpayPaymentId?: string;
+  razorpaySignature?: string;
+  invoice?: string;
+  assignedMentor?: string;
+  whatsappChannelLink?: string;
+  validUntil: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface OrderState {
+  currentOrder: Order | null;
+  userOrders: Order[];
+  loading: boolean;
+  error: string | null;
+  paymentLoading: boolean;
+  paymentError: string | null;
+}
+
+// Payment Types
+export interface RazorpayOrder {
+  id: string;
+  amount: number;
+  currency: string;
+  receipt: string;
+}
+
+export interface PaymentVerification {
+  razorpay_order_id: string;
+  razorpay_payment_id: string;
+  razorpay_signature: string;
+}
+
+// User Purchase Types
+export interface UserPurchase {
+  productId: string;
+  orderId: string;
+  purchaseDate: string;
+  validUntil: string;
+  choiceFillingUsage: number;
+  collegePredictorUsage: number;
+}

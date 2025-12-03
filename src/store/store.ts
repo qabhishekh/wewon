@@ -3,6 +3,8 @@ import authReducer from "./auth/authSlice";
 import counsellorReducer from "./counsellor/counsellorSlice";
 import collegeReducer from "./college/collegeSlice";
 import counselingReducer from "./counseling/counselingSlice";
+import couponReducer from "./coupon/couponSlice";
+import orderReducer from "./order/orderSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +12,8 @@ export const store = configureStore({
     counsellor: counsellorReducer,
     college: collegeReducer,
     counseling: counselingReducer,
+    coupon: couponReducer,
+    order: orderReducer,
   },
 });
 

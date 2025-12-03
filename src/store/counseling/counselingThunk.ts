@@ -22,7 +22,7 @@ export const fetchCounselingProducts = createAsyncThunk(
       });
 
       const response = await apiClient.get(
-        `/api/admin/products?${queryParams.toString()}`
+        `/api/counselling?${queryParams.toString()}`
       );
 
       return {
@@ -55,6 +55,30 @@ export const fetchCounselingProductBySlug = createAsyncThunk(
     } catch (error: any) {
       return rejectWithValue(
         error.response?.data?.message || "Failed to fetch counseling product"
+      );
+    }
+  }
+);
+
+// Toggle like on a product
+export const toggleLikeProduct = createAsyncThunk(
+  "counseling/toggleLike",
+  async (productId: string, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.post(
+        `/api/counselling/${productId}/like`
+      );
+
+      if (!response.data.success) {
+        return rejectWithValue(
+          response.data.message || "Failed to toggle like"
+        );
+      }
+
+      return response.data.data as CounselingProduct;
+    } catch (error: any) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to toggle like"
       );
     }
   }

@@ -27,9 +27,9 @@ export default function Home() {
           <PersonalizedMentorship />
         </div>
       </div>
-      <div className="container mx-auto">
+      {/* <div className="container mx-auto">
         <FeaturedVideos />
-      </div>
+      </div> */}
       <div className="container mx-auto">
         <TopColleges />
       </div>
