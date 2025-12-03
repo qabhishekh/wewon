@@ -14,7 +14,8 @@ const Navbar = () => {
     { name: "Counseling", href: "/counseling" },
     { name: "Colleges", href: "/colleges" },
     { name: "Exams", href: "/exams" },
-    { name: "Mentorship", href: "/mentorship" },
+    { name: "About", href: "/about" },
+    { name: "Contact", href: "/contact" },
   ];
 
   // Extract user's first letter

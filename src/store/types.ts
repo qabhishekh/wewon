@@ -1,0 +1,325 @@
+// Main Types
+export interface AuthState {
+  user: User | Counsellor;
+  token: string | null;
+  loading: boolean;
+  btnloading: boolean;
+  error: string | null;
+  isAuthenticated: boolean;
+}
+
+export interface Counsellor {
+  userId: UserId;
+  _id?: string;
+  bio: string;
+  specialization: string[];
+  experience: number;
+  qualifications: Qualifications[];
+  languages: string[];
+  rating: {
+    average: number;
+    totalReviews: number;
+  };
+  sessionsCompleted: number;
+  profileVideo?: string;
+  verified: boolean;
+
+  socialLinks?: {
+    linkedin?: string;
+    youtube?: string;
+    website?: string;
+  };
+  createdAt?: string;
+  updatedAt?: string;
+}
+export interface User {
+  userId: UserId;
+  _id?: string;
+  academics?: {
+    tenth?: AcademicRecord;
+    twelfth?: AcademicRecord;
+  };
+  exams: ExamRecord[];
+  preferences?: Preferences;
+
+  savedColleges: [];
+  appliedColleges: [];
+
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+// Sub Types
+
+interface Qualifications {
+  degree: string;
+  institution: string;
+  year: number;
+}
+interface AcademicRecord {
+  board?: string;
+  year?: number;
+  percentage?: number;
+  school?: string;
+  stream?: string;
+}
+
+interface ExamRecord {
+  name: string;
+  score?: number;
+  rank?: number;
+  year: number;
+}
+
+interface Preferences {
+  stream?: string;
+  courseType?: string;
+  preferredStates?: string[];
+  preferredCollegeType?: "government" | "private" | "any";
+}
+
+export interface UserId {
+  _id: string;
+  name: string;
+  email: string;
+  role: string;
+  avatar: string;
+  phone: string;
+}
+
+// College Types
+export interface College {
+  _id: string;
+  instituteId: string;
+  Name: string;
+  Abbreviation: string;
+  Type: string;
+  Est_Year: number;
+  City: string;
+  State: string;
+  Address: string;
+  Website: string;
+  Director_Contact: string;
+  Registrar_Contact: string;
+  Email: string;
+  createdAt: string;
+  updatedAt: string;
+  __v?: number;
+}
+
+export interface CollegeState {
+  colleges: College[];
+  totalPages: number;
+  currentPage: number;
+  totalColleges: number;
+  collegesLoading: boolean;
+  collegesError: string | null;
+  // Single college details
+  selectedCollege: College | null;
+  collegeDetails: CollegeDetails | null;
+  collegeDetailsLoading: boolean;
+  collegeDetailsError: string | null;
+  // Recommended colleges
+  recommendedColleges: College[];
+  recommendedLoading: boolean;
+  recommendedError: string | null;
+}
+
+// College Detail Types
+export interface AdmissionRule {
+  _id: string;
+  instituteId: string;
+  Degree: string;
+  Course_Type: string;
+  Duration: string;
+  Entrance_Exam: string;
+  Admission_Mode: string;
+  Eligibility_Criteria: string;
+  Important_Link: string;
+  createdAt: string;
+  updatedAt: string;
+  __v?: number;
+}
+
+export interface Connectivity {
+  _id: string;
+  instituteId: string;
+  Type: string;
+  Name: string;
+  Distance_KM: number;
+  createdAt: string;
+  updatedAt: string;
+  __v?: number;
+}
+
+export interface CourseDetail {
+  _id: string;
+  instituteId: string;
+  Degree: string;
+  Branch_Name: string;
+  Duration: string;
+  Entrance_Exam: string;
+  Seats_Gender_Neutral: number;
+  Seats_Female_Only: number;
+  Total_Seats: number;
+  createdAt: string;
+  updatedAt: string;
+  __v?: number;
+}
+
+export interface Facility {
+  _id: string;
+  instituteId: string;
+  Type: string;
+  Value: string;
+  createdAt: string;
+  updatedAt: string;
+  __v?: number;
+}
+
+export interface Fee {
+  _id: string;
+  instituteId: string;
+  Category: string;
+  Fee_Component: string;
+  Amount: number;
+  Frequency: string;
+  Is_Refundable: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v?: number;
+}
+
+export interface FeeWaiver {
+  _id: string;
+  instituteId: string;
+  Waiver_Category_Name: string;
+  Eligibility_Criteria: string;
+  Waiver_Amount_Details: string;
+  createdAt: string;
+  updatedAt: string;
+  __v?: number;
+}
+
+export interface Placement {
+  _id: string;
+  instituteId: string;
+  Branch_Name: string;
+  Batch_Year: number;
+  Placed_Percentage: number;
+  Max_CTC_LPA: number;
+  Avg_CTC_LPA: number;
+  Median_CTC_LPA: number;
+  createdAt: string;
+  updatedAt: string;
+  __v?: number;
+}
+
+export interface Ranking {
+  _id: string;
+  instituteId: string;
+  Agency: string;
+  Category: string;
+  Year: number;
+  Rank_Range: string;
+  createdAt: string;
+  updatedAt: string;
+  __v?: number;
+}
+
+export interface SeatMatrix {
+  _id: string;
+  instituteId: string;
+  Degree: string;
+  Branch: string;
+  Seats_Gender_Neutral: number;
+  Seats_Female_Only: number;
+  Total_Seats: number;
+  Change_Trend: string;
+  createdAt: string;
+  updatedAt: string;
+  __v?: number;
+}
+
+export interface CollegeDetails {
+  admissionRules: AdmissionRule[];
+  connectivity: Connectivity[];
+  courses: CourseDetail[];
+  facilities: Facility[];
+  fees: Fee[];
+  feeWaivers: FeeWaiver[];
+  placements: Placement[];
+  rankings: Ranking[];
+  seatMatrix: SeatMatrix[];
+}
+
+// Counseling Product Types
+export interface CounselingProduct {
+  _id: string;
+  title: string;
+  slug: string;
+  description: string;
+  thumbnail: string;
+  price: number;
+  validityInDays: number;
+  totalMaterialCount: number;
+  isActive: boolean;
+  features: {
+    choiceFilling: {
+      isEnabled: boolean;
+      usageLimit: number;
+    };
+    collegePredictor: {
+      isEnabled: boolean;
+      usageLimit: number;
+    };
+    hasMentorship: boolean;
+    hasCourseContent: boolean;
+  };
+  content: {
+    landingPageHighlights: {
+      introVideo?: {
+        title: string;
+        url: string;
+      };
+      coursePdf?: {
+        title: string;
+        url: string;
+      };
+      fullDescriptionVideo?: {
+        title: string;
+        url: string;
+      };
+    };
+    curriculum: Array<{
+      sectionTitle: string;
+      resources: Array<{
+        title: string;
+        type: "video" | "pdf" | "link";
+        url: string;
+        duration?: number;
+        _id: string;
+      }>;
+      _id: string;
+    }>;
+  };
+  likes: {
+    count: number;
+    likedBy: string[];
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CounselingState {
+  products: CounselingProduct[];
+  totalPages: number;
+  currentPage: number;
+  total: number;
+  productsLoading: boolean;
+  productsError: string | null;
+
+  selectedProduct: CounselingProduct | null;
+  selectedProductLoading: boolean;
+  selectedProductError: string | null;
+}

@@ -45,7 +45,6 @@ const PersonalizedMentorship = () => {
                 </p>
                 <Button
                   onClick={() => {
-                    console.log("hey");
                   }}
                 >
                   Get Guidance
@@ -123,7 +122,6 @@ const PersonalizedMentorship = () => {
                 </p>
                 <Button
                   onClick={() => {
-                    console.log("hey");
                   }}
                 >
                   Book a Session

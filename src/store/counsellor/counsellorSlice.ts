@@ -5,9 +5,9 @@ import {
   fetchUserProfile,
   loginUser,
   signupUser,
-  updateStudentProfile,
+  updateCounsellorProfile,
   updateUserProfile,
-} from "./authThunk";
+} from "./counsellorThunk";
 
 // ---------------------------
 // Initial State
@@ -44,8 +44,8 @@ const initialState: AuthState = {
 // ---------------------------
 // Slice
 // ---------------------------
-const authSlice = createSlice({
-  name: "auth",
+const counselloSlice = createSlice({
+  name: "counsello",
   initialState,
   reducers: {
     logout: (state) => {
@@ -72,7 +72,6 @@ const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
       state.error = null;
-      state.loading = false;
       window.location.href = "/auth";
       localStorage.removeItem("token");
     },
@@ -87,9 +86,6 @@ const authSlice = createSlice({
         localStorage.setItem("token", action.payload.token);
       }
     },
-    setLoadingFalse: (state)=>{
-      state.loading = false
-    }
   },
   extraReducers: (builder) => {
     // Login
@@ -167,18 +163,19 @@ const authSlice = createSlice({
       });
     // UPDATE STUDENT PROFILE
     builder
-      .addCase(updateStudentProfile.pending, (state) => {
-        state.btnloading = true;
+      .addCase(updateCounsellorProfile.pending, (state) => {
+        state.loading = true;
         state.error = null;
       })
-      .addCase(updateStudentProfile.fulfilled, (state, action) => {
-        state.btnloading = false;
+      .addCase(updateCounsellorProfile.fulfilled, (state, action) => {
+        state.loading = false;
         if (state.user) {
-          state.user = { ...state.user, ...action.payload };
+          const { userId, ...rest } = action.payload;
+          state.user = { ...state.user, ...rest };
         }
       })
-      .addCase(updateStudentProfile.rejected, (state, action) => {
-        state.btnloading = false;
+      .addCase(updateCounsellorProfile.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.payload || "Profile update failed.";
       });
   },
@@ -187,12 +184,12 @@ const authSlice = createSlice({
 // ---------------------------
 // Exports
 // ---------------------------
-export const { logout, setCredentials, setLoadingFalse } = authSlice.actions;
-export default authSlice.reducer;
+export const { logout, setCredentials } = counselloSlice.actions;
+export default counselloSlice.reducer;
 
 // Selectors
-export const selectAuth = (state: RootState) => state.auth;
-export const selectUser = (state: RootState) => state.auth.user;
+export const selectAuth = (state: RootState) => state.counsellor;
+export const selectUser = (state: RootState) => state.counsellor.user;
 export const selectIsAuthenticated = (state: RootState) =>
-  state.auth.isAuthenticated;
-export const selectAuthLoading = (state: RootState) => state.auth.loading;
+  state.counsellor.isAuthenticated;
+export const selectAuthLoading = (state: RootState) => state.counsellor.loading;

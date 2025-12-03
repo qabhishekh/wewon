@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { useAppDispatch } from "@/store/hooks";
 import { toast } from "sonner";
-import { User as UserTypes } from "@/store/auth/types";
+import { User as UserTypes } from "@/store/types";
 import EditProfileModal from "./EditProfileModal";
 import { updateStudentProfile } from "@/store/auth/authThunk";
 

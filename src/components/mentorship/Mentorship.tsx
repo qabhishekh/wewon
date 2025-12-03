@@ -171,9 +171,10 @@ export default function Mentorship() {
     <div className="px-4 md:px-0">
       {/* Responsive Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">
-        {currentItems.map((item) => (
+        {currentItems.map((item, index) => (
           <CounselingCard
-            key={item.id}
+            key={index}
+            slug={item.href.replace("/counseling/", "")}
             title={item.title}
             description={item.description}
             imageUrl={item.imageUrl}
@@ -181,7 +182,6 @@ export default function Mentorship() {
             originalPrice={item.originalPrice}
             currentPrice={item.currentPrice}
             buttonText={item.buttonText}
-            href={item.href}
           />
         ))}
       </div>

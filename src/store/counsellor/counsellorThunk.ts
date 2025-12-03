@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { User, UserId } from "../types";
+import { Counsellor, User, UserId } from "../types";
 import apiClient from "@/hooks/Axios";
 
 // ---------------------------
@@ -64,15 +64,16 @@ export const updateUserProfile = createAsyncThunk<
   }
 });
 
-export const updateStudentProfile = createAsyncThunk<
+export const updateCounsellorProfile = createAsyncThunk<
   any,
-  User,
+  Counsellor,
   { rejectValue: string }
->("profile/updateStudentProfile", async (data, { rejectWithValue }) => {
+>("profile/updateCounsellorProfile", async (data, { rejectWithValue }) => {
   try {
     const res = await apiClient.put("/api/profile", data);
-
-    return res.data.profile;
+    console.log({res});
+    
+    return res.data.updatedProfile;
   } catch (err: any) {
     const msg = err.response?.data?.message || "Failed to update profile";
     return rejectWithValue(msg);
