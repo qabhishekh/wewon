@@ -31,7 +31,7 @@ const Navbar = () => {
               alt="We Won Academy Logo"
               width={70}
               height={30}
-              className="h-full object-contain"
+              className="w-auto object-contain"
             />
           </Link>
         </div>
@@ -74,7 +74,7 @@ const Navbar = () => {
                   alt="We Won Academy Logo"
                   width={70}
                   height={30}
-                  className="h-full object-contain"
+                  className="h-8 w-auto object-contain"
                 />
                 <button
                   onClick={() => setIsOpen(false)}
