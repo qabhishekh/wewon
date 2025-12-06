@@ -3,7 +3,6 @@ import MainHeading from "@/components/sections/MainHeading";
 import { useParams } from "next/navigation";
 import React, { useEffect } from "react";
 import CollegeHero from "../sections/CollegeHero";
-import BentoGridT from "@/components/sections/BentoGridT";
 import CoursesFees from "../sections/CoursesFees";
 import GoogleAds from "@/components/sections/GoogleAds";
 import Recommended from "@/components/sections/Recommended";
@@ -25,6 +24,7 @@ import {
   selectCollegeDetailsError,
   clearCollegeDetails,
 } from "@/store/college/collegeSlice";
+import BentoGridT2 from "@/components/sections/BentoGridT2";
 
 export default function CollegePage() {
   const { id } = useParams();
@@ -302,17 +302,7 @@ export default function CollegePage() {
         />
       </div>
 
-      <BentoGridT
-        leftHead={{
-          title: "Highlights",
-          description:
-            highlights.length > 0
-              ? highlights
-              : [
-                  `${college.Name} is a ${college.Type} institution located in ${college.City}, ${college.State}.`,
-                  `Established in ${college.Est_Year}.`,
-                ],
-        }}
+      <BentoGridT2
         rightHead={{
           title: "Contact Information",
           description: [
