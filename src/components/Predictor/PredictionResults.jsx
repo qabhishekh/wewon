@@ -4,6 +4,8 @@ import { useState } from "react";
 
 export default function PredictionResults({ results }) {
   const [activeTab, setActiveTab] = useState("JoSAA");
+  const [genderFilter, setGenderFilter] = useState("All");
+
   const [expandedGroups, setExpandedGroups] = useState({
     High: true,
     Medium: true,
@@ -25,6 +27,18 @@ export default function PredictionResults({ results }) {
 
   const currentData = tabs.find((tab) => tab.id === activeTab)?.data || [];
 
+  const filteredData = currentData.filter((item) => {
+    if (genderFilter === "All") return true;
+    if (genderFilter === "Female-only") {
+      return item.gender.toLowerCase().includes("female");
+    }
+    if (genderFilter === "Gender-Neutral") {
+      return item.gender.toLowerCase().includes("neutral");
+    }
+    return true;
+  });
+
+
   // Group data by probability
   const groupedData = {
     High: [],
@@ -32,7 +46,7 @@ export default function PredictionResults({ results }) {
     Low: [],
   };
 
-  currentData.forEach((item) => {
+  filteredData.forEach((item) => {
     const p = item.probability?.toLowerCase() || "";
     if (p.includes("high")) {
       groupedData.High.push(item);
@@ -66,6 +80,27 @@ export default function PredictionResults({ results }) {
           Based on your rank and preferences
         </p>
       </div>
+
+      {/* Gender Filter */}
+      <div className="px-6 py-4 border-b border-[var(--border)] flex gap-4 items-center">
+        <span className="text-sm font-medium text-[var(--muted-text)]">Filter by Gender:</span>
+        <div className="flex gap-2">
+          {["All", "Gender-Neutral", "Female-only"].map((filter) => (
+            <button
+              key={filter}
+              onClick={() => setGenderFilter(filter)}
+              className={`px-3 py-1.5 text-sm rounded-lg border transition-colors ${
+                genderFilter === filter
+                  ? "bg-[var(--primary)] text-white border-[var(--primary)]"
+                  : "bg-white text-[var(--muted-text)] border-[var(--border)] hover:bg-gray-50"
+              }`}
+            >
+              {filter}
+            </button>
+          ))}
+        </div>
+      </div>
+
 
       {/* Tabs */}
       {tabs.length > 0 ? (
@@ -122,7 +157,9 @@ export default function PredictionResults({ results }) {
                           <tr>
                             <th className="px-6 py-3">Institute</th>
                             <th className="px-6 py-3">Branch</th>
+                            <th className="px-6 py-3">Gender</th>
                             <th className="px-6 py-3">Quota</th>
+
                             <th className="px-6 py-3">Seat Type</th>
                             <th className="px-6 py-3">Ranks (Open - Close)</th>
                             <th className="px-6 py-3">Round</th>
@@ -139,6 +176,15 @@ export default function PredictionResults({ results }) {
                               </td>
                               <td className="px-6 py-4 text-[var(--muted-text)]">
                                 {item.branch}
+                              </td>
+                              <td className="px-6 py-4 text-[var(--muted-text)]">
+                                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                  item.gender.toLowerCase().includes("female") 
+                                    ? "bg-pink-100 text-pink-700" 
+                                    : "bg-blue-100 text-blue-700"
+                                }`}>
+                                  {item.gender.toLowerCase().includes("female") ? "Female" : "Neutral"}
+                                </span>
                               </td>
                               <td className="px-6 py-4 text-[var(--muted-text)]">
                                 {item.quota}
