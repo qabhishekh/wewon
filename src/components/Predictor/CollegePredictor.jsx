@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import GoogleAds from "../sections/GoogleAds";
 import { predict } from "@/network/predictor";
 import options from "./data/options.json";
@@ -21,6 +21,17 @@ export default function CollegePredictor() {
 
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
+  const resultsRef = useRef(null);
+
+  // Auto-scroll to results when they become available
+  useEffect(() => {
+    if (results && resultsRef.current) {
+      resultsRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [results]);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -44,7 +55,9 @@ export default function CollegePredictor() {
     try {
       const payload = {
         crlRank: Number(formData.crlRank),
-        categoryRank: formData.categoryRank ? Number(formData.categoryRank) : undefined,
+        categoryRank: formData.categoryRank
+          ? Number(formData.categoryRank)
+          : undefined,
         category: formData.category,
         gender: formData.gender,
         homeState: formData.homeState,
@@ -68,33 +81,32 @@ export default function CollegePredictor() {
   };
 
   return (
-    <div className="container mx-auto px-4 my-10">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        
+    <div className="container mx-auto px-2 sm:px-4 my-6 sm:my-10">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
         {/* Left Column: Steps */}
-        <div className="flex flex-col justify-center space-y-6">
+        <div className="flex flex-col justify-center space-y-3 sm:space-y-6">
           <GoogleAds adSlot="1234567890" />
-          <div className="p-6 bg-[var(--background)] border border-[var(--border)] rounded-xl shadow-sm">
-            <h3 className="text-xl font-semibold text-[var(--foreground)]">
+          <div className="p-3 sm:p-6 bg-[var(--background)] border border-[var(--border)] rounded-lg sm:rounded-xl shadow-sm">
+            <h3 className="text-base sm:text-xl font-semibold text-[var(--foreground)]">
               Enter your exam details
             </h3>
-            <p className="text-[var(--muted-text)] mt-1">
+            <p className="text-xs sm:text-sm text-[var(--muted-text)] mt-1">
               Select your stream, exam, and rank
             </p>
           </div>
-          <div className="p-6 bg-[var(--background)] border border-[var(--border)] rounded-xl shadow-sm">
-            <h3 className="text-xl font-semibold text-[var(--foreground)]">
+          <div className="p-3 sm:p-6 bg-[var(--background)] border border-[var(--border)] rounded-lg sm:rounded-xl shadow-sm">
+            <h3 className="text-base sm:text-xl font-semibold text-[var(--foreground)]">
               Add your preferences
             </h3>
-            <p className="text-[var(--muted-text)] mt-1">
+            <p className="text-xs sm:text-sm text-[var(--muted-text)] mt-1">
               Category, gender, and home state
             </p>
           </div>
-          <div className="p-6 bg-[var(--background)] border border-[var(--border)] rounded-xl shadow-sm">
-            <h3 className="text-xl font-semibold text-[var(--foreground)]">
+          <div className="p-3 sm:p-6 bg-[var(--background)] border border-[var(--border)] rounded-lg sm:rounded-xl shadow-sm">
+            <h3 className="text-base sm:text-xl font-semibold text-[var(--foreground)]">
               Get instant results
             </h3>
-            <p className="text-[var(--muted-text)] mt-1">
+            <p className="text-xs sm:text-sm text-[var(--muted-text)] mt-1">
               See your personalized college matches
             </p>
           </div>
@@ -104,24 +116,24 @@ export default function CollegePredictor() {
         </div>
 
         {/* Right Column: Predictor Form */}
-        <div className="bg-[var(--background)] border border-[var(--border)] rounded-xl shadow-lg p-6 sm:p-8">
+        <div className="bg-[var(--background)] border border-[var(--border)] rounded-lg sm:rounded-xl shadow-lg p-3 sm:p-6 md:p-8">
           {/* Header */}
-          <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
-            <h2 className="text-3xl font-bold text-[var(--primary)]">
+          <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 sm:gap-4 mb-4 sm:mb-6">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[var(--primary)]">
               College Predictor
             </h2>
-            <span className="bg-[var(--light-blue)] text-[var(--primary)] text-xs font-semibold px-4 py-2 rounded-full whitespace-nowrap">
+            <span className="bg-[var(--light-blue)] text-[var(--primary)] text-[10px] sm:text-xs font-semibold px-2 sm:px-4 py-1 sm:py-2 rounded-full whitespace-nowrap">
               Trusted by 50,000+ students
             </span>
           </div>
 
           {/* Form */}
-          <form className="space-y-5" onSubmit={handleSubmit}>
+          <form className="space-y-3 sm:space-y-5" onSubmit={handleSubmit}>
             {/* CRL Rank */}
             <div>
               <label
                 htmlFor="crlRank"
-                className="block text-sm font-medium text-[var(--foreground)] mb-1.5"
+                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
               >
                 Enter CRL Rank (Required)
               </label>
@@ -132,7 +144,7 @@ export default function CollegePredictor() {
                 onChange={handleChange}
                 placeholder="15000"
                 required
-                className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
+                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
               />
             </div>
 
@@ -140,7 +152,7 @@ export default function CollegePredictor() {
             <div>
               <label
                 htmlFor="categoryRank"
-                className="block text-sm font-medium text-[var(--foreground)] mb-1.5"
+                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
               >
                 Enter Category Rank (Optional)
               </label>
@@ -150,22 +162,22 @@ export default function CollegePredictor() {
                 value={formData.categoryRank}
                 onChange={handleChange}
                 placeholder="2000"
-                className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
+                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
               />
             </div>
 
             {/* Gender */}
             <div>
-              <label className="block text-sm font-medium text-[var(--foreground)] mb-1.5">
+              <label className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5">
                 Gender
               </label>
-              <div className="flex space-x-2">
+              <div className="flex space-x-1.5 sm:space-x-2">
                 {options.genders.map((option) => (
                   <button
                     key={option.value}
                     type="button"
                     onClick={() => handleGenderChange(option.value)}
-                    className={`flex-1 p-3 border rounded-lg text-sm font-medium transition ${
+                    className={`flex-1 p-2 sm:p-3 border rounded-lg text-xs sm:text-sm font-medium transition ${
                       formData.gender === option.value
                         ? "bg-[var(--primary)] text-white border-[var(--primary)]"
                         : "bg-white text-[var(--muted-text)] border-[var(--border)] hover:bg-[var(--muted-background)]"
@@ -181,7 +193,7 @@ export default function CollegePredictor() {
             <div>
               <label
                 htmlFor="category"
-                className="block text-sm font-medium text-[var(--foreground)] mb-1.5"
+                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
               >
                 Select Your Category
               </label>
@@ -189,7 +201,7 @@ export default function CollegePredictor() {
                 id="category"
                 value={formData.category}
                 onChange={handleChange}
-                className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
+                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
               >
                 {options.categories.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -203,7 +215,7 @@ export default function CollegePredictor() {
             <div>
               <label
                 htmlFor="homeState"
-                className="block text-sm font-medium text-[var(--foreground)] mb-1.5"
+                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
               >
                 Select Your Home State
               </label>
@@ -211,7 +223,7 @@ export default function CollegePredictor() {
                 id="homeState"
                 value={formData.homeState}
                 onChange={handleChange}
-                className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
+                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
               >
                 {options.states.map((state) => (
                   <option key={state} value={state}>
@@ -225,7 +237,7 @@ export default function CollegePredictor() {
             <div>
               <label
                 htmlFor="counselingType"
-                className="block text-sm font-medium text-[var(--foreground)] mb-1.5"
+                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
               >
                 Counseling Type
               </label>
@@ -233,7 +245,7 @@ export default function CollegePredictor() {
                 id="counselingType"
                 value={formData.counselingType}
                 onChange={handleChange}
-                className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
+                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
               >
                 {options.counselingTypes.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -247,7 +259,7 @@ export default function CollegePredictor() {
             <div>
               <label
                 htmlFor="roundNumber"
-                className="block text-sm font-medium text-[var(--foreground)] mb-1.5"
+                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
               >
                 Round Number
               </label>
@@ -258,7 +270,7 @@ export default function CollegePredictor() {
                 onChange={handleChange}
                 placeholder="1"
                 disabled
-                className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
+                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
               />
             </div>
 
@@ -266,7 +278,7 @@ export default function CollegePredictor() {
             <div>
               <label
                 htmlFor="instituteType"
-                className="block text-sm font-medium text-[var(--foreground)] mb-1.5"
+                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
               >
                 Institute Type (Optional)
               </label>
@@ -274,7 +286,7 @@ export default function CollegePredictor() {
                 id="instituteType"
                 value={formData.instituteType}
                 onChange={handleChange}
-                className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
+                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
               >
                 <option value="">All</option>
                 {options.instituteTypes.map((option) => (
@@ -289,7 +301,7 @@ export default function CollegePredictor() {
             <div>
               <label
                 htmlFor="branchGroup"
-                className="block text-sm font-medium text-[var(--foreground)] mb-1.5"
+                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
               >
                 Branch Group (Optional)
               </label>
@@ -297,7 +309,7 @@ export default function CollegePredictor() {
                 id="branchGroup"
                 value={formData.branchGroup}
                 onChange={handleChange}
-                className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
+                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
               >
                 <option value="">All</option>
                 {options.branchGroups.map((group) => (
@@ -313,14 +325,14 @@ export default function CollegePredictor() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[var(--primary)] text-white font-semibold p-3.5 rounded-lg shadow-md hover:opacity-90 transition-opacity disabled:opacity-50"
+                className="w-full bg-[var(--primary)] text-white font-semibold p-2.5 sm:p-3.5 text-sm sm:text-base rounded-lg shadow-md hover:opacity-90 transition-opacity disabled:opacity-50"
               >
                 {loading ? "Predicting..." : "See My College Matches"}
               </button>
             </div>
 
             {/* Footer Text */}
-            <p className="text-center text-xs text-[var(--muted-text)] pt-2">
+            <p className="text-center text-[10px] sm:text-xs text-[var(--muted-text)] pt-2">
               Powered by real-time admissions data and official 2025 cutoff
             </p>
           </form>
@@ -328,7 +340,9 @@ export default function CollegePredictor() {
       </div>
 
       {/* Results Section */}
-      {results && <PredictionResults results={results} />}
+      <div ref={resultsRef}>
+        {results && <PredictionResults results={results} />}
+      </div>
     </div>
   );
 }
