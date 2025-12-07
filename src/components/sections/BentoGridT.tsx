@@ -12,7 +12,7 @@ interface Section {
 }
 
 interface BentoGridProps {
-  leftHead: Section;
+  leftHead?: Section;
   rightHead: Section;
   bottomHead: Section;
   showEmployees?: boolean;
@@ -37,58 +37,60 @@ const BentoGridT: React.FC<BentoGridProps> = ({
     >
       <div className="max-w-8xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
         {/* Left Column */}
-        <div
-          className="rounded-3xl md:rounded-r-3xl md:rounded-l-none p-6 md:p-8 lg:p-12"
-          style={{ backgroundColor: primaryColor }}
-        >
-          {/* Who We Are Section */}
-          <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
-            <div
-              className="w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center flex-shrink-0 max-sm:hidden"
-              style={{ backgroundColor: accentColor }}
-            >
-              <ArrowUpRight color="white" />
-            </div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-white">
-              {leftHead.title}
-            </h2>
-          </div>
-
-          {leftHead.description.map((text, idx) => (
-            <p
-              key={idx}
-              className="text-white text-sm md:text-base lg:text-lg leading-relaxed mb-4 md:mb-6 opacity-90"
-            >
-              {text}
-            </p>
-          ))}
-
-          {/* Conditional Employee Section */}
-          {showEmployees && employees.length > 0 && (
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-6 md:mt-8">
-              <div className="flex -space-x-3">
-                {employees.map((emp, idx) => (
-                  <div
-                    key={idx}
-                    className="w-12 h-12 md:w-14 md:h-14 rounded-full border-4 overflow-hidden"
-                    style={{ borderColor: primaryColor }}
-                  >
-                    <img
-                      src={emp.img}
-                      alt={emp.alt || `Employee ${idx + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
-
-              <button className="flex items-center gap-2 px-6 md:px-8 py-2.5 md:py-3 rounded-full border-1 border-white text-white text-sm md:text-base lg:text-lg font-medium hover:bg-white hover:text-[var(--primary)] transition-all">
-                And more
+        {leftHead && (
+          <div
+            className="rounded-3xl md:rounded-r-3xl md:rounded-l-none p-6 md:p-8 lg:p-12"
+            style={{ backgroundColor: primaryColor }}
+          >
+            {/* Who We Are Section */}
+            <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
+              <div
+                className="w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center flex-shrink-0 max-sm:hidden"
+                style={{ backgroundColor: accentColor }}
+              >
                 <ArrowUpRight color="white" />
-              </button>
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-white">
+                {leftHead.title}
+              </h2>
             </div>
-          )}
-        </div>
+
+            {leftHead.description.map((text, idx) => (
+              <p
+                key={idx}
+                className="text-white text-sm md:text-base lg:text-lg leading-relaxed mb-4 md:mb-6 opacity-90"
+              >
+                {text}
+              </p>
+            ))}
+
+            {/* Conditional Employee Section */}
+            {showEmployees && employees.length > 0 && (
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-6 md:mt-8">
+                <div className="flex -space-x-3">
+                  {employees.map((emp, idx) => (
+                    <div
+                      key={idx}
+                      className="w-12 h-12 md:w-14 md:h-14 rounded-full border-4 overflow-hidden"
+                      style={{ borderColor: primaryColor }}
+                    >
+                      <img
+                        src={emp.img}
+                        alt={emp.alt || `Employee ${idx + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                <button className="flex items-center gap-2 px-6 md:px-8 py-2.5 md:py-3 rounded-full border-1 border-white text-white text-sm md:text-base lg:text-lg font-medium hover:bg-white hover:text-[var(--primary)] transition-all">
+                  And more
+                  <ArrowUpRight color="white" />
+                </button>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Right Column */}
         <div className="flex flex-col gap-4 md:gap-6">

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 interface TabNavigationProps {
@@ -13,7 +13,18 @@ export default function TabNavigation({
   activeTab,
   onTabChange,
 }: TabNavigationProps) {
-  const activeIndex = tabs.indexOf(activeTab);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
+
+  useEffect(() => {
+    const activeIndex = tabs.indexOf(activeTab);
+    const activeTabElement = tabRefs.current[activeIndex];
+
+    if (activeTabElement) {
+      const { offsetLeft, offsetWidth } = activeTabElement;
+      setIndicatorStyle({ left: offsetLeft, width: offsetWidth });
+    }
+  }, [activeTab, tabs]);
 
   return (
     <div className="relative border-b border-gray-200">
@@ -21,6 +32,9 @@ export default function TabNavigation({
         {tabs.map((tab, index) => (
           <button
             key={tab}
+            ref={(el) => {
+              tabRefs.current[index] = el;
+            }}
             onClick={() => onTabChange(tab)}
             className={`relative px-4 py-3 font-semibold transition-colors ${
               activeTab === tab
@@ -38,8 +52,8 @@ export default function TabNavigation({
         className="absolute bottom-0 h-0.5 bg-[var(--accent)]"
         initial={false}
         animate={{
-          left: `${activeIndex * (100 / tabs.length)}%`,
-          width: `${100 / tabs.length}%`,
+          left: indicatorStyle.left,
+          width: indicatorStyle.width,
         }}
         transition={{
           type: "spring",

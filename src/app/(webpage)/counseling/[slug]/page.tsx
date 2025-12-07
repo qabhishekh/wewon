@@ -130,13 +130,7 @@ export default function CounselingDetailPage() {
     <div className="container mx-auto px-4 py-8">
       {/* Top Bar: Back Button, Share, Like */}
       <div className="flex items-center justify-between mb-6">
-        <Link
-          href="/counseling"
-          className="inline-flex items-center gap-2 text-[var(--primary)] hover:text-[var(--accent)] transition-colors no-underline"
-        >
-          <ArrowLeft size={20} />
-          <span className="font-semibold">Back to Counseling</span>
-        </Link>
+        <div className="inline-flex items-center gap-2 text-[var(--primary)] hover:text-[var(--accent)] transition-colors no-underline"></div>
 
         <div className="flex items-center gap-3">
           <ShareButton
@@ -144,13 +138,13 @@ export default function CounselingDetailPage() {
             url={`/counseling/${product.slug}`}
             description={product.description}
           />
-          <LikeButton
+          {/* <LikeButton
             productId={product._id}
             initialLikes={product.likes.count}
             isLiked={isLiked}
             onLike={handleLike}
             disabled={!isAuthenticated}
-          />
+          /> */}
         </div>
       </div>
 
