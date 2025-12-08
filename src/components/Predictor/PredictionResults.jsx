@@ -191,10 +191,10 @@ export default function PredictionResults({ results }) {
                       <table className="w-full text-left text-xs sm:text-sm">
                         <thead className="bg-gray-50 text-[var(--muted-text)] uppercase font-semibold text-[10px] sm:text-xs">
                           <tr>
-                            <th className="px-2 sm:px-6 py-2 sm:py-3 whitespace-nowrap">
+                            <th className="px-2 sm:px-6 py-2 sm:py-3 max-w-[300px]">
                               Institute
                             </th>
-                            <th className="px-2 sm:px-6 py-2 sm:py-3 whitespace-nowrap">
+                            <th className="px-2 sm:px-6 py-2 sm:py-3 max-w-[280px]">
                               Branch
                             </th>
                             <th className="px-2 sm:px-6 py-2 sm:py-3 whitespace-nowrap">
@@ -221,10 +221,10 @@ export default function PredictionResults({ results }) {
                               key={index}
                               className="hover:bg-gray-50 transition-colors"
                             >
-                              <td className="px-2 sm:px-6 py-3 sm:py-4 font-medium text-[var(--foreground)] whitespace-nowrap">
+                              <td className="px-2 sm:px-6 py-3 sm:py-4 font-medium text-[var(--foreground)] max-w-[300px] break-words">
                                 {item.institute}
                               </td>
-                              <td className="px-2 sm:px-6 py-3 sm:py-4 text-[var(--muted-text)] whitespace-nowrap">
+                              <td className="px-2 sm:px-6 py-3 sm:py-4 text-[var(--muted-text)] max-w-[280px] break-words">
                                 {item.branch}
                               </td>
                               <td className="px-2 sm:px-6 py-3 sm:py-4 text-[var(--muted-text)]">
