@@ -4,13 +4,8 @@ import { useState } from "react";
 
 export default function PredictionResults({ results }) {
   const [activeTab, setActiveTab] = useState("JoSAA");
+  const [activeProbabilityTab, setActiveProbabilityTab] = useState("High");
   const [genderFilter, setGenderFilter] = useState("All");
-
-  const [expandedGroups, setExpandedGroups] = useState({
-    High: true,
-    Medium: true,
-    Low: true,
-  });
 
   if (!results) return null;
 
@@ -56,13 +51,16 @@ export default function PredictionResults({ results }) {
     }
   });
 
-  const groups = [
+  const probabilityTabs = [
     {
       key: "High",
       label: "High Probability",
       color: "text-green-700",
       bg: "bg-green-50",
       border: "border-green-200",
+      badgeBg: "bg-green-100",
+      badgeText: "text-green-700",
+      rowBg: "bg-green-50/30",
     },
     {
       key: "Medium",
@@ -70,6 +68,9 @@ export default function PredictionResults({ results }) {
       color: "text-yellow-700",
       bg: "bg-yellow-50",
       border: "border-yellow-200",
+      badgeBg: "bg-yellow-100",
+      badgeText: "text-yellow-700",
+      rowBg: "bg-yellow-50/30",
     },
     {
       key: "Low",
@@ -77,15 +78,17 @@ export default function PredictionResults({ results }) {
       color: "text-red-700",
       bg: "bg-red-50",
       border: "border-red-200",
+      badgeBg: "bg-red-100",
+      badgeText: "text-red-700",
+      rowBg: "bg-red-50/30",
     },
   ];
 
-  const toggleGroup = (key) => {
-    setExpandedGroups((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
-  };
+  // Get current probability tab data
+  const currentProbabilityData = groupedData[activeProbabilityTab] || [];
+  const currentProbabilityTabConfig = probabilityTabs.find(
+    (tab) => tab.key === activeProbabilityTab
+  );
 
   return (
     <div className="mt-6 sm:mt-10 bg-white border border-[var(--border)] rounded-lg sm:rounded-xl shadow-lg overflow-hidden">
@@ -120,18 +123,18 @@ export default function PredictionResults({ results }) {
         </div>
       </div>
 
-      {/* Tabs */}
+      {/* Main Tabs (JoSAA/CSAB/IIT) */}
       {tabs.length > 0 ? (
         <>
-          <div className="flex border-b border-[var(--border)] overflow-x-auto">
+          <div className="flex border-b border-[var(--border)] overflow-x-auto bg-gray-50">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-medium transition-colors whitespace-nowrap ${
+                className={`px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-semibold transition-colors whitespace-nowrap ${
                   activeTab === tab.id
-                    ? "border-b-2 border-[var(--primary)] text-[var(--primary)] bg-[var(--muted-background)]"
-                    : "text-[var(--muted-text)] hover:text-[var(--foreground)] hover:bg-gray-50"
+                    ? "border-b-2 border-[var(--primary)] text-[var(--primary)] bg-white"
+                    : "text-[var(--muted-text)] hover:text-[var(--foreground)] hover:bg-gray-100"
                 }`}
               >
                 {tab.label} ({tab.data.length})
@@ -139,128 +142,134 @@ export default function PredictionResults({ results }) {
             ))}
           </div>
 
-          {/* Grouped Results */}
-          <div className="p-3 sm:p-6 space-y-3 sm:space-y-4">
-            {groups.map((group) => {
-              const items = groupedData[group.key];
-              if (items.length === 0) return null;
-              const isExpanded = expandedGroups[group.key];
+          {/* Probability Tabs (High/Medium/Low) */}
+          <div className="flex border-b border-[var(--border)] overflow-x-auto bg-gray-100">
+            {probabilityTabs.map((probTab) => {
+              const count = groupedData[probTab.key]?.length || 0;
+              if (count === 0) return null;
 
               return (
-                <div
-                  key={group.key}
-                  className={`rounded-lg sm:rounded-xl border ${group.border} overflow-hidden transition-all duration-300`}
+                <button
+                  key={probTab.key}
+                  onClick={() => setActiveProbabilityTab(probTab.key)}
+                  className={`px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-medium transition-all whitespace-nowrap flex items-center gap-1.5 sm:gap-2 ${
+                    activeProbabilityTab === probTab.key
+                      ? `border-b-2 ${probTab.border.replace(
+                          "border-",
+                          "border-b-"
+                        )} ${probTab.color} bg-white`
+                      : "text-[var(--muted-text)] hover:text-[var(--foreground)] hover:bg-gray-200"
+                  }`}
                 >
-                  <button
-                    onClick={() => toggleGroup(group.key)}
-                    className={`w-full px-3 sm:px-6 py-3 sm:py-4 ${
-                      group.bg
-                    } border-b ${
-                      isExpanded ? group.border : "border-transparent"
-                    } flex items-center justify-between transition-colors hover:bg-opacity-80`}
+                  {probTab.label}
+                  <span
+                    className={`text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-full font-semibold ${
+                      activeProbabilityTab === probTab.key
+                        ? `${probTab.badgeBg} ${probTab.badgeText}`
+                        : "bg-gray-200 text-gray-600"
+                    }`}
                   >
-                    <h4
-                      className={`font-semibold text-sm sm:text-base ${group.color} flex items-center gap-1.5 sm:gap-2`}
-                    >
-                      {group.label}
-                      <span className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-full bg-white bg-opacity-60 border border-current">
-                        {items.length}
-                      </span>
-                    </h4>
-                    <svg
-                      className={`w-4 h-4 sm:w-5 sm:h-5 ${
-                        group.color
-                      } transform transition-transform duration-200 ${
-                        isExpanded ? "rotate-180" : ""
-                      }`}
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  </button>
-
-                  {isExpanded && (
-                    <div className="overflow-x-auto animate-in fade-in slide-in-from-top-2 duration-200">
-                      <table className="w-full text-left text-xs sm:text-sm">
-                        <thead className="bg-gray-50 text-[var(--muted-text)] uppercase font-semibold text-[10px] sm:text-xs">
-                          <tr>
-                            <th className="px-2 sm:px-6 py-2 sm:py-3 max-w-[300px]">
-                              Institute
-                            </th>
-                            <th className="px-2 sm:px-6 py-2 sm:py-3 max-w-[280px]">
-                              Branch
-                            </th>
-                            <th className="px-2 sm:px-6 py-2 sm:py-3 whitespace-nowrap">
-                              Gender
-                            </th>
-                            <th className="px-2 sm:px-6 py-2 sm:py-3 whitespace-nowrap">
-                              Quota
-                            </th>
-
-                            <th className="px-2 sm:px-6 py-2 sm:py-3 whitespace-nowrap">
-                              Seat Type
-                            </th>
-                            <th className="px-2 sm:px-6 py-2 sm:py-3 whitespace-nowrap">
-                              Ranks (Open - Close)
-                            </th>
-                            <th className="px-2 sm:px-6 py-2 sm:py-3 whitespace-nowrap">
-                              Round
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-[var(--border)]">
-                          {items.map((item, index) => (
-                            <tr
-                              key={index}
-                              className="hover:bg-gray-50 transition-colors"
-                            >
-                              <td className="px-2 sm:px-6 py-3 sm:py-4 font-medium text-[var(--foreground)] max-w-[300px] break-words">
-                                {item.institute}
-                              </td>
-                              <td className="px-2 sm:px-6 py-3 sm:py-4 text-[var(--muted-text)] max-w-[280px] break-words">
-                                {item.branch}
-                              </td>
-                              <td className="px-2 sm:px-6 py-3 sm:py-4 text-[var(--muted-text)]">
-                                <span
-                                  className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium ${
-                                    item.gender.toLowerCase().includes("female")
-                                      ? "bg-pink-100 text-pink-700"
-                                      : "bg-blue-100 text-blue-700"
-                                  }`}
-                                >
-                                  {item.gender.toLowerCase().includes("female")
-                                    ? "Female"
-                                    : "Neutral"}
-                                </span>
-                              </td>
-                              <td className="px-2 sm:px-6 py-3 sm:py-4 text-[var(--muted-text)] whitespace-nowrap">
-                                {item.quota}
-                              </td>
-                              <td className="px-2 sm:px-6 py-3 sm:py-4 text-[var(--muted-text)] whitespace-nowrap">
-                                {item.seatType}
-                              </td>
-                              <td className="px-2 sm:px-6 py-3 sm:py-4 text-[var(--muted-text)] whitespace-nowrap">
-                                {item.openingRank} - {item.closingRank}
-                              </td>
-                              <td className="px-2 sm:px-6 py-3 sm:py-4 text-[var(--muted-text)] whitespace-nowrap">
-                                {item.round}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
-                </div>
+                    {count}
+                  </span>
+                </button>
               );
             })}
+          </div>
+
+          {/* Table Results */}
+          <div className="p-3 sm:p-6">
+            {currentProbabilityData.length > 0 ? (
+              <div className="overflow-x-auto rounded-lg border border-[var(--border)]">
+                <table className="w-full text-left text-xs sm:text-sm">
+                  <thead className="bg-gray-50 text-[var(--muted-text)] uppercase font-semibold text-[10px] sm:text-xs border-b-2 border-[var(--border)]">
+                    <tr>
+                      <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
+                        Probability
+                      </th>
+                      <th className="px-2 sm:px-4 py-2 sm:py-3 max-w-[300px]">
+                        Institute
+                      </th>
+                      <th className="px-2 sm:px-4 py-2 sm:py-3 max-w-[280px]">
+                        Branch
+                      </th>
+                      <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
+                        Gender
+                      </th>
+                      <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
+                        Quota
+                      </th>
+                      <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
+                        Seat Type
+                      </th>
+                      <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
+                        Opening Rank
+                      </th>
+                      <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
+                        Closing Rank
+                      </th>
+                      <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
+                        Round
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[var(--border)]">
+                    {currentProbabilityData.map((item, index) => (
+                      <tr
+                        key={index}
+                        className={`${currentProbabilityTabConfig?.rowBg} hover:bg-opacity-60 transition-colors`}
+                      >
+                        <td className="px-2 sm:px-4 py-3 sm:py-4">
+                          <span
+                            className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold ${currentProbabilityTabConfig?.badgeBg} ${currentProbabilityTabConfig?.badgeText} border ${currentProbabilityTabConfig?.border}`}
+                          >
+                            {activeProbabilityTab.toUpperCase()}
+                          </span>
+                        </td>
+                        <td className="px-2 sm:px-4 py-3 sm:py-4 font-medium text-[var(--foreground)] max-w-[300px] break-words">
+                          {item.institute}
+                        </td>
+                        <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)] max-w-[280px] break-words">
+                          {item.branch}
+                        </td>
+                        <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)]">
+                          <span
+                            className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium ${
+                              item.gender.toLowerCase().includes("female")
+                                ? "bg-pink-100 text-pink-700"
+                                : "bg-blue-100 text-blue-700"
+                            }`}
+                          >
+                            {item.gender.toLowerCase().includes("female")
+                              ? "Female"
+                              : "Neutral"}
+                          </span>
+                        </td>
+                        <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)] whitespace-nowrap">
+                          {item.quota}
+                        </td>
+                        <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)] whitespace-nowrap">
+                          {item.seatType}
+                        </td>
+                        <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)] whitespace-nowrap">
+                          {item.openingRank}
+                        </td>
+                        <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)] whitespace-nowrap">
+                          {item.closingRank}
+                        </td>
+                        <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)] whitespace-nowrap">
+                          {item.round}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="p-6 sm:p-8 text-center text-xs sm:text-sm text-[var(--muted-text)] bg-gray-50 rounded-lg border border-[var(--border)]">
+                No {activeProbabilityTab.toLowerCase()} probability predictions
+                found matching your criteria.
+              </div>
+            )}
           </div>
         </>
       ) : (

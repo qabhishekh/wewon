@@ -34,7 +34,27 @@ export default function CollegePredictor() {
   }, [results]);
 
   const handleChange = (e) => {
-    const { id, value } = e.target;
+    const { id, value, type } = e.target;
+
+    // Validate number inputs to prevent negative values
+    if (type === "number") {
+      // If value is empty, allow it (for clearing the field)
+      if (value === "") {
+        setFormData((prev) => ({
+          ...prev,
+          [id]: value,
+        }));
+        return;
+      }
+
+      // Convert to number and check if it's negative or zero
+      const numValue = Number(value);
+      if (numValue < 1) {
+        // Don't update state if value is negative or zero
+        return;
+      }
+    }
+
     setFormData((prev) => ({
       ...prev,
       [id]: value,
@@ -143,6 +163,7 @@ export default function CollegePredictor() {
                 value={formData.crlRank}
                 onChange={handleChange}
                 placeholder="15000"
+                min="1"
                 required
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
               />
@@ -162,6 +183,7 @@ export default function CollegePredictor() {
                 value={formData.categoryRank}
                 onChange={handleChange}
                 placeholder="2000"
+                min="1"
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
               />
             </div>
@@ -269,6 +291,7 @@ export default function CollegePredictor() {
                 value={formData.roundNumber}
                 onChange={handleChange}
                 placeholder="1"
+                min="1"
                 disabled
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
               />
@@ -327,7 +350,7 @@ export default function CollegePredictor() {
                 disabled={loading}
                 className="w-full bg-[var(--primary)] text-white font-semibold p-2.5 sm:p-3.5 text-sm sm:text-base rounded-lg shadow-md hover:opacity-90 transition-opacity disabled:opacity-50"
               >
-                {loading ? "Predicting..." : "See My College Matches"}
+                {loading ? "Predicting..." : "Predict My College"}
               </button>
             </div>
 
