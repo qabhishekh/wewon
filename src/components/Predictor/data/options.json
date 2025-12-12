@@ -5,14 +5,14 @@
   ],
   "categories": [
     { "label": "OPEN", "value": "OPEN" },
-    { "label": "OPEN (PwD)", "value": "OPEN (PwD)" },
     { "label": "EWS", "value": "EWS" },
-    { "label": "EWS (PwD)", "value": "EWS (PwD)" },
     { "label": "OBC-NCL", "value": "OBC-NCL" },
-    { "label": "OBC-NCL (PwD)", "value": "OBC-NCL (PwD)" },
     { "label": "SC", "value": "SC" },
-    { "label": "SC (PwD)", "value": "SC (PwD)" },
     { "label": "ST", "value": "ST" },
+    { "label": "OPEN (PwD)", "value": "OPEN (PwD)" },
+    { "label": "EWS (PwD)", "value": "EWS (PwD)" },
+    { "label": "OBC-NCL (PwD)", "value": "OBC-NCL (PwD)" },
+    { "label": "SC (PwD)", "value": "SC (PwD)" },
     { "label": "ST (PwD)", "value": "ST (PwD)" }
   ],
   "genders": [
@@ -20,7 +20,6 @@
     { "label": "Female", "value": "Female" }
   ],
   "instituteTypes": [
-    { "label": "IIT", "value": "IIT" },
     { "label": "NIT", "value": "NIT" },
     { "label": "IIIT", "value": "IIIT" },
     { "label": "GFTI", "value": "GFTI" }
