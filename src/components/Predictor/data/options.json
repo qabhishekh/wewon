@@ -3,6 +3,21 @@
     { "label": "JoSAA", "value": "JoSAA" },
     { "label": "CSAB", "value": "CSAB" }
   ],
+  "rounds": {
+    "JoSAA": [
+      { "label": "Round 1", "value": 1 },
+      { "label": "Round 2", "value": 2 },
+      { "label": "Round 3", "value": 3 },
+      { "label": "Round 4", "value": 4 },
+      { "label": "Round 5", "value": 5 },
+      { "label": "Round 6", "value": 6 }
+    ],
+    "CSAB": [
+      { "label": "Round 1", "value": 1 },
+      { "label": "Round 2", "value": 2 },
+      { "label": "Round 3", "value": 3 }
+    ]
+  },
   "categories": [
     { "label": "OPEN", "value": "OPEN" },
     { "label": "EWS", "value": "EWS" },

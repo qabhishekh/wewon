@@ -60,7 +60,7 @@ export default function CounselingDetailPage() {
 
   const handleBuyNow = () => {
     if (!isAuthenticated) {
-      router.push("/auth/login");
+      router.push("/auth");
       return;
     }
     setShowCheckout(true);

@@ -1,4 +1,3 @@
-import BottomNavigation from "@/components/layout/BottomNavigation";
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 
@@ -13,7 +12,6 @@ export default function WebpageLayout({
       <Navbar />
 
       {children}
-      <BottomNavigation />
       <Footer />
     </>
   );
