@@ -6,16 +6,16 @@ import { predict } from "@/network/predictor";
 import options from "./data/options.json";
 import PredictionResults from "./PredictionResults";
 
-export default function CollegePredictor() {
+export default function IITCollegePredictor() {
   const [formData, setFormData] = useState({
     crlRank: "",
     categoryRank: "",
     category: "OPEN", // Default to OPEN (General)
     gender: "Male",
     homeState: "Madhya Pradesh",
-    counselingType: "JoSAA",
+    counselingType: "JoSAA", // Fixed for IIT predictor
     roundNumber: 1,
-    instituteType: "",
+    instituteType: "IIT", // Fixed for IIT predictor
     branchGroup: "",
   });
 
@@ -150,7 +150,7 @@ export default function CollegePredictor() {
           {/* Header */}
           <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 sm:gap-4 mb-4 sm:mb-6">
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[var(--primary)]">
-              JEE MAINS COLLEGE PREDICTOR
+              JEE ADVANCED COLLEGE PREDICTOR
             </h2>
             <span className="bg-[var(--light-blue)] text-[var(--primary)] text-[10px] sm:text-xs font-semibold px-2 sm:px-4 py-1 sm:py-2 rounded-full whitespace-nowrap">
               Trusted by 50,000+ students
@@ -265,28 +265,6 @@ export default function CollegePredictor() {
               </select>
             </div>
 
-            {/* Counseling Type */}
-            <div>
-              <label
-                htmlFor="counselingType"
-                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
-              >
-                Counseling Type
-              </label>
-              <select
-                id="counselingType"
-                value={formData.counselingType}
-                onChange={handleChange}
-                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
-              >
-                {options.counselingTypes.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
             {/* Round Number */}
             <div>
               <label
@@ -304,29 +282,6 @@ export default function CollegePredictor() {
                 {options.rounds[formData.counselingType]?.map((round) => (
                   <option key={round.value} value={round.value}>
                     {round.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Institute Type (Optional) */}
-            <div>
-              <label
-                htmlFor="instituteType"
-                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
-              >
-                Institute Type (Optional)
-              </label>
-              <select
-                id="instituteType"
-                value={formData.instituteType}
-                onChange={handleChange}
-                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
-              >
-                <option value="">All</option>
-                {options.instituteTypes.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
                   </option>
                 ))}
               </select>

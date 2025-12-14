@@ -54,8 +54,12 @@ export default function WebpageLayout({
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarTrigger />
-      {children}
+      <main className="flex-1 w-full bg-gradient-to-br from-gray-50 to-[#073d68]/5 min-h-screen">
+        <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-gray-200 px-4 py-3 shadow-sm">
+          <SidebarTrigger className="hover:bg-gray-100 rounded-lg p-2 transition-colors" />
+        </div>
+        <div className="p-4 md:p-6 lg:p-8">{children}</div>
+      </main>
     </SidebarProvider>
   );
 }

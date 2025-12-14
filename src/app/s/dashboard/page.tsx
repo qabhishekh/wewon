@@ -1,28 +1,302 @@
+"use client";
+
+import { useAppSelector } from "@/store/hooks";
+import {
+  BookOpen,
+  Heart,
+  TrendingUp,
+  Target,
+  Award,
+  ArrowRight,
+  CheckCircle2,
+  Clock,
+  Sparkles,
+} from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
 export default function Page() {
+  const { user } = useAppSelector((state) => state.auth);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Calculate profile completion percentage
+  const calculateProfileCompletion = () => {
+    if (!user || user.userId.role !== "student") return 0;
+    const studentUser = user as any; // Type assertion for student user
+    let completed = 0;
+    const total = 5;
+
+    if (studentUser.userId?.name) completed++;
+    if (studentUser.userId?.email) completed++;
+    if (studentUser.academics?.tenth?.percentage) completed++;
+    if (studentUser.academics?.twelfth?.percentage) completed++;
+    if (studentUser.exams && studentUser.exams.length > 0) completed++;
+
+    return Math.round((completed / total) * 100);
+  };
+
+  const profileCompletion = calculateProfileCompletion();
+  const savedCollegesCount =
+    user && "savedColleges" in user
+      ? (user as any).savedColleges?.length || 0
+      : 0;
+  const predictionsCount =
+    user && "exams" in user ? (user as any).exams?.length || 0 : 0;
+
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="mb-6">
-        <h1 className="text-2xl font-semibold tracking-tight">Welcome Back 👋</h1>
-        <p className="text-sm text-muted-foreground">
-          Here’s an overview of your activity.
-        </p>
-      </div>
-
-      {/* Example Cards */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border p-5">
-          <h3 className="text-sm font-medium text-gray-500">Active Users</h3>
-          <p className="text-3xl font-bold mt-2">2,145</p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Welcome Banner */}
+        <div
+          className={`mb-8 bg-gradient-to-r from-[#073d68] to-purple-600 rounded-2xl shadow-xl p-8 text-white transform transition-all duration-700 ${
+            mounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+          }`}
+        >
+          <div className="flex items-center gap-3 mb-2">
+            <Sparkles className="w-6 h-6" />
+            <h1 className="text-3xl font-bold">
+              Welcome back, {user?.userId?.name?.split(" ")[0] || "Student"}! 👋
+            </h1>
+          </div>
+          <p className="text-purple-100 text-lg">
+            Ready to explore your college options? Let's make your dreams a
+            reality.
+          </p>
         </div>
 
-        <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border p-5">
-          <h3 className="text-sm font-medium text-gray-500">New Signups</h3>
-          <p className="text-3xl font-bold mt-2">356</p>
+        {/* Stats Grid */}
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8">
+          {/* Profile Completion */}
+          <div
+            className={`bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 p-6 border border-gray-100 transform ${
+              mounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+            }`}
+            style={{ transitionDelay: "100ms" }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-gradient-to-br from-green-400 to-green-600 rounded-xl">
+                <CheckCircle2 className="w-6 h-6 text-white" />
+              </div>
+              <span className="text-3xl font-bold text-green-600">
+                {profileCompletion}%
+              </span>
+            </div>
+            <h3 className="text-sm font-semibold text-gray-600 mb-2">
+              Profile Completion
+            </h3>
+            <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
+              <div
+                className="bg-gradient-to-r from-green-400 to-green-600 h-2 rounded-full transition-all duration-1000"
+                style={{ width: `${profileCompletion}%` }}
+              />
+            </div>
+            <p className="text-xs text-gray-500">
+              {profileCompletion === 100
+                ? "Your profile is complete! 🎉"
+                : "Complete your profile to get better predictions"}
+            </p>
+          </div>
+
+          {/* Saved Colleges */}
+          <div
+            className={`bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 p-6 border border-gray-100 transform ${
+              mounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+            }`}
+            style={{ transitionDelay: "200ms" }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-gradient-to-br from-pink-400 to-pink-600 rounded-xl">
+                <Heart className="w-6 h-6 text-white" />
+              </div>
+              <span className="text-3xl font-bold text-pink-600">
+                {savedCollegesCount}
+              </span>
+            </div>
+            <h3 className="text-sm font-semibold text-gray-600 mb-2">
+              Saved Colleges
+            </h3>
+            <p className="text-xs text-gray-500">
+              {savedCollegesCount === 0
+                ? "Start saving colleges you're interested in"
+                : `You have ${savedCollegesCount} college${
+                    savedCollegesCount > 1 ? "s" : ""
+                  } saved`}
+            </p>
+          </div>
+
+          {/* Predictions Made */}
+          <div
+            className={`bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 p-6 border border-gray-100 transform ${
+              mounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+            }`}
+            style={{ transitionDelay: "300ms" }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-gradient-to-br from-[#073d68] to-[#0a5282] rounded-xl">
+                <TrendingUp className="w-6 h-6 text-white" />
+              </div>
+              <span className="text-3xl font-bold text-[#073d68]">
+                {predictionsCount}
+              </span>
+            </div>
+            <h3 className="text-sm font-semibold text-gray-600 mb-2">
+              Exam Records
+            </h3>
+            <p className="text-xs text-gray-500">
+              {predictionsCount === 0
+                ? "Add your exam scores to get predictions"
+                : `${predictionsCount} exam${
+                    predictionsCount > 1 ? "s" : ""
+                  } recorded`}
+            </p>
+          </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border p-5">
-          <h3 className="text-sm font-medium text-gray-500">Total Revenue</h3>
-          <p className="text-3xl font-bold mt-2">₹1.2M</p>
+        {/* Quick Actions */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+            <Target className="w-6 h-6 text-[#073d68]" />
+            Quick Actions
+          </h2>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {/* College Predictor */}
+            <Link href="/predictor">
+              <div
+                className={`group bg-gradient-to-br from-[#073d68] to-[#0a5282] rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 p-6 cursor-pointer transform hover:scale-105 ${
+                  mounted
+                    ? "translate-y-0 opacity-100"
+                    : "translate-y-4 opacity-0"
+                }`}
+                style={{ transitionDelay: "400ms" }}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="p-3 bg-white/20 backdrop-blur-sm rounded-xl">
+                    <BookOpen className="w-8 h-8 text-white" />
+                  </div>
+                  <ArrowRight className="w-6 h-6 text-white/70 group-hover:text-white group-hover:translate-x-1 transition-all" />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">
+                  College Predictor
+                </h3>
+                <p className="text-purple-100 text-sm">
+                  Find colleges based on your rank and preferences
+                </p>
+              </div>
+            </Link>
+
+            {/* View Saved Colleges */}
+            <Link href="/s/saved-colleges">
+              <div
+                className={`group bg-gradient-to-br from-pink-500 to-pink-700 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 p-6 cursor-pointer transform hover:scale-105 ${
+                  mounted
+                    ? "translate-y-0 opacity-100"
+                    : "translate-y-4 opacity-0"
+                }`}
+                style={{ transitionDelay: "500ms" }}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="p-3 bg-white/20 backdrop-blur-sm rounded-xl">
+                    <Heart className="w-8 h-8 text-white" />
+                  </div>
+                  <ArrowRight className="w-6 h-6 text-white/70 group-hover:text-white group-hover:translate-x-1 transition-all" />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">
+                  Saved Colleges
+                </h3>
+                <p className="text-pink-100 text-sm">
+                  View and manage your saved college list
+                </p>
+              </div>
+            </Link>
+
+            {/* Complete Profile */}
+            <Link href="/s/profile">
+              <div
+                className={`group bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 p-6 cursor-pointer transform hover:scale-105 ${
+                  mounted
+                    ? "translate-y-0 opacity-100"
+                    : "translate-y-4 opacity-0"
+                }`}
+                style={{ transitionDelay: "600ms" }}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="p-3 bg-white/20 backdrop-blur-sm rounded-xl">
+                    <Award className="w-8 h-8 text-white" />
+                  </div>
+                  <ArrowRight className="w-6 h-6 text-white/70 group-hover:text-white group-hover:translate-x-1 transition-all" />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">
+                  Complete Profile
+                </h3>
+                <p className="text-purple-100 text-sm">
+                  Add your academic details and exam scores
+                </p>
+              </div>
+            </Link>
+          </div>
+        </div>
+
+        {/* Recent Activity / Tips */}
+        <div
+          className={`bg-white rounded-2xl shadow-lg p-6 border border-gray-100 transform transition-all duration-700 ${
+            mounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+          }`}
+          style={{ transitionDelay: "700ms" }}
+        >
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+            <Clock className="w-6 h-6 text-[#073d68]" />
+            Getting Started
+          </h2>
+          <div className="space-y-4">
+            <div className="flex items-start gap-4 p-4 bg-[#073d68]/5 rounded-xl hover:bg-[#073d68]/10 transition-colors">
+              <div className="p-2 bg-[#073d68] rounded-lg flex-shrink-0">
+                <CheckCircle2 className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-800 mb-1">
+                  Complete Your Profile
+                </h4>
+                <p className="text-sm text-gray-600">
+                  Add your 10th and 12th marks, exam scores, and preferences to
+                  get accurate college predictions.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4 p-4 bg-purple-50 rounded-xl hover:bg-purple-100 transition-colors">
+              <div className="p-2 bg-purple-500 rounded-lg flex-shrink-0">
+                <BookOpen className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-800 mb-1">
+                  Use College Predictor
+                </h4>
+                <p className="text-sm text-gray-600">
+                  Enter your JEE Main or Advanced rank to discover colleges you
+                  can get into based on previous year cutoffs.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4 p-4 bg-pink-50 rounded-xl hover:bg-pink-100 transition-colors">
+              <div className="p-2 bg-pink-500 rounded-lg flex-shrink-0">
+                <Heart className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-800 mb-1">
+                  Save Your Favorites
+                </h4>
+                <p className="text-sm text-gray-600">
+                  Bookmark colleges you're interested in to easily compare and
+                  track them later.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
