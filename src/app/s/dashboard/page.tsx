@@ -48,21 +48,17 @@ export default function Page() {
     user && "exams" in user ? (user as any).exams?.length || 0 : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Banner */}
-        <div
-          className={`mb-8 bg-gradient-to-r from-[#073d68] to-purple-600 rounded-2xl shadow-xl p-8 text-white transform transition-all duration-700 ${
-            mounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-          }`}
-        >
+        <div className="mb-8 bg-[#073d68] rounded-2xl shadow-xl p-8 text-white">
           <div className="flex items-center gap-3 mb-2">
             <Sparkles className="w-6 h-6" />
             <h1 className="text-3xl font-bold">
               Welcome back, {user?.userId?.name?.split(" ")[0] || "Student"}! 👋
             </h1>
           </div>
-          <p className="text-purple-100 text-lg">
+          <p className="text-blue-100 text-lg">
             Ready to explore your college options? Let's make your dreams a
             reality.
           </p>
@@ -71,14 +67,9 @@ export default function Page() {
         {/* Stats Grid */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8">
           {/* Profile Completion */}
-          <div
-            className={`bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 p-6 border border-gray-100 transform ${
-              mounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-            }`}
-            style={{ transitionDelay: "100ms" }}
-          >
+          <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
             <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-gradient-to-br from-green-400 to-green-600 rounded-xl">
+              <div className="p-3 bg-green-500 rounded-xl">
                 <CheckCircle2 className="w-6 h-6 text-white" />
               </div>
               <span className="text-3xl font-bold text-green-600">
@@ -90,7 +81,7 @@ export default function Page() {
             </h3>
             <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
               <div
-                className="bg-gradient-to-r from-green-400 to-green-600 h-2 rounded-full transition-all duration-1000"
+                className="bg-green-500 h-2 rounded-full"
                 style={{ width: `${profileCompletion}%` }}
               />
             </div>
@@ -102,14 +93,9 @@ export default function Page() {
           </div>
 
           {/* Saved Colleges */}
-          <div
-            className={`bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 p-6 border border-gray-100 transform ${
-              mounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-            }`}
-            style={{ transitionDelay: "200ms" }}
-          >
+          <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
             <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-gradient-to-br from-pink-400 to-pink-600 rounded-xl">
+              <div className="p-3 bg-pink-500 rounded-xl">
                 <Heart className="w-6 h-6 text-white" />
               </div>
               <span className="text-3xl font-bold text-pink-600">
@@ -129,14 +115,9 @@ export default function Page() {
           </div>
 
           {/* Predictions Made */}
-          <div
-            className={`bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 p-6 border border-gray-100 transform ${
-              mounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-            }`}
-            style={{ transitionDelay: "300ms" }}
-          >
+          <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
             <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-gradient-to-br from-[#073d68] to-[#0a5282] rounded-xl">
+              <div className="p-3 bg-[#073d68] rounded-xl">
                 <TrendingUp className="w-6 h-6 text-white" />
               </div>
               <span className="text-3xl font-bold text-[#073d68]">
@@ -165,24 +146,17 @@ export default function Page() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {/* College Predictor */}
             <Link href="/predictor">
-              <div
-                className={`group bg-gradient-to-br from-[#073d68] to-[#0a5282] rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 p-6 cursor-pointer transform hover:scale-105 ${
-                  mounted
-                    ? "translate-y-0 opacity-100"
-                    : "translate-y-4 opacity-0"
-                }`}
-                style={{ transitionDelay: "400ms" }}
-              >
+              <div className="group bg-[#073d68] rounded-2xl shadow-lg p-6 cursor-pointer">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 bg-white/20 backdrop-blur-sm rounded-xl">
+                  <div className="p-3 bg-white/20 rounded-xl">
                     <BookOpen className="w-8 h-8 text-white" />
                   </div>
-                  <ArrowRight className="w-6 h-6 text-white/70 group-hover:text-white group-hover:translate-x-1 transition-all" />
+                  <ArrowRight className="w-6 h-6 text-white/70" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">
                   College Predictor
                 </h3>
-                <p className="text-purple-100 text-sm">
+                <p className="text-blue-100 text-sm">
                   Find colleges based on your rank and preferences
                 </p>
               </div>
@@ -190,19 +164,12 @@ export default function Page() {
 
             {/* View Saved Colleges */}
             <Link href="/s/saved-colleges">
-              <div
-                className={`group bg-gradient-to-br from-pink-500 to-pink-700 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 p-6 cursor-pointer transform hover:scale-105 ${
-                  mounted
-                    ? "translate-y-0 opacity-100"
-                    : "translate-y-4 opacity-0"
-                }`}
-                style={{ transitionDelay: "500ms" }}
-              >
+              <div className="group bg-pink-500 rounded-2xl shadow-lg p-6 cursor-pointer">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 bg-white/20 backdrop-blur-sm rounded-xl">
+                  <div className="p-3 bg-white/20 rounded-xl">
                     <Heart className="w-8 h-8 text-white" />
                   </div>
-                  <ArrowRight className="w-6 h-6 text-white/70 group-hover:text-white group-hover:translate-x-1 transition-all" />
+                  <ArrowRight className="w-6 h-6 text-white/70" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">
                   Saved Colleges
@@ -215,19 +182,12 @@ export default function Page() {
 
             {/* Complete Profile */}
             <Link href="/s/profile">
-              <div
-                className={`group bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 p-6 cursor-pointer transform hover:scale-105 ${
-                  mounted
-                    ? "translate-y-0 opacity-100"
-                    : "translate-y-4 opacity-0"
-                }`}
-                style={{ transitionDelay: "600ms" }}
-              >
+              <div className="group bg-purple-500 rounded-2xl shadow-lg p-6 cursor-pointer">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 bg-white/20 backdrop-blur-sm rounded-xl">
+                  <div className="p-3 bg-white/20 rounded-xl">
                     <Award className="w-8 h-8 text-white" />
                   </div>
-                  <ArrowRight className="w-6 h-6 text-white/70 group-hover:text-white group-hover:translate-x-1 transition-all" />
+                  <ArrowRight className="w-6 h-6 text-white/70" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">
                   Complete Profile
@@ -241,18 +201,13 @@ export default function Page() {
         </div>
 
         {/* Recent Activity / Tips */}
-        <div
-          className={`bg-white rounded-2xl shadow-lg p-6 border border-gray-100 transform transition-all duration-700 ${
-            mounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-          }`}
-          style={{ transitionDelay: "700ms" }}
-        >
+        <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
           <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
             <Clock className="w-6 h-6 text-[#073d68]" />
             Getting Started
           </h2>
           <div className="space-y-4">
-            <div className="flex items-start gap-4 p-4 bg-[#073d68]/5 rounded-xl hover:bg-[#073d68]/10 transition-colors">
+            <div className="flex items-start gap-4 p-4 bg-[#073d68]/5 rounded-xl">
               <div className="p-2 bg-[#073d68] rounded-lg flex-shrink-0">
                 <CheckCircle2 className="w-5 h-5 text-white" />
               </div>
@@ -267,7 +222,7 @@ export default function Page() {
               </div>
             </div>
 
-            <div className="flex items-start gap-4 p-4 bg-purple-50 rounded-xl hover:bg-purple-100 transition-colors">
+            <div className="flex items-start gap-4 p-4 bg-purple-50 rounded-xl">
               <div className="p-2 bg-purple-500 rounded-lg flex-shrink-0">
                 <BookOpen className="w-5 h-5 text-white" />
               </div>
@@ -282,7 +237,7 @@ export default function Page() {
               </div>
             </div>
 
-            <div className="flex items-start gap-4 p-4 bg-pink-50 rounded-xl hover:bg-pink-100 transition-colors">
+            <div className="flex items-start gap-4 p-4 bg-pink-50 rounded-xl">
               <div className="p-2 bg-pink-500 rounded-lg flex-shrink-0">
                 <Heart className="w-5 h-5 text-white" />
               </div>

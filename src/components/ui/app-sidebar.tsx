@@ -83,9 +83,9 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <Link href={"/"}>
-              <SidebarMenu className="py-6 flex justify-center items-center w-full border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                <Image src={"/logo.svg"} height={50} width={70} alt="Logo" />
-                <h4 className="font-bold text-lg bg-gradient-to-r from-[#073d68] to-purple-600 bg-clip-text text-transparent">
+              <SidebarMenu className="py-6 flex justify-center items-center w-full border-b border-gray-100">
+                <Image src="/logo.svg" height={50} width={70} alt="Logo" />
+                <h4 className="font-bold text-lg text-[#073d68]">
                   We Won Academy
                 </h4>
               </SidebarMenu>
@@ -105,9 +105,9 @@ export function AppSidebar() {
                     <SidebarMenuButton asChild>
                       <Link
                         href={item.url}
-                        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl ${
                           isActive
-                            ? "bg-gradient-to-r from-[#073d68] to-purple-500 text-white shadow-lg shadow-[#073d68]/30"
+                            ? "bg-[#073d68] text-white shadow-lg"
                             : "text-gray-700 hover:bg-gray-100 hover:text-[#073d68]"
                         }`}
                       >
@@ -133,7 +133,7 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton className="hover:bg-gray-100 rounded-xl transition-colors p-3">
+                <SidebarMenuButton className="hover:bg-gray-100 rounded-xl p-3">
                   <div className="flex items-center gap-3 w-full">
                     {user?.userId?.avatar ? (
                       <img
@@ -142,7 +142,7 @@ export function AppSidebar() {
                         className="w-10 h-10 rounded-full object-cover border-2 border-[#073d68]"
                       />
                     ) : (
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#073d68] to-purple-500 flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-full bg-[#073d68] flex items-center justify-center">
                         <User2 className="w-5 h-5 text-white" />
                       </div>
                     )}

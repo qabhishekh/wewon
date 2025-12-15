@@ -104,7 +104,8 @@ export default function Counselings() {
             description={product.description}
             imageUrl={product.thumbnail}
             imageAlt={product.title}
-            currentPrice={product.price}
+            originalPrice={product.price}
+            currentPrice={product.discountPrice || product.price}
             buttonText="View Details"
           />
         ))}
