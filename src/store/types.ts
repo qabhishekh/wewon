@@ -261,6 +261,7 @@ export interface CounselingProduct {
   description: string;
   thumbnail: string;
   price: number;
+  discountPrice?: number;
   validityInDays: number;
   totalMaterialCount: number;
   isActive: boolean;

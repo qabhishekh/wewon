@@ -72,12 +72,8 @@ export default function StudentProfilePage({
   return (
     <div className="min-h-screen py-8 px-4">
       <div>
-        {/* Header with Gradient Background */}
-        <div
-          className={`bg-gradient-to-r from-[#073d68] to-purple-600 rounded-2xl shadow-xl p-6 md:p-8 mb-6 transform transition-all duration-700 ${
-            mounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-          }`}
-        >
+        {/* Header */}
+        <div className="bg-[#073d68] rounded-2xl shadow-xl p-6 md:p-8 mb-6">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between">
             <div className="flex items-center gap-6">
               {/* Avatar */}
@@ -91,7 +87,7 @@ export default function StudentProfilePage({
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#073d68] to-purple-400">
+                    <div className="w-full h-full flex items-center justify-center bg-[#073d68]">
                       <User className="w-12 h-12 md:w-16 md:h-16 text-white" />
                     </div>
                   )}
@@ -107,7 +103,7 @@ export default function StudentProfilePage({
                   </h1>
                 </div>
 
-                <div className="flex flex-col gap-2 text-purple-100">
+                <div className="flex flex-col gap-2 text-blue-100">
                   <div className="flex items-center gap-2">
                     <Mail className="w-4 h-4" />
                     <span className="text-sm">{profileData.userId.email}</span>
@@ -129,7 +125,7 @@ export default function StudentProfilePage({
             <div className="flex gap-6 mt-4 md:mt-0">
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold bg-white text-[#073d68] hover:bg-purple-50 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+                className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold bg-white text-[#073d68] shadow-lg"
               >
                 <Edit2 className="w-5 h-5" />
                 Edit Profile
@@ -142,19 +138,12 @@ export default function StudentProfilePage({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-1 space-y-6">
             {/* Stats */}
-            <div
-              className={`bg-white rounded-2xl shadow-lg p-6 transform transition-all duration-700 ${
-                mounted
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-4 opacity-0"
-              }`}
-              style={{ transitionDelay: "100ms" }}
-            >
-              <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-[#073d68] to-purple-600 bg-clip-text text-transparent">
+            <div className="bg-white rounded-2xl shadow-lg p-6">
+              <h3 className="text-xl font-bold mb-4 text-[#073d68]">
                 Quick Stats
               </h3>
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-pink-50 to-pink-100 hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between p-4 rounded-xl bg-pink-50">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-pink-500 rounded-lg">
                       <Heart className="w-5 h-5 text-white" />
@@ -167,7 +156,7 @@ export default function StudentProfilePage({
                     {profileData.savedColleges?.length || 0}
                   </span>
                 </div>
-                <div className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-[#073d68]/10 to-[#073d68]/20 hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between p-4 rounded-xl bg-[#073d68]/10">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-[#073d68] rounded-lg">
                       <Building2 className="w-5 h-5 text-white" />
@@ -178,7 +167,7 @@ export default function StudentProfilePage({
                     {profileData.appliedColleges?.length || 0}
                   </span>
                 </div>
-                <div className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-purple-50 to-purple-100 hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between p-4 rounded-xl bg-purple-50">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-purple-500 rounded-lg">
                       <Trophy className="w-5 h-5 text-white" />
@@ -195,15 +184,8 @@ export default function StudentProfilePage({
             </div>
 
             {/* Preferences */}
-            <div
-              className={`bg-white rounded-2xl shadow-lg p-6 transform transition-all duration-700 ${
-                mounted
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-4 opacity-0"
-              }`}
-              style={{ transitionDelay: "200ms" }}
-            >
-              <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-[#073d68] to-purple-600 bg-clip-text text-transparent">
+            <div className="bg-white rounded-2xl shadow-lg p-6">
+              <h3 className="text-xl font-bold mb-4 text-[#073d68]">
                 Preferences
               </h3>
               <div className="space-y-4">
@@ -244,7 +226,7 @@ export default function StudentProfilePage({
                           (state) => (
                             <span
                               key={state}
-                              className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-[#073d68] to-purple-500 text-white rounded-full text-sm font-medium shadow-md"
+                              className="inline-flex items-center gap-1 px-3 py-1 bg-[#073d68] text-white rounded-full text-sm font-medium shadow-md"
                             >
                               <MapPin className="w-3 h-3" />
                               {state}

@@ -175,6 +175,7 @@ export default function CollegePredictor() {
                 placeholder="15000"
                 min="1"
                 required
+                onWheel={(e) => e.currentTarget.blur()}
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
               />
             </div>
@@ -194,6 +195,7 @@ export default function CollegePredictor() {
                 onChange={handleChange}
                 placeholder="2000"
                 min="1"
+                onWheel={(e) => e.currentTarget.blur()}
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
               />
             </div>
