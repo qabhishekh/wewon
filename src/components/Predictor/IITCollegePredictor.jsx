@@ -12,7 +12,7 @@ export default function IITCollegePredictor() {
     categoryRank: "",
     category: "OPEN", // Default to OPEN (General)
     gender: "Male",
-    homeState: "Madhya Pradesh",
+    homeState: "",
     counselingType: "JoSAA", // Fixed for IIT predictor
     roundNumber: 1,
     instituteType: "IIT", // Fixed for IIT predictor
@@ -148,11 +148,11 @@ export default function IITCollegePredictor() {
         {/* Right Column: Predictor Form */}
         <div className="bg-[var(--background)] border border-[var(--border)] rounded-lg sm:rounded-xl shadow-lg p-3 sm:p-6 md:p-8">
           {/* Header */}
-          <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 sm:gap-4 mb-4 sm:mb-6">
+          <div className="flex flex-col justify-between gap-2 sm:gap-4 mb-4 sm:mb-6">
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[var(--primary)]">
               JEE ADVANCED COLLEGE PREDICTOR
             </h2>
-            <span className="bg-[var(--light-blue)] text-[var(--primary)] text-[10px] sm:text-xs font-semibold px-2 sm:px-4 py-1 sm:py-2 rounded-full whitespace-nowrap">
+            <span className="bg-[var(--light-blue)] text-[var(--primary)] text-[10px] sm:text-xs font-semibold px-2 sm:px-4 py-1 sm:py-2 rounded-full whitespace-nowrap w-fit">
               Trusted by 50,000+ students
             </span>
           </div>
@@ -254,11 +254,13 @@ export default function IITCollegePredictor() {
                 Select Your Home State
               </label>
               <select
+                required
                 id="homeState"
                 value={formData.homeState}
                 onChange={handleChange}
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
               >
+                <option value="">Select Your Home State</option>
                 {options.states.map((state) => (
                   <option key={state} value={state}>
                     {state}
@@ -276,11 +278,13 @@ export default function IITCollegePredictor() {
                 Round Number
               </label>
               <select
+                required
                 id="roundNumber"
                 value={formData.roundNumber}
                 onChange={handleChange}
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
               >
+                <option value="">Select Round Number</option>
                 {options.rounds[formData.counselingType]?.map((round) => (
                   <option key={round.value} value={round.value}>
                     {round.label}
@@ -304,11 +308,13 @@ export default function IITCollegePredictor() {
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
               >
                 <option value="">All</option>
-                {options.branchGroups.map((group) => (
-                  <option key={group} value={group}>
-                    {group}
-                  </option>
-                ))}
+                {options.branchGroups
+                  .filter((group) => group !== "Mining")
+                  .map((group) => (
+                    <option key={group} value={group}>
+                      {group}
+                    </option>
+                  ))}
               </select>
             </div>
 
@@ -333,7 +339,9 @@ export default function IITCollegePredictor() {
 
       {/* Results Section */}
       <div ref={resultsRef}>
-        {results && <PredictionResults results={results} />}
+        {results && (
+          <PredictionResults results={results} userGender={formData.gender} />
+        )}
       </div>
     </div>
   );
