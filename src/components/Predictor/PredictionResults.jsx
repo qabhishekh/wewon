@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export default function PredictionResults({ results }) {
+export default function PredictionResults({ results, userGender }) {
   const [activeTab, setActiveTab] = useState("JoSAA");
   const [activeProbabilityTab, setActiveProbabilityTab] = useState("High");
   const [genderFilter, setGenderFilter] = useState("All");
@@ -107,19 +107,27 @@ export default function PredictionResults({ results }) {
           Filter by Gender:
         </span>
         <div className="flex gap-1.5 sm:gap-2 flex-wrap">
-          {["All", "Gender-Neutral", "Female-only"].map((filter) => (
-            <button
-              key={filter}
-              onClick={() => setGenderFilter(filter)}
-              className={`px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm rounded-lg border transition-colors ${
-                genderFilter === filter
-                  ? "bg-[var(--primary)] text-white border-[var(--primary)]"
-                  : "bg-white text-[var(--muted-text)] border-[var(--border)] hover:bg-gray-50"
-              }`}
-            >
-              {filter}
-            </button>
-          ))}
+          {["All", "Gender-Neutral", "Female-only"]
+            .filter((filter) => {
+              // Hide "Female-only" option when user's gender is Male
+              if (filter === "Female-only" && userGender === "Male") {
+                return false;
+              }
+              return true;
+            })
+            .map((filter) => (
+              <button
+                key={filter}
+                onClick={() => setGenderFilter(filter)}
+                className={`px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm rounded-lg border transition-colors ${
+                  genderFilter === filter
+                    ? "bg-[var(--primary)] text-white border-[var(--primary)]"
+                    : "bg-white text-[var(--muted-text)] border-[var(--border)] hover:bg-gray-50"
+                }`}
+              >
+                {filter}
+              </button>
+            ))}
         </div>
       </div>
 
