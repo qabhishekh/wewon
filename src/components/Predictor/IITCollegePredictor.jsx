@@ -82,9 +82,18 @@ export default function IITCollegePredictor() {
     e.preventDefault();
     setLoading(true);
     setResults(null);
+
+    // Validate that at least one rank is provided
+    if (!formData.crlRank && !formData.categoryRank) {
+      alert("Please enter either CRL Rank or Category Rank");
+      setLoading(false);
+      return;
+    }
+
     try {
+      
       const payload = {
-        crlRank: Number(formData.crlRank),
+        crlRank: Number(formData.crlRank || 1),
         categoryRank: formData.categoryRank
           ? Number(formData.categoryRank)
           : undefined,
@@ -165,7 +174,7 @@ export default function IITCollegePredictor() {
                 htmlFor="crlRank"
                 className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
               >
-                Enter CRL Rank (Required)
+                Enter CRL Rank
               </label>
               <input
                 type="number"
@@ -174,7 +183,6 @@ export default function IITCollegePredictor() {
                 onChange={handleChange}
                 placeholder="15000"
                 min="1"
-                required
                 onWheel={(e) => e.currentTarget.blur()}
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
               />
@@ -186,7 +194,7 @@ export default function IITCollegePredictor() {
                 htmlFor="categoryRank"
                 className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
               >
-                Enter Category Rank (Optional)
+                Enter Category Rank
               </label>
               <input
                 type="number"
