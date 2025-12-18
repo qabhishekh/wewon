@@ -13,6 +13,11 @@ export default function PredictionResults({ results, userGender }) {
     { id: "JoSAA", label: "JoSAA", data: results.josaaPredictions },
     { id: "CSAB", label: "CSAB", data: results.csabPredictions },
     { id: "IIT", label: "IIT", data: results.iitPredictions },
+    {
+      id: "HomeState",
+      label: "Home State",
+      data: results.homestatePredictions,
+    },
   ].filter((tab) => tab.data && tab.data.length > 0);
 
   // If the current active tab has no data, switch to the first available tab
