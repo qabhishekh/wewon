@@ -5,6 +5,7 @@ import GoogleAds from "../sections/GoogleAds";
 import { predict } from "@/network/predictor";
 import options from "./data/options.json";
 import PredictionResults from "./PredictionResults";
+import { toast } from "sonner";
 
 export default function IITCollegePredictor() {
   const [formData, setFormData] = useState({
@@ -84,14 +85,19 @@ export default function IITCollegePredictor() {
     setResults(null);
 
     // Validate that at least one rank is provided
+    if (formData.category === "OPEN" && !formData.crlRank) {
+      toast.error("Please enter CRL Rank for OPEN category");
+      setLoading(false);
+      return;
+    }
+
     if (!formData.crlRank && !formData.categoryRank) {
-      alert("Please enter either CRL Rank or Category Rank");
+      toast.error("Please enter either CRL Rank or Category Rank");
       setLoading(false);
       return;
     }
 
     try {
-      
       const payload = {
         crlRank: Number(formData.crlRank || 1),
         categoryRank: formData.categoryRank
@@ -113,7 +119,7 @@ export default function IITCollegePredictor() {
       // alert("Prediction successful! Check console for results.");
     } catch (error) {
       console.error("Prediction error:", error);
-      alert("Failed to get prediction. Please try again.");
+      toast.error("Failed to get prediction. Please try again.");
     } finally {
       setLoading(false);
     }
