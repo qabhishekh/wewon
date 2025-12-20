@@ -13,7 +13,6 @@ export default function IITCollegePredictor() {
     categoryRank: "",
     category: "OPEN", // Default to OPEN (General)
     gender: "Male",
-    homeState: "",
     counselingType: "JoSAA", // Fixed for IIT predictor
     roundNumber: 1,
     instituteType: "IIT", // Fixed for IIT predictor
@@ -105,7 +104,6 @@ export default function IITCollegePredictor() {
           : undefined,
         category: formData.category,
         gender: formData.gender,
-        homeState: formData.homeState,
         counselingType: formData.counselingType,
         roundNumber: Number(formData.roundNumber),
         instituteType: formData.instituteType || undefined,
@@ -254,30 +252,6 @@ export default function IITCollegePredictor() {
                 {options.categories.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Select Home State */}
-            <div>
-              <label
-                htmlFor="homeState"
-                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
-              >
-                Select Your Home State
-              </label>
-              <select
-                required
-                id="homeState"
-                value={formData.homeState}
-                onChange={handleChange}
-                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
-              >
-                <option value="">Select Your Home State</option>
-                {options.states.map((state) => (
-                  <option key={state} value={state}>
-                    {state}
                   </option>
                 ))}
               </select>

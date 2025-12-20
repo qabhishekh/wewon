@@ -56,6 +56,19 @@ export default function PredictionResults({ results, userGender }) {
     }
   });
 
+  // Sort Medium and Low by Closing Rank in descending order
+  groupedData.Medium.sort((a, b) => {
+    const rankA = parseInt(a.closingRank) || 0;
+    const rankB = parseInt(b.closingRank) || 0;
+    return rankB - rankA; // Descending order
+  });
+
+  groupedData.Low.sort((a, b) => {
+    const rankA = parseInt(a.closingRank) || 0;
+    const rankB = parseInt(b.closingRank) || 0;
+    return rankB - rankA; // Descending order
+  });
+
   const probabilityTabs = [
     {
       key: "High",
