@@ -312,82 +312,87 @@ export default function CounselingDetailPage() {
           </div>
 
           {/* Free Overview Video */}
-          {product.content.landingPageHighlights.introVideo && (
-            <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 mb-12">
-              <h2 className="text-2xl font-bold text-[var(--primary)] mb-6">
-                Free Overview Video
-              </h2>
-              <div className="mb-4">
-                <h3 className="font-semibold text-lg text-gray-800 mb-2">
-                  {product.content.landingPageHighlights.introVideo.title}
-                </h3>
-                <p className="text-gray-600 mb-4">Watch the program overview</p>
-              </div>
-              <div
-                className="relative w-full rounded-lg overflow-hidden shadow-lg"
-                style={{ paddingBottom: "56.25%" }}
-              >
-                {(() => {
-                  const videoUrl =
-                    product.content.landingPageHighlights.introVideo.url;
+          {product.content.landingPageHighlights.introVideo &&
+            product.content.landingPageHighlights.introVideo.url && (
+              <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 mb-12">
+                <h2 className="text-2xl font-bold text-[var(--primary)] mb-6">
+                  Free Overview Video
+                </h2>
+                <div className="mb-4">
+                  <h3 className="font-semibold text-lg text-gray-800 mb-2">
+                    {product.content.landingPageHighlights.introVideo.title}
+                  </h3>
+                  <p className="text-gray-600 mb-4">
+                    Watch the program overview
+                  </p>
+                </div>
+                <div
+                  className="relative w-full rounded-lg overflow-hidden shadow-lg"
+                  style={{ paddingBottom: "56.25%" }}
+                >
+                  {(() => {
+                    const videoUrl =
+                      product.content.landingPageHighlights.introVideo.url;
 
-                  // Check if it's a YouTube video
-                  if (
-                    videoUrl.includes("youtube.com") ||
-                    videoUrl.includes("youtu.be")
-                  ) {
-                    let videoId = "";
-                    if (videoUrl.includes("youtube.com/watch?v=")) {
-                      videoId = videoUrl.split("v=")[1]?.split("&")[0] || "";
-                    } else if (videoUrl.includes("youtu.be/")) {
-                      videoId =
-                        videoUrl.split("youtu.be/")[1]?.split("?")[0] || "";
+                    // Check if it's a YouTube video
+                    if (
+                      videoUrl.includes("youtube.com") ||
+                      videoUrl.includes("youtu.be")
+                    ) {
+                      let videoId = "";
+                      if (videoUrl.includes("youtube.com/watch?v=")) {
+                        videoId = videoUrl.split("v=")[1]?.split("&")[0] || "";
+                      } else if (videoUrl.includes("youtu.be/")) {
+                        videoId =
+                          videoUrl.split("youtu.be/")[1]?.split("?")[0] || "";
+                      }
+                      return (
+                        <iframe
+                          className="absolute top-0 left-0 w-full h-full"
+                          src={`https://www.youtube.com/embed/${videoId}`}
+                          title={
+                            product.content.landingPageHighlights.introVideo
+                              .title
+                          }
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      );
                     }
-                    return (
-                      <iframe
-                        className="absolute top-0 left-0 w-full h-full"
-                        src={`https://www.youtube.com/embed/${videoId}`}
-                        title={
-                          product.content.landingPageHighlights.introVideo.title
-                        }
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      />
-                    );
-                  }
 
-                  // Check if it's a Vimeo video
-                  if (videoUrl.includes("vimeo.com")) {
-                    const videoId =
-                      videoUrl.split("vimeo.com/")[1]?.split("?")[0] || "";
-                    return (
-                      <iframe
-                        className="absolute top-0 left-0 w-full h-full"
-                        src={`https://player.vimeo.com/video/${videoId}`}
-                        title={
-                          product.content.landingPageHighlights.introVideo.title
-                        }
-                        allow="autoplay; fullscreen; picture-in-picture"
-                        allowFullScreen
-                      />
-                    );
-                  }
+                    // Check if it's a Vimeo video
+                    if (videoUrl.includes("vimeo.com")) {
+                      const videoId =
+                        videoUrl.split("vimeo.com/")[1]?.split("?")[0] || "";
+                      return (
+                        <iframe
+                          className="absolute top-0 left-0 w-full h-full"
+                          src={`https://player.vimeo.com/video/${videoId}`}
+                          title={
+                            product.content.landingPageHighlights.introVideo
+                              .title
+                          }
+                          allow="autoplay; fullscreen; picture-in-picture"
+                          allowFullScreen
+                        />
+                      );
+                    }
 
-                  // For direct video files (mp4, webm, etc.)
-                  return (
-                    <video
-                      className="absolute top-0 left-0 w-full h-full"
-                      controls
-                      preload="metadata"
-                    >
-                      <source src={videoUrl} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                  );
-                })()}
+                    // For direct video files (mp4, webm, etc.)
+                    return (
+                      <video
+                        className="absolute top-0 left-0 w-full h-full"
+                        controls
+                        preload="metadata"
+                      >
+                        <source src={videoUrl} type="video/mp4" />
+                        Your browser does not support the video tag.
+                      </video>
+                    );
+                  })()}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
           {/* Learning Materials */}
           <LearningMaterialsSection
