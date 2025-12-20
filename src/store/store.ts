@@ -5,6 +5,7 @@ import collegeReducer from "./college/collegeSlice";
 import counselingReducer from "./counseling/counselingSlice";
 import couponReducer from "./coupon/couponSlice";
 import orderReducer from "./order/orderSlice";
+import examReducer from "./exam/examSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     counseling: counselingReducer,
     coupon: couponReducer,
     order: orderReducer,
+    exam: examReducer,
   },
 });
 

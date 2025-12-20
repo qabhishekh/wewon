@@ -39,7 +39,9 @@ export default function WebpageLayout({
       }
     } else if (role === "admin") {
       // Redirect admins to external URL
-      window.location.href = "https://www.youtube.com";
+      // window.location.href = "https://www.youtube.com";
+    }else{
+      router.replace("/auth");
     }
   }, [isAuthenticated, loading, user, path, router]);
 

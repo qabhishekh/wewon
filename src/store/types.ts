@@ -410,3 +410,33 @@ export interface UserPurchase {
   choiceFillingUsage: number;
   collegePredictorUsage: number;
 }
+
+// Exam Types
+export interface ExamSection {
+  sectionTitle: string;
+  description: string; // HTML/Rich-text supported
+}
+
+export interface Exam {
+  _id: string;
+  examName: string;
+  logoUrl: string;
+  websiteUrl: string;
+  tags: string[];
+  sections: ExamSection[];
+  isActive: boolean;
+  createdAt: string;
+}
+
+export interface ExamState {
+  exams: Exam[];
+  totalPages: number;
+  currentPage: number;
+  total: number;
+  examsLoading: boolean;
+  examsError: string | null;
+
+  selectedExam: Exam | null;
+  selectedExamLoading: boolean;
+  selectedExamError: string | null;
+}
