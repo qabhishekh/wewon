@@ -36,6 +36,25 @@ export default function IITCollegePredictor() {
   const handleChange = (e) => {
     const { id, value, type } = e.target;
 
+    // Validate categoryRank to accept only numbers or numbers ending with 'P'
+    if (id === "categoryRank") {
+      // Allow empty value (for clearing the field)
+      if (value === "") {
+        setFormData((prev) => ({
+          ...prev,
+          [id]: value,
+        }));
+        return;
+      }
+
+      // Validate format: must be a number or number ending with capital 'P'
+      const categoryRankPattern = /^\d+P?$/;
+      if (!categoryRankPattern.test(value)) {
+        // Don't update state if format is invalid
+        return;
+      }
+    }
+
     // Validate number inputs to prevent negative values
     if (type === "number") {
       // If value is empty, allow it (for clearing the field)
@@ -96,12 +115,22 @@ export default function IITCollegePredictor() {
       return;
     }
 
+    // Validate categoryRank format if provided
+    if (formData.categoryRank) {
+      const categoryRankPattern = /^\d+P?$/;
+      if (!categoryRankPattern.test(formData.categoryRank)) {
+        toast.error(
+          "Category Rank must be a number or a number ending with 'P'"
+        );
+        setLoading(false);
+        return;
+      }
+    }
+
     try {
       const payload = {
         crlRank: Number(formData.crlRank || 1),
-        categoryRank: formData.categoryRank
-          ? Number(formData.categoryRank)
-          : undefined,
+        categoryRank: formData.categoryRank ? formData.categoryRank : undefined,
         category: formData.category,
         gender: formData.gender,
         counselingType: formData.counselingType,
@@ -201,12 +230,11 @@ export default function IITCollegePredictor() {
                 Enter Category Rank
               </label>
               <input
-                type="number"
+                type="text"
                 id="categoryRank"
                 value={formData.categoryRank}
                 onChange={handleChange}
-                placeholder="2000"
-                min="1"
+                placeholder="2000 or 2000P"
                 onWheel={(e) => e.currentTarget.blur()}
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
               />
