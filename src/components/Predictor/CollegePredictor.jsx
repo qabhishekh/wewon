@@ -5,6 +5,7 @@ import GoogleAds from "../sections/GoogleAds";
 import { predict } from "@/network/predictor";
 import options from "./data/options.json";
 import PredictionResults from "./PredictionResults";
+import { toast } from "sonner";
 
 export default function CollegePredictor() {
   const [formData, setFormData] = useState({
@@ -35,6 +36,25 @@ export default function CollegePredictor() {
 
   const handleChange = (e) => {
     const { id, value, type } = e.target;
+
+    // Validate categoryRank to accept only numbers
+    if (id === "categoryRank") {
+      // Allow empty value (for clearing the field)
+      if (value === "") {
+        setFormData((prev) => ({
+          ...prev,
+          [id]: value,
+        }));
+        return;
+      }
+
+      // Validate format: must be a number
+      const categoryRankPattern = /^\d+$/;
+      if (!categoryRankPattern.test(value)) {
+        // Don't update state if format is invalid
+        return;
+      }
+    }
 
     // Validate number inputs to prevent negative values
     if (type === "number") {
@@ -82,6 +102,24 @@ export default function CollegePredictor() {
     e.preventDefault();
     setLoading(true);
     setResults(null);
+
+    // Validate that category rank is provided when category is not OPEN
+    if (formData.category !== "OPEN" && !formData.categoryRank) {
+      toast.error("Please enter Category Rank for the selected category");
+      setLoading(false);
+      return;
+    }
+
+    // Validate categoryRank format if provided
+    if (formData.categoryRank) {
+      const categoryRankPattern = /^\d+$/;
+      if (!categoryRankPattern.test(formData.categoryRank)) {
+        toast.error("Category Rank must be a number");
+        setLoading(false);
+        return;
+      }
+    }
+
     try {
       const payload = {
         crlRank: Number(formData.crlRank),
@@ -104,7 +142,7 @@ export default function CollegePredictor() {
       // alert("Prediction successful! Check console for results.");
     } catch (error) {
       console.error("Prediction error:", error);
-      alert("Failed to get prediction. Please try again.");
+      toast.error("Failed to get prediction. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -186,15 +224,16 @@ export default function CollegePredictor() {
                 htmlFor="categoryRank"
                 className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
               >
-                Enter Category Rank (Optional)
+                Enter Category Rank{" "}
+                {formData.category !== "OPEN" ? "(Required)" : "(Optional)"}
               </label>
               <input
-                type="number"
+                type="text"
                 id="categoryRank"
                 value={formData.categoryRank}
                 onChange={handleChange}
                 placeholder="2000"
-                min="1"
+                required={formData.category !== "OPEN"}
                 onWheel={(e) => e.currentTarget.blur()}
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
               />

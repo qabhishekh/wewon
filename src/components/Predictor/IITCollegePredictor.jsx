@@ -109,6 +109,13 @@ export default function IITCollegePredictor() {
       return;
     }
 
+    // Validate that category rank is provided when category is not OPEN
+    if (formData.category !== "OPEN" && !formData.categoryRank) {
+      toast.error("Please enter Category Rank for the selected category");
+      setLoading(false);
+      return;
+    }
+
     if (!formData.crlRank && !formData.categoryRank) {
       toast.error("Please enter either CRL Rank or Category Rank");
       setLoading(false);
@@ -227,7 +234,8 @@ export default function IITCollegePredictor() {
                 htmlFor="categoryRank"
                 className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
               >
-                Enter Category Rank
+                Enter Category Rank{" "}
+                {formData.category !== "OPEN" && "(Required)"}
               </label>
               <input
                 type="text"
@@ -235,6 +243,7 @@ export default function IITCollegePredictor() {
                 value={formData.categoryRank}
                 onChange={handleChange}
                 placeholder="2000 or 2000P"
+                required={formData.category !== "OPEN"}
                 onWheel={(e) => e.currentTarget.blur()}
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
               />
