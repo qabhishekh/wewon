@@ -21,62 +21,36 @@ export default function Facilities({ facilities }: FacilitiesProps) {
   });
 
   return (
-    <div className="py-12">
+    <div className="py-8">
       <SubHeading top="Facilities" bottom="Campus facilities and amenities" />
 
-      <style jsx>{`
-        .facility-scroll::-webkit-scrollbar {
-          width: 8px;
-        }
-        .facility-scroll::-webkit-scrollbar-track {
-          background: #f1f1f1;
-          border-radius: 4px;
-        }
-        .facility-scroll::-webkit-scrollbar-thumb {
-          background: #888;
-          border-radius: 4px;
-        }
-        .facility-scroll::-webkit-scrollbar-thumb:hover {
-          background: #555;
-        }
-        .facility-scroll {
-          scrollbar-width: thin;
-          scrollbar-color: #888 #f1f1f1;
-        }
-      `}</style>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-        {Object.entries(facilitiesByType).map(([type, items]) => (
-          <div key={type} className="relative">
-            <h3
-              className="text-xl font-semibold mb-4"
-              style={{ color: "var(--primary)" }}
+      <div className="flex flex-col gap-4 mt-6">
+        {Object.entries(facilitiesByType).map(([type, items]) => {
+          return (
+            <div
+              key={type}
+              className="bg-white rounded-lg border border-gray-200 p-4 flex flex-col"
             >
-              {type}
-            </h3>
-            <div className="relative">
-              <div
-                className={`space-y-2 ${
-                  items.length > 5
-                    ? "max-h-[400px] overflow-y-auto pr-2 facility-scroll"
-                    : ""
-                }`}
-              >
+              <div className="flex items-center justify-between mb-3 pb-2 border-b">
+                <h3 className="text-sm font-semibold text-gray-700">{type}</h3>
+                <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                  {items.length}
+                </span>
+              </div>
+
+              <div className="flex flex-wrap gap-2 flex-1">
                 {items.map((facility) => (
                   <div
                     key={facility._id}
-                    className="p-3 rounded-lg bg-gray-50 border border-gray-200"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 rounded-full hover:bg-gray-100 transition-colors border border-gray-200"
                   >
-                    <p className="text-gray-800">{facility.Value}</p>
+                    <p className="text-sm text-gray-700">{facility.Value}</p>
                   </div>
                 ))}
               </div>
-              {items.length > 5 && (
-                <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white to-transparent pointer-events-none" />
-              )}
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

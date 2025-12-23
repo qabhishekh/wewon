@@ -21,41 +21,33 @@ export default function Rankings({ rankings }: RankingsProps) {
   });
 
   return (
-    <div className="py-12">
+    <div className="py-8">
       <SubHeading
         top="Rankings"
         bottom="College rankings from various agencies"
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mt-6">
         {Object.entries(rankingsByCategory).map(([category, ranks]) => (
-          <div key={category}>
-            <h3
-              className="text-xl font-semibold mb-4"
-              style={{ color: "var(--primary)" }}
-            >
+          <div key={category} className="bg-white rounded-lg border border-gray-200 p-4">
+            <h3 className="text-sm font-semibold text-gray-700 mb-3 pb-2 border-b">
               {category}
             </h3>
-            <div className="space-y-4">
+            <div className="space-y-2">
               {ranks.map((ranking) => (
                 <div
                   key={ranking._id}
-                  className="p-4 rounded-lg border"
-                  style={{ borderColor: "rgba(13, 58, 102, 0.2)" }}
+                  className="flex items-center justify-between p-2 rounded hover:bg-gray-50 transition-colors"
                 >
-                  <div className="flex justify-between items-start mb-2">
-                    <h4 className="font-semibold text-gray-800">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-900 truncate">
                       {ranking.Agency}
-                    </h4>
-                    <span className="text-sm text-gray-500">
-                      {ranking.Year}
-                    </span>
+                    </p>
+                    <p className="text-xs text-gray-500">{ranking.Year}</p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl font-bold text-primary">
-                      #{ranking.Rank_Range}
-                    </span>
-                  </div>
+                  <span className="text-sm font-bold text-blue-600 ml-3">
+                    #{ranking.Rank_Range}
+                  </span>
                 </div>
               ))}
             </div>
