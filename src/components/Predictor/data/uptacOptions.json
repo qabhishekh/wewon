@@ -1,0 +1,86 @@
+{
+  "categories": [
+    { "label": "OPEN", "value": "OPEN" },
+    { "label": "EWS", "value": "EWS" },
+    { "label": "BC", "value": "BC" },
+    { "label": "SC", "value": "SC" },
+    { "label": "ST", "value": "ST" }
+  ],
+  "subCategories": {
+    "OPEN": [
+      { "label": "NOT APPLICABLE", "value": "NOT APPLICABLE" },
+      { "label": "OPEN(TF)", "value": "OPEN(TF)" },
+      { "label": "OPEN(AF)", "value": "OPEN(AF)" },
+      { "label": "OPEN(GIRL)", "value": "OPEN(GIRL)" },
+      { "label": "OPEN(PH)", "value": "OPEN(PH)" },
+      { "label": "OPEN(FF)", "value": "OPEN(FF)" }
+    ],
+    "EWS": [
+      { "label": "NOT APPLICABLE", "value": "NOT APPLICABLE" },
+      { "label": "EWS(GL)", "value": "EWS(GL)" },
+      { "label": "EWS(AF)", "value": "EWS(AF)" },
+      { "label": "EWS(FF)", "value": "EWS(FF)" },
+      { "label": "EWS(PH)", "value": "EWS(PH)" }
+    ],
+    "BC": [
+      { "label": "NOT APPLICABLE", "value": "NOT APPLICABLE" },
+      { "label": "BC(AF)", "value": "BC(AF)" },
+      { "label": "BC(GIRL)", "value": "BC(GIRL)" },
+      { "label": "BC(PH)", "value": "BC(PH)" },
+      { "label": "BC(FF)", "value": "BC(FF)" }
+    ],
+    "SC": [
+      { "label": "NOT APPLICABLE", "value": "NOT APPLICABLE" },
+      { "label": "SC(GIRL)", "value": "SC(GIRL)" },
+      { "label": "SC(AF)", "value": "SC(AF)" },
+      { "label": "SC(PH)", "value": "SC(PH)" },
+      { "label": "SC(FF)", "value": "SC(FF)" }
+    ],
+    "ST": [
+      { "label": "NOT APPLICABLE", "value": "NOT APPLICABLE" },
+      { "label": "ST(GIRL)", "value": "ST(GIRL)" },
+      { "label": "ST(AF)", "value": "ST(AF)" }
+    ]
+  },
+  "homeStates": [
+    { "label": "Uttar Pradesh", "value": "Uttar Pradesh" },
+    { "label": "Outside Uttar Pradesh", "value": "Outside Uttar Pradesh" }
+  ],
+  "rounds": {
+    "Uttar Pradesh": [
+      { "label": "Round 1", "value": 1 },
+      { "label": "Round 2", "value": 2 },
+      { "label": "Round 3", "value": 3 },
+      { "label": "Round 4", "value": 4 },
+      { "label": "Round 6", "value": 6 },
+      { "label": "Round 7", "value": 7 }
+    ],
+    "Outside Uttar Pradesh": [
+      { "label": "Round 6", "value": 6 },
+      { "label": "Round 7", "value": 7 }
+    ]
+  },
+  "instituteTypes": [
+    { "label": "ALL", "value": "ALL" },
+    { "label": "GOVERNMENT COLLEGE", "value": "GOVERNMENT COLLEGE" },
+    { "label": "GOVERNMENT UNIVERSITY", "value": "GOVERNMENT UNIVERSITY" },
+    { "label": "PRIVATE INSTITUTE", "value": "PRIVATE INSTITUTE" }
+  ],
+  "programGroups": [
+    "ALL",
+    "TFW BRANCHES",
+    "CSE Related",
+    "Electrical Engineering",
+    "ELECTRONICS ENGINEERING",
+    "MECHANICAL ENGINEERING",
+    "CHEMICAL ENGINEERING",
+    "CIVIL ENGINEERING",
+    "AGRICULTURE ENGINEERING",
+    "MANUFACTURING & MECHATRONICS",
+    "OTHERS"
+  ],
+  "genders": [
+    { "label": "Male", "value": "Male" },
+    { "label": "Female", "value": "Female" }
+  ]
+}

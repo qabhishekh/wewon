@@ -40,6 +40,7 @@ const Navbar = () => {
   const navLinks = [
     { name: "Mains Predictor", href: "/predictor" },
     { name: "Advanced Predictor", href: "/iitpredictor" },
+    { name: "UPTAC Predictor", href: "/uptacpredictor" },
     { name: "Counseling", href: "/counseling" },
     { name: "Colleges", href: "/colleges" },
     { name: "Exams", href: "/exams" },
