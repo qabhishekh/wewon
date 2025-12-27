@@ -96,7 +96,7 @@ export default function CutOffsFilter({
 
   return (
     <div
-      className="w-full px-6 lg:px-12"
+      className="w-full mb-6"
       style={{ fontFamily: "Poppins, sans-serif" }}
     >
       <SubHeading top="Cutoffs" align="left" />

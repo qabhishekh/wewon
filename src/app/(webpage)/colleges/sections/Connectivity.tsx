@@ -30,6 +30,7 @@ export default function Connectivity({ connectivity }: ConnectivityProps) {
   return (
     <div className="py-12">
       <SubHeading
+        align="left"
         top="How to Reach"
         bottom="Transportation and connectivity options"
       />

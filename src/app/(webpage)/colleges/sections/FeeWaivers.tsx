@@ -1,3 +1,4 @@
+import SubHeading from "@/components/sections/SubHeading";
 import React from "react";
 
 interface FeeWaiver {
@@ -19,11 +20,9 @@ const FeeWaivers: React.FC<FeeWaiversProps> = ({ feeWaivers }) => {
 
   return (
     <div className="py-8">
-      <h2 className="text-3xl font-bold text-[var(--primary)] mb-6">
-        Fee Waivers & Scholarships
-      </h2>
+      <SubHeading align="left" top="Fee Waivers & Scholarships" />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         {feeWaivers.map((waiver) => (
           <div
             key={waiver._id}

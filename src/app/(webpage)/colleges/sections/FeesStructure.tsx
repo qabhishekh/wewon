@@ -25,7 +25,7 @@ export default function FeesStructure({ fees }: FeesStructureProps) {
 
   return (
     <div className="py-12">
-      <SubHeading top="Fee Structure" bottom="Detailed breakdown of fees" />
+      <SubHeading align="left" top="Fee Structure" bottom="Detailed breakdown of fees" />
 
       <div className="mt-8 space-y-6">
         {Object.entries(feesByCategory).map(([category, items]) => (

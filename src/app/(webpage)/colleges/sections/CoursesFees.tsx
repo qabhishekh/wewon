@@ -69,7 +69,7 @@ export default function CoursesFees({
 
   return (
     <div
-      className="w-full px-6 lg:px-12"
+      className="w-full"
       style={{ fontFamily: "Poppins, sans-serif" }}
     >
       <SubHeading top={"Courses & Fees"} align="left" />

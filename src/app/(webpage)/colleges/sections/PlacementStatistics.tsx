@@ -103,7 +103,7 @@ export default function PlacementStatistics({
 
   return (
     <div
-      className="w-full px-6 lg:px-12"
+      className="w-full"
       style={{ fontFamily: "Poppins, sans-serif" }}
     >
       <div className="w-full mx-auto">

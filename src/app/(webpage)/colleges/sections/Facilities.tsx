@@ -36,7 +36,7 @@ export default function Facilities({ facilities }: FacilitiesProps) {
 
   return (
     <div className="py-8">
-      <SubHeading top="Facilities" bottom="Campus facilities and amenities" />
+      <SubHeading align="left" top="Facilities" bottom="Campus facilities and amenities" />
 
       <div className="flex flex-col gap-3 mt-6">
         {Object.entries(facilitiesByType).map(([type, items]) => {
