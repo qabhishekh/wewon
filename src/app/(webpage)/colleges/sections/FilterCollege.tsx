@@ -92,140 +92,569 @@ export default function FilterColleges() {
   }));
 
   return (
-    <div className="">
-      {/* Header Section */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
-        <h1
-          className="text-3xl md:text-4xl font-semibold"
-          style={{ color: "#0D3A66" }}
-        >
-          Filter Colleges
-          {totalColleges > 0 && (
-            <span className="text-lg font-normal ml-2 opacity-60">
-              ({totalColleges} colleges)
-            </span>
-          )}
-        </h1>
+    <div className="flex gap-6">
+      {/* Left Sidebar - Filters (Desktop Only) */}
+      <aside className="hidden lg:block w-72 flex-shrink-0">
+        <div className="sticky top-6">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            <div className="p-5 border-b border-gray-200">
+              <h2
+                className="text-xl font-semibold"
+                style={{ color: "#0D3A66" }}
+              >
+                Filters
+              </h2>
+            </div>
 
-        {/* Search and Filter */}
-        <div className="flex gap-3 w-full md:w-auto">
-          <div className="relative flex-1 md:w-80">
-            <Search
-              className="absolute left-4 top-1/2 -translate-y-1/2"
-              size={20}
-              style={{ color: "rgba(13, 58, 102, 0.4)" }}
-            />
-            <input
-              type="text"
-              placeholder="Search for colleges"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && handleSearch()}
-              className="w-full py-3 pl-12 pr-4 rounded-lg outline-none transition-all"
-              style={{
-                border: "1px solid rgba(13, 58, 102, 0.2)",
-                color: "#0D3A66",
-                backgroundColor: "#ffffff",
-              }}
-            />
+            {/* Scrollable Filter Content */}
+            <div className="max-h-[calc(100vh-180px)] overflow-y-auto">
+              {/* Location Filter */}
+              <div className="p-5 border-b border-gray-200">
+                <h3
+                  className="text-sm font-semibold mb-3"
+                  style={{ color: "#0D3A66" }}
+                >
+                  Location
+                </h3>
+                <input
+                  type="text"
+                  placeholder="Search location..."
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:border-[#0D3A66] mb-3"
+                />
+                <div className="space-y-2 max-h-40 overflow-y-auto">
+                  {[
+                    "Delhi/NCR",
+                    "Mumbai (All)",
+                    "Bangalore",
+                    "Pune",
+                    "Kolkata",
+                    "Hyderabad",
+                    "Chennai",
+                    "Ahmedabad",
+                    "Jaipur",
+                    "Lucknow",
+                    "Chandigarh",
+                    "Indore",
+                    "Bhopal",
+                    "Nagpur",
+                    "Visakhapatnam",
+                    "Maharashtra",
+                    "Uttar Pradesh",
+                    "Karnataka",
+                    "Andhra Pradesh",
+                    "Tamil Nadu",
+                    "West Bengal",
+                    "Rajasthan",
+                    "Gujarat",
+                    "Madhya Pradesh",
+                  ].map((location) => (
+                    <label
+                      key={location}
+                      className="flex items-center cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 cursor-pointer"
+                        style={{ accentColor: "#0D3A66" }}
+                      />
+                      <span
+                        className="ml-2 text-sm"
+                        style={{ color: "#0D3A66" }}
+                      >
+                        {location}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Course Filter */}
+              <div className="p-5 border-b border-gray-200">
+                <h3
+                  className="text-sm font-semibold mb-3"
+                  style={{ color: "#0D3A66" }}
+                >
+                  Course
+                </h3>
+                <div className="space-y-2 max-h-40 overflow-y-auto">
+                  {[
+                    "MBA/PGDM",
+                    "BBA",
+                    "B.Tech/B.E.",
+                    "M.Tech",
+                    "B.Com",
+                    "M.Com",
+                    "BCA",
+                    "MCA",
+                    "BA",
+                    "MA",
+                    "B.Sc",
+                    "M.Sc",
+                    "LLB",
+                    "LLM",
+                    "BDS",
+                    "MBBS",
+                    "MD/MS",
+                    "B.Ed",
+                    "M.Ed",
+                    "B.Pharma",
+                    "M.Pharma",
+                    "Hotel Management",
+                    "Fashion Design",
+                    "Architecture",
+                  ].map((course) => (
+                    <label
+                      key={course}
+                      className="flex items-center cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 cursor-pointer"
+                        style={{ accentColor: "#0D3A66" }}
+                      />
+                      <span
+                        className="ml-2 text-sm"
+                        style={{ color: "#0D3A66" }}
+                      >
+                        {course}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Total Fees Filter */}
+              <div className="p-5 border-b border-gray-200">
+                <h3
+                  className="text-sm font-semibold mb-3"
+                  style={{ color: "#0D3A66" }}
+                >
+                  Total Fees
+                </h3>
+                <div className="space-y-2">
+                  {[
+                    "Free",
+                    "< 1 Lakh",
+                    "1 - 2 Lakh",
+                    "2 - 3 Lakh",
+                    "3 - 5 Lakh",
+                    "> 5 Lakh",
+                  ].map((fee) => (
+                    <label
+                      key={fee}
+                      className="flex items-center cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 cursor-pointer"
+                        style={{ accentColor: "#0D3A66" }}
+                      />
+                      <span
+                        className="ml-2 text-sm"
+                        style={{ color: "#0D3A66" }}
+                      >
+                        {fee}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Rating Filter */}
+              <div className="p-5 border-b border-gray-200">
+                <h3
+                  className="text-sm font-semibold mb-3"
+                  style={{ color: "#0D3A66" }}
+                >
+                  Rating
+                </h3>
+                <div className="space-y-2">
+                  {[
+                    "4.5 & Above",
+                    "4.0 - 4.5",
+                    "3.5 - 4.0",
+                    "3.0 - 3.5",
+                    "Below 3.0",
+                  ].map((rating) => (
+                    <label
+                      key={rating}
+                      className="flex items-center cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 cursor-pointer"
+                        style={{ accentColor: "#0D3A66" }}
+                      />
+                      <span
+                        className="ml-2 text-sm"
+                        style={{ color: "#0D3A66" }}
+                      >
+                        {rating}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Ownership Filter */}
+              <div className="p-5 border-b border-gray-200">
+                <h3
+                  className="text-sm font-semibold mb-3"
+                  style={{ color: "#0D3A66" }}
+                >
+                  Ownership
+                </h3>
+                <div className="space-y-2">
+                  {[
+                    "Government",
+                    "Private",
+                    "Government-Aided",
+                    "Deemed University",
+                    "Central University",
+                    "State University",
+                    "Private University",
+                    "Autonomous",
+                    "Public-Private Partnership",
+                  ].map((ownership) => (
+                    <label
+                      key={ownership}
+                      className="flex items-center cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 cursor-pointer"
+                        style={{ accentColor: "#0D3A66" }}
+                      />
+                      <span
+                        className="ml-2 text-sm"
+                        style={{ color: "#0D3A66" }}
+                      >
+                        {ownership}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Mode of Study Filter */}
+              <div className="p-5 border-b border-gray-200">
+                <h3
+                  className="text-sm font-semibold mb-3"
+                  style={{ color: "#0D3A66" }}
+                >
+                  Mode of Study
+                </h3>
+                <div className="space-y-2">
+                  {[
+                    "Full Time",
+                    "Distance / Correspondence",
+                    "Online",
+                    "Part Time - Classroom",
+                    "Blend",
+                  ].map((mode) => (
+                    <label
+                      key={mode}
+                      className="flex items-center cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 cursor-pointer"
+                        style={{ accentColor: "#0D3A66" }}
+                      />
+                      <span
+                        className="ml-2 text-sm"
+                        style={{ color: "#0D3A66" }}
+                      >
+                        {mode}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Specialization Filter */}
+              <div className="p-5 border-b border-gray-200">
+                <h3
+                  className="text-sm font-semibold mb-3"
+                  style={{ color: "#0D3A66" }}
+                >
+                  Specialization
+                </h3>
+                <input
+                  type="text"
+                  placeholder="Search specialization..."
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:border-[#0D3A66] mb-3"
+                />
+                <div className="space-y-2 max-h-40 overflow-y-auto">
+                  {[
+                    "Finance",
+                    "Marketing",
+                    "Human Resource Management",
+                    "Operations Management",
+                    "Business Analytics",
+                    "Information Technology",
+                    "International Business",
+                    "Entrepreneurship",
+                    "Supply Chain Management",
+                    "Healthcare Management",
+                    "Digital Marketing",
+                    "Data Science",
+                    "Banking & Insurance",
+                    "Rural Management",
+                    "Retail Management",
+                    "Project Management",
+                    "Strategic Management",
+                    "Consulting",
+                    "E-Commerce",
+                    "Real Estate Management",
+                  ].map((spec) => (
+                    <label
+                      key={spec}
+                      className="flex items-center cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 cursor-pointer"
+                        style={{ accentColor: "#0D3A66" }}
+                      />
+                      <span
+                        className="ml-2 text-sm"
+                        style={{ color: "#0D3A66" }}
+                      >
+                        {spec}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Credential Filter */}
+              <div className="p-5 border-b border-gray-200">
+                <h3
+                  className="text-sm font-semibold mb-3"
+                  style={{ color: "#0D3A66" }}
+                >
+                  Credential
+                </h3>
+                <div className="space-y-2">
+                  {[
+                    "Degree",
+                    "Diploma",
+                    "Certificate",
+                    "PG Diploma",
+                    "Advanced Diploma",
+                    "Integrated Program",
+                    "Dual Degree",
+                  ].map((cred) => (
+                    <label
+                      key={cred}
+                      className="flex items-center cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 cursor-pointer"
+                        style={{ accentColor: "#0D3A66" }}
+                      />
+                      <span
+                        className="ml-2 text-sm"
+                        style={{ color: "#0D3A66" }}
+                      >
+                        {cred}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Course Level Filter */}
+              <div className="p-5 border-b border-gray-200">
+                <h3
+                  className="text-sm font-semibold mb-3"
+                  style={{ color: "#0D3A66" }}
+                >
+                  Course Level
+                </h3>
+                <div className="space-y-2">
+                  {["UG", "After 10th", "PG"].map((level) => (
+                    <label
+                      key={level}
+                      className="flex items-center cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 cursor-pointer"
+                        style={{ accentColor: "#0D3A66" }}
+                      />
+                      <span
+                        className="ml-2 text-sm"
+                        style={{ color: "#0D3A66" }}
+                      >
+                        {level}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="p-5 border-t border-gray-200 bg-gray-50 space-y-2">
+              <button
+                onClick={() => handleApplyFilter({})}
+                className="w-full py-2.5 rounded-lg font-medium text-sm transition-all hover:opacity-90"
+                style={{ backgroundColor: "#0D3A66", color: "#ffffff" }}
+              >
+                Apply Filters
+              </button>
+              <button
+                className="w-full py-2.5 rounded-lg font-medium text-sm transition-all hover:bg-gray-100 border border-gray-300"
+                style={{ color: "#0D3A66" }}
+              >
+                Clear All
+              </button>
+            </div>
           </div>
-
-          <button
-            className="p-3 rounded-lg transition-all hover:opacity-90"
-            style={{ backgroundColor: "#0D3A66" }}
-            onClick={handleSearch}
-          >
-            <Search size={20} style={{ color: "#ffffff" }} />
-          </button>
-
-          <button
-            className="p-3 rounded-lg transition-all hover:opacity-90"
-            style={{ backgroundColor: "#0D3A66" }}
-            onClick={() => setIsFilterOpen(true)}
-          >
-            <Filter size={20} style={{ color: "#ffffff" }} />
-          </button>
         </div>
+      </aside>
+
+      {/* Right Content Area */}
+      <div className="flex-1 min-w-0">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
+          <h1
+            className="text-3xl md:text-4xl font-semibold"
+            style={{ color: "#0D3A66" }}
+          >
+            Filter Colleges
+            {totalColleges > 0 && (
+              <span className="text-lg font-normal ml-2 opacity-60">
+                ({totalColleges} colleges)
+              </span>
+            )}
+          </h1>
+
+          {/* Search and Mobile Filter */}
+          <div className="flex gap-3 w-full md:w-auto">
+            <div className="relative flex-1 md:w-80">
+              <Search
+                className="absolute left-4 top-1/2 -translate-y-1/2"
+                size={20}
+                style={{ color: "rgba(13, 58, 102, 0.4)" }}
+              />
+              <input
+                type="text"
+                placeholder="Search for colleges"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+                className="w-full py-3 pl-12 pr-4 rounded-lg outline-none transition-all"
+                style={{
+                  border: "1px solid rgba(13, 58, 102, 0.2)",
+                  color: "#0D3A66",
+                  backgroundColor: "#ffffff",
+                }}
+              />
+            </div>
+
+            <button
+              className="p-3 rounded-lg transition-all hover:opacity-90"
+              style={{ backgroundColor: "#0D3A66" }}
+              onClick={handleSearch}
+            >
+              <Search size={20} style={{ color: "#ffffff" }} />
+            </button>
+
+            {/* Mobile Filter Button */}
+            <button
+              className="lg:hidden p-3 rounded-lg transition-all hover:opacity-90"
+              style={{ backgroundColor: "#0D3A66" }}
+              onClick={() => setIsFilterOpen(true)}
+            >
+              <Filter size={20} style={{ color: "#ffffff" }} />
+            </button>
+          </div>
+        </div>
+
+        {/* Loading State */}
+        {loading && (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div
+                key={index}
+                className="animate-pulse bg-gray-200 rounded-lg h-80"
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && !loading && (
+          <div
+            className="p-6 rounded-lg text-center"
+            style={{
+              backgroundColor: "rgba(239, 68, 68, 0.1)",
+              border: "1px solid rgba(239, 68, 68, 0.3)",
+            }}
+          >
+            <p style={{ color: "#DC2626" }} className="font-medium">
+              {error}
+            </p>
+            <button
+              onClick={() =>
+                dispatch(
+                  fetchColleges({
+                    page: currentPage,
+                    limit: itemsPerPage,
+                    searchQuery: debouncedSearch,
+                  })
+                )
+              }
+              className="mt-4 px-6 py-2 rounded-lg transition-all hover:opacity-90"
+              style={{ backgroundColor: "#0D3A66", color: "#ffffff" }}
+            >
+              Retry
+            </button>
+          </div>
+        )}
+
+        {/* Empty State */}
+        {!loading && !error && mappedColleges.length === 0 && (
+          <div className="text-center py-12">
+            <p style={{ color: "#0D3A66" }} className="text-lg opacity-60">
+              No colleges found. Try adjusting your search.
+            </p>
+          </div>
+        )}
+
+        {/* College Grid */}
+        {!loading && !error && mappedColleges.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {mappedColleges.map((college) => (
+              <CollegeCard
+                college={college}
+                key={college.id}
+                handleKnowMore={handleKnowMore}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Pagination */}
+        {!loading && !error && totalPages > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        )}
       </div>
 
-      {/* Loading State */}
-      {loading && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {Array.from({ length: 8 }).map((_, index) => (
-            <div
-              key={index}
-              className="animate-pulse bg-gray-200 rounded-lg h-80"
-            />
-          ))}
-        </div>
-      )}
-
-      {/* Error State */}
-      {error && !loading && (
-        <div
-          className="p-6 rounded-lg text-center"
-          style={{
-            backgroundColor: "rgba(239, 68, 68, 0.1)",
-            border: "1px solid rgba(239, 68, 68, 0.3)",
-          }}
-        >
-          <p style={{ color: "#DC2626" }} className="font-medium">
-            {error}
-          </p>
-          <button
-            onClick={() =>
-              dispatch(
-                fetchColleges({
-                  page: currentPage,
-                  limit: itemsPerPage,
-                  searchQuery: debouncedSearch,
-                })
-              )
-            }
-            className="mt-4 px-6 py-2 rounded-lg transition-all hover:opacity-90"
-            style={{ backgroundColor: "#0D3A66", color: "#ffffff" }}
-          >
-            Retry
-          </button>
-        </div>
-      )}
-
-      {/* Empty State */}
-      {!loading && !error && mappedColleges.length === 0 && (
-        <div className="text-center py-12">
-          <p style={{ color: "#0D3A66" }} className="text-lg opacity-60">
-            No colleges found. Try adjusting your search.
-          </p>
-        </div>
-      )}
-
-      {/* College Grid */}
-      {!loading && !error && mappedColleges.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {mappedColleges.map((college) => (
-            <CollegeCard
-              college={college}
-              key={college.id}
-              handleKnowMore={handleKnowMore}
-            />
-          ))}
-        </div>
-      )}
-
+      {/* Mobile Filter Modal */}
       <FilterModal
         handleApplyFilter={handleApplyFilter}
         isOpen={isFilterOpen}
         onClose={() => setIsFilterOpen(false)}
       />
-
-      {/* Pagination */}
-      {!loading && !error && totalPages > 0 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
-      )}
     </div>
   );
 }
