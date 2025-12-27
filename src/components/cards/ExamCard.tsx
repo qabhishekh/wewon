@@ -81,7 +81,7 @@ const ExamCard = ({
         {/* Know More Button */}
         <button
           onClick={() => handleKnowMore(exam._id)}
-          className="w-full py-3 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-all hover:opacity-90"
+          className="w-full py-3 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-all hover:opacity-90 cursor-pointer"
           style={{
             backgroundColor: "var(--light-blue)",
             color: "#0D3A66",

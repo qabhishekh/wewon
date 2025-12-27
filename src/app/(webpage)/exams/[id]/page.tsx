@@ -46,6 +46,23 @@ export default function ExamDetailPage() {
     }
   }, [id, dispatch]);
 
+  // Set initial active tab to first available tab
+  useEffect(() => {
+    if (exam?.sections && exam.sections.length > 0) {
+      const firstSection = exam.sections.find((section) => {
+        const title = section.sectionTitle.toLowerCase();
+        const isActualOverview =
+          title.includes("overview") || title.includes("about");
+        return isActualOverview || !title.includes("overview");
+      });
+
+      if (firstSection) {
+        const firstTab = getSectionTab(firstSection.sectionTitle);
+        setActiveTab(firstTab);
+      }
+    }
+  }, [exam?.sections]);
+
   // Map section titles to tabs (case-insensitive matching)
   const getSectionTab = (sectionTitle: string): string => {
     const title = sectionTitle.toLowerCase();
@@ -69,23 +86,20 @@ export default function ExamDetailPage() {
   const handleTabChange = (tabName: string) => {
     setActiveTab(tabName);
 
-    // Find the first section that matches this tab
-    const matchingSection = exam?.sections?.find(
-      (section) => getSectionTab(section.sectionTitle) === tabName
-    );
+    // Find the element for this tab
+    const element = sectionRefs.current[tabName];
 
-    if (matchingSection) {
-      const sectionId = getSectionTab(matchingSection.sectionTitle);
-      const element = sectionRefs.current[sectionId];
+    if (element) {
+      // Use scrollIntoView with instant behavior
+      element.scrollIntoView({
+        behavior: "auto",
+        block: "start",
+        inline: "nearest",
+      });
 
-      if (element) {
-        // Scroll to section with offset for fixed header
-        const yOffset = -100; // Adjust this value based on your header height
-        const y =
-          element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-
-        window.scrollTo({ top: y, behavior: "smooth" });
-      }
+      // Add additional offset for fixed header
+      const yOffset = 120; // Offset for fixed header
+      window.scrollBy({ top: -yOffset, behavior: "auto" });
     }
   };
 
@@ -158,26 +172,188 @@ export default function ExamDetailPage() {
     return acc;
   }, {} as { [key: string]: typeof exam.sections });
 
+  // Filter tabs to only show those that have sections
+  const availableTabs = tabs.filter((tab) => {
+    return (
+      groupedSections && groupedSections[tab] && groupedSections[tab].length > 0
+    );
+  });
+
   return (
     <div className="bg-gray-50 min-h-screen">
+      {/* Custom Styles for Accordion */}
+      <style jsx global>{`
+        .prose details {
+          background: #ffffff;
+          border: 1px solid #e5e7eb;
+          border-radius: 8px;
+          padding: 0;
+          margin: 1rem 0;
+          overflow: hidden;
+        }
+
+        .prose summary {
+          cursor: pointer;
+          padding: 1rem 1.25rem;
+          font-weight: 600;
+          font-size: 1rem;
+          color: #1f2937;
+          list-style: none;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          user-select: none;
+        }
+
+        .prose summary::-webkit-details-marker {
+          display: none;
+        }
+
+        .prose summary::after {
+          content: "+";
+          font-size: 1.25rem;
+          font-weight: 600;
+          color: #6b7280;
+          flex-shrink: 0;
+          transition: transform 0.3s ease;
+        }
+
+        .prose details[open] summary::after {
+          content: "−";
+          transform: rotate(180deg);
+        }
+
+        .prose details[open] summary {
+          border-bottom: 1px solid #e5e7eb;
+        }
+
+        .prose details > *:not(summary) {
+          display: grid;
+          grid-template-rows: 0fr;
+          transition: grid-template-rows 0.3s ease;
+        }
+
+        .prose details[open] > *:not(summary) {
+          grid-template-rows: 1fr;
+        }
+
+        .prose details > *:not(summary) > * {
+          overflow: hidden;
+        }
+
+        .prose details p {
+          padding: 1rem 1.25rem;
+          margin: 0;
+          color: #4b5563;
+          line-height: 1.6;
+        }
+
+        /* Ordered Lists */
+        .prose ol {
+          list-style-type: decimal;
+          padding-left: 2rem;
+          margin: 1rem 0;
+          color: #374151;
+        }
+
+        .prose ol li {
+          margin: 0.5rem 0;
+          padding-left: 0.5rem;
+        }
+
+        .prose ol li p {
+          margin: 0;
+          display: inline;
+        }
+
+        /* Unordered Lists */
+        .prose ul {
+          list-style-type: disc;
+          padding-left: 2rem;
+          margin: 1rem 0;
+          color: #374151;
+        }
+
+        .prose ul li {
+          margin: 0.5rem 0;
+          padding-left: 0.5rem;
+        }
+
+        .prose ul li p {
+          margin: 0;
+          display: inline;
+        }
+
+        /* Tables */
+        .prose table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 1.5rem 0;
+          background: #ffffff;
+          border: 1px solid #e5e7eb;
+          border-radius: 8px;
+          overflow: hidden;
+        }
+
+        .prose table th {
+          background: #f9fafb;
+          padding: 0.75rem 1rem;
+          text-align: left;
+          font-weight: 600;
+          color: #111827;
+          border-bottom: 2px solid #e5e7eb;
+        }
+
+        .prose table td {
+          padding: 0.75rem 1rem;
+          border-bottom: 1px solid #e5e7eb;
+          color: #374151;
+        }
+
+        .prose table tr:last-child td {
+          border-bottom: none;
+        }
+
+        .prose table tr:hover {
+          background: #f9fafb;
+        }
+
+        .prose table th p,
+        .prose table td p {
+          margin: 0;
+        }
+
+        /* Paragraphs */
+        .prose p {
+          margin: 0.75rem 0;
+          color: #374151;
+          line-height: 1.6;
+        }
+
+        /* Strong/Bold */
+        .prose strong {
+          font-weight: 600;
+          color: #111827;
+        }
+      `}</style>
+
       {/* Hero Section */}
       <ExamHero
         logoUrl={exam.logoUrl}
         examName={exam.examName}
-        tabs={tabs}
+        tabs={availableTabs}
         activeTab={activeTab}
         onTabChange={handleTabChange}
       />
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
-
         {/* Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Content Area */}
           <div className="lg:col-span-2 space-y-6">
             {/* Render all sections grouped by tabs */}
-            {tabs.map((tabName) => {
+            {availableTabs.map((tabName) => {
               const sectionsForTab = groupedSections?.[tabName] || [];
 
               if (sectionsForTab.length === 0) return null;
@@ -191,10 +367,7 @@ export default function ExamDetailPage() {
                   id={`section-${tabName.toLowerCase()}`}
                 >
                   {sectionsForTab.map((section, index) => (
-                    <div
-                      key={index}
-                      className="rounded-xl mb-6"
-                    >
+                    <div key={index} className="rounded-xl mb-6">
                       <h2 className="text-2xl font-bold text-[#0D3A66] py-4 border-b">
                         {section.sectionTitle}
                       </h2>

@@ -30,10 +30,10 @@ const CounselingCard = ({
 
   return (
     <div
-      className={`w-full max-w-sm mx-auto overflow-hidden rounded-xl bg-white shadow-lg font-sans ${className}`}
+      className={`w-full max-w-sm mx-auto overflow-hidden rounded-xl bg-white shadow-lg font-sans h-full flex flex-col ${className}`}
     >
       {/* Image Container with fixed aspect ratio */}
-      <div className="relative w-full h-48 sm:h-52 md:h-48 lg:h-52 overflow-hidden">
+      <div className="relative w-full h-48 sm:h-52 md:h-48 lg:h-52 overflow-hidden flex-shrink-0">
         <img
           className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
           src={imageUrl}
@@ -49,14 +49,16 @@ const CounselingCard = ({
       </div>
 
       {/* Content Section */}
-      <div className="p-4 sm:p-5 flex flex-col">
+      <div className="p-4 sm:p-5 flex flex-col flex-grow">
         {/* Title */}
-        <h2 className="text-lg sm:text-xl font-bold text-[var(--primary)] line-clamp-1 leading-tight">
+        <h2 className="text-lg sm:text-xl font-bold text-[var(--primary)] line-clamp-2 leading-tight min-h-[3.5rem]">
           {title}
         </h2>
 
         {/* Description */}
-        <p className="mt-2 text-sm text-gray-600 line-clamp-3">{description}</p>
+        <p className="mt-2 text-sm text-gray-600 line-clamp-3 flex-grow">
+          {description}
+        </p>
 
         {/* Price Section */}
         <div className="mt-4 flex items-baseline gap-2">

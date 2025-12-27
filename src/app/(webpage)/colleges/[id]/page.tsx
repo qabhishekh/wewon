@@ -1,7 +1,7 @@
 "use client";
 import MainHeading from "@/components/sections/MainHeading";
 import { useParams } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CollegeHero from "../sections/CollegeHero";
 import CoursesFees from "../sections/CoursesFees";
 import GoogleAds from "@/components/sections/GoogleAds";
@@ -12,6 +12,9 @@ import Rankings from "../sections/Rankings";
 import Facilities from "../sections/Facilities";
 import FeesStructure from "../sections/FeesStructure";
 import Connectivity from "../sections/Connectivity";
+import AdmissionRules from "../sections/AdmissionRules";
+import FeeWaivers from "../sections/FeeWaivers";
+import SeatMatrix from "../sections/SeatMatrix";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   fetchCollegeById,
@@ -35,6 +38,26 @@ export default function CollegePage() {
   const collegeDetails = useAppSelector(selectCollegeDetails);
   const loading = useAppSelector(selectCollegeDetailsLoading);
   const error = useAppSelector(selectCollegeDetailsError);
+
+  // Refs for scroll navigation
+  const sectionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const [activeTab, setActiveTab] = useState("Admission Rules");
+
+  // Handle tab click - scroll to section
+  const handleTabChange = (tabName: string) => {
+    setActiveTab(tabName);
+    const element = sectionRefs.current[tabName];
+
+    if (element) {
+      element.scrollIntoView({
+        behavior: "auto",
+        block: "start",
+        inline: "nearest",
+      });
+      const yOffset = 120;
+      window.scrollBy({ top: -yOffset, behavior: "auto" });
+    }
+  };
 
   // Fetch college data on mount
   useEffect(() => {
@@ -277,16 +300,17 @@ export default function CollegePage() {
           logo="https://images.unsplash.com/photo-1738464024478-2a60ac914513?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y29sbGVnZSUyMGxvZ298ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=900"
           tags={[college.Type, `Estd. ${college.Est_Year}`]}
           tabs={[
-            "Info & Courses",
-            "Seats",
-            "Cut-Offs",
-            "Fee Structure",
-            "Placement",
-            "How to Reach",
-            "Ranking",
-            "Mode of Admission",
+            "Admission Rules",
+            "Connectivity",
+            "Courses",
             "Facilities",
+            "Fees",
+            "Fee Waivers",
+            "Placements",
+            "Rankings",
+            "Seat Matrix",
           ]}
+          onTabChange={handleTabChange}
           buttons={[
             {
               label: "Save",
@@ -302,66 +326,116 @@ export default function CollegePage() {
         />
       </div>
 
-      <BentoGridT2
-        rightHead={{
-          title: "Contact Information",
-          description: [
-            college.Email ? `Email: ${college.Email}` : "",
-            college.Director_Contact
-              ? `Director: ${college.Director_Contact}`
-              : "",
-            college.Registrar_Contact
-              ? `Registrar: ${college.Registrar_Contact}`
-              : "",
-            college.Website ? `Website: ${college.Website}` : "",
-          ].filter(Boolean),
-        }}
-        bottomHead={{
-          title: "Address",
-          description: [college.Address],
-        }}
-      />
-
       <div className="container mx-auto">
-        {/* Courses & Fees */}
-        {tabsData.length > 0 && (
-          <CoursesFees
-            tabsData={tabsData}
-            onCompare={onCompare}
-            onDownloadBrochure={onDownloadBrochure}
-            onDownloadMainBrochure={onDownloadMainBrochure}
-          />
-        )}
+        {/* 1. Admission Rules */}
+        {collegeDetails?.admissionRules &&
+          collegeDetails.admissionRules.length > 0 && (
+            <div
+              ref={(el) => {
+                sectionRefs.current["Admission Rules"] = el;
+              }}
+            >
+              <AdmissionRules admissionRules={collegeDetails.admissionRules} />
+            </div>
+          )}
 
-        {/* Placement Statistics */}
-        {yearsData.length > 0 && (
-          <PlacementStatistics
-            yearsData={yearsData}
-            eligibleColor="var(--primary)"
-            placedColor="#FF7A3D"
-          />
-        )}
-
-        {/* Rankings */}
-        {collegeDetails?.rankings && collegeDetails.rankings.length > 0 && (
-          <Rankings rankings={collegeDetails.rankings} />
-        )}
-
-        {/* Facilities */}
-        {collegeDetails?.facilities && collegeDetails.facilities.length > 0 && (
-          <Facilities facilities={collegeDetails.facilities} />
-        )}
-
-        {/* Fee Structure */}
-        {collegeDetails?.fees && collegeDetails.fees.length > 0 && (
-          <FeesStructure fees={collegeDetails.fees} />
-        )}
-
-        {/* Connectivity */}
+        {/* 2. Connectivity */}
         {collegeDetails?.connectivity &&
           collegeDetails.connectivity.length > 0 && (
-            <Connectivity connectivity={collegeDetails.connectivity} />
+            <div
+              ref={(el) => {
+                sectionRefs.current["Connectivity"] = el;
+              }}
+            >
+              <Connectivity connectivity={collegeDetails.connectivity} />
+            </div>
           )}
+
+        {/* 3. Courses */}
+        {tabsData.length > 0 && (
+          <div
+            ref={(el) => {
+              sectionRefs.current["Courses"] = el;
+            }}
+          >
+            <CoursesFees
+              tabsData={tabsData}
+              onCompare={onCompare}
+              onDownloadBrochure={onDownloadBrochure}
+              onDownloadMainBrochure={onDownloadMainBrochure}
+            />
+          </div>
+        )}
+
+        {/* 4. Facilities */}
+        {collegeDetails?.facilities && collegeDetails.facilities.length > 0 && (
+          <div
+            ref={(el) => {
+              sectionRefs.current["Facilities"] = el;
+            }}
+          >
+            <Facilities facilities={collegeDetails.facilities} />
+          </div>
+        )}
+
+        {/* 5. Fees */}
+        {collegeDetails?.fees && collegeDetails.fees.length > 0 && (
+          <div
+            ref={(el) => {
+              sectionRefs.current["Fees"] = el;
+            }}
+          >
+            <FeesStructure fees={collegeDetails.fees} />
+          </div>
+        )}
+
+        {/* 6. Fee Waivers */}
+        {collegeDetails?.feeWaivers && collegeDetails.feeWaivers.length > 0 && (
+          <div
+            ref={(el) => {
+              sectionRefs.current["Fee Waivers"] = el;
+            }}
+          >
+            <FeeWaivers feeWaivers={collegeDetails.feeWaivers} />
+          </div>
+        )}
+
+        {/* 7. Placements */}
+        {yearsData.length > 0 && (
+          <div
+            ref={(el) => {
+              sectionRefs.current["Placements"] = el;
+            }}
+          >
+            <PlacementStatistics
+              yearsData={yearsData}
+              eligibleColor="var(--primary)"
+              placedColor="#FF7A3D"
+            />
+          </div>
+        )}
+
+        {/* 8. Rankings */}
+        {collegeDetails?.rankings && collegeDetails.rankings.length > 0 && (
+          <div
+            ref={(el) => {
+              sectionRefs.current["Rankings"] = el;
+            }}
+          >
+            <Rankings rankings={collegeDetails.rankings} />
+          </div>
+        )}
+
+        {/* 9. Seat Matrix */}
+        {collegeDetails?.seatMatrix && collegeDetails.seatMatrix.length > 0 && (
+          <div
+            ref={(el) => {
+              sectionRefs.current["Seat Matrix"] = el;
+            }}
+          >
+            <SeatMatrix seatMatrix={collegeDetails.seatMatrix} />
+          </div>
+        )}
 
         {/* Cut-Offs */}
         <CutOffsFilter />

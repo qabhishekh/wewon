@@ -10,6 +10,7 @@ interface CollegeHeroProps {
   conductedBy?: string;
   tags?: string[];
   tabs?: string[];
+  onTabChange?: (tabName: string) => void;
   buttons?: {
     label: string;
     icon: string;
@@ -27,6 +28,7 @@ export default function CollegeHero({
   conductedBy,
   buttons,
   tabs,
+  onTabChange,
 }: CollegeHeroProps) {
   return (
     <div
@@ -144,7 +146,8 @@ export default function CollegeHero({
                 {tabs.map((tab, index) => (
                   <button
                     key={index}
-                    className="text-sm md:text-base font-medium text-gray-600 hover:text-primary whitespace-nowrap border-b-2 border-transparent hover:border-primary transition-colors"
+                    onClick={() => onTabChange?.(tab)}
+                    className="text-sm md:text-base font-medium text-gray-600 hover:text-primary whitespace-nowrap border-b-2 border-transparent hover:border-primary transition-colors pb-2"
                   >
                     {tab}
                   </button>
