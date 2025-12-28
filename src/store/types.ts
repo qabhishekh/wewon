@@ -440,3 +440,34 @@ export interface ExamState {
   selectedExamLoading: boolean;
   selectedExamError: string | null;
 }
+
+// Predictor Types
+export enum PredictorCategory {
+  JEE = "JEE",
+  STATE = "State Level",
+  NEET = "NEET",
+  OTHER = "Other",
+}
+
+export interface Predictor {
+  id: string;
+  name: string;
+  shortName: string;
+  description: string;
+  route: string;
+  price: number;
+  discountPrice?: number;
+  icon: string;
+  category: PredictorCategory;
+  isActive: boolean;
+  features: string[];
+}
+
+export interface PredictorPurchase {
+  predictorId: string;
+  orderId: string;
+  purchaseDate: string;
+  validUntil: string;
+  usageCount: number;
+  usageLimit: number;
+}
