@@ -1,5 +1,8 @@
-export interface Predictor {
-  _id?: string; // MongoDB ID (optional for frontend-only data)
+import { PredictorCategory } from "@/store/types";
+
+// This interface matches the backend CounsellingProduct schema exactly
+export interface CounsellingProduct {
+  _id?: string;
   title: string;
   slug: string;
   description: string;
@@ -7,11 +10,6 @@ export interface Predictor {
   price: number;
   discountPrice?: number;
   validityInDays: number;
-  route: string; // Frontend route (derived from slug)
-  icon: string; // Frontend display icon
-  category: PredictorCategory; // Frontend categorization
-  isActive: boolean;
-  purchased: boolean; // Frontend state - whether user has purchased
   features: {
     hasMentorship: boolean;
     choiceFilling: {
@@ -24,31 +22,49 @@ export interface Predictor {
     };
     hasCourseContent: boolean;
   };
+  content?: {
+    landingPageHighlights?: {
+      introVideo?: { title: string; url?: string };
+      coursePdf?: { title: string; url?: string };
+      fullDescriptionVideo?: { title: string; url?: string };
+    };
+    curriculum?: Array<{
+      sectionTitle: string;
+      resources: Array<{
+        title: string;
+        type: "video" | "pdf" | "link";
+        url: string;
+        duration?: number;
+      }>;
+    }>;
+  };
+  likes?: {
+    count: number;
+    likedBy: string[];
+  };
+  assignedCounsellors?: string[];
+  totalMaterialCount: number;
+  isActive: boolean;
+}
+
+// Extended interface for frontend-specific fields
+export interface PredictorProduct extends CounsellingProduct {
+  icon: string; // Frontend display icon
+  category: PredictorCategory; // Frontend categorization
+  purchased: boolean; // Frontend state - whether user has purchased
   displayFeatures: string[]; // Frontend display features list
-  totalMaterialCount?: number;
 }
 
-export enum PredictorCategory {
-  JEE = "JEE",
-  STATE = "State Level",
-  NEET = "NEET",
-  OTHER = "Other",
-}
-
-export const PREDICTORS: Predictor[] = [
+export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
   {
+    _id: "69521fbfae39369012122fc7",
     title: "JEE Mains College Predictor",
     slug: "jee-mains-predictor",
     description:
       "Predict your college based on JEE Mains rank and preferences. Get accurate predictions for NITs, IIITs, and GFTIs.",
-    route: "/mainpredictor",
     price: 499,
     discountPrice: 299,
     validityInDays: 365,
-    icon: "🎓",
-    category: PredictorCategory.JEE,
-    isActive: true,
-    purchased: false,
     features: {
       hasMentorship: false,
       choiceFilling: {
@@ -61,27 +77,27 @@ export const PREDICTORS: Predictor[] = [
       },
       hasCourseContent: false,
     },
+    totalMaterialCount: 0,
+    isActive: true,
+    // Frontend-specific fields
+    icon: "🎓",
+    category: PredictorCategory.JEE,
+    purchased: false,
     displayFeatures: [
       "NIT, IIIT & GFTI Predictions",
       "Branch-wise Analysis",
       "Previous Year Cutoffs",
       "Personalized Recommendations",
     ],
-    totalMaterialCount: 0,
   },
   {
     title: "JEE Advanced College Predictor",
     slug: "jee-advanced-predictor",
     description:
       "Predict your IIT based on JEE Advanced rank. Get detailed insights into IIT admissions and branch predictions.",
-    route: "/iitpredictor",
     price: 599,
     discountPrice: 399,
     validityInDays: 365,
-    icon: "🏆",
-    category: PredictorCategory.JEE,
-    isActive: true,
-    purchased: true,
     features: {
       hasMentorship: false,
       choiceFilling: {
@@ -94,27 +110,27 @@ export const PREDICTORS: Predictor[] = [
       },
       hasCourseContent: false,
     },
+    totalMaterialCount: 0,
+    isActive: true,
+    // Frontend-specific fields
+    icon: "🏆",
+    category: PredictorCategory.JEE,
+    purchased: true,
     displayFeatures: [
       "All IIT Predictions",
       "Branch-wise Cutoffs",
       "Seat Availability",
       "Opening & Closing Ranks",
     ],
-    totalMaterialCount: 0,
   },
   {
     title: "UPTAC College Predictor",
     slug: "uptac-predictor",
     description:
       "Predict colleges for UPTAC counseling. Get predictions for engineering colleges in Uttar Pradesh based on your rank.",
-    route: "/uptacpredictor",
     price: 399,
     discountPrice: 249,
     validityInDays: 365,
-    icon: "🎯",
-    category: PredictorCategory.STATE,
-    isActive: true,
-    purchased: true,
     features: {
       hasMentorship: false,
       choiceFilling: {
@@ -127,13 +143,18 @@ export const PREDICTORS: Predictor[] = [
       },
       hasCourseContent: false,
     },
+    totalMaterialCount: 0,
+    isActive: true,
+    // Frontend-specific fields
+    icon: "🎯",
+    category: PredictorCategory.STATE,
+    purchased: true,
     displayFeatures: [
       "UP Engineering Colleges",
       "Round-wise Predictions",
       "Category-wise Analysis",
       "TFW Seat Predictions",
     ],
-    totalMaterialCount: 0,
   },
   // Placeholder for future predictors (15 more to be added)
   // Examples:
@@ -155,22 +176,28 @@ export const PREDICTORS: Predictor[] = [
 ];
 
 // Helper functions
-export const getActivePredictors = (): Predictor[] => {
-  return PREDICTORS.filter((predictor) => predictor.isActive);
+export const getActivePredictors = (): PredictorProduct[] => {
+  return PREDICTOR_PRODUCTS.filter((predictor) => predictor.isActive);
 };
 
 export const getPredictorsByCategory = (
   category: PredictorCategory
-): Predictor[] => {
-  return PREDICTORS.filter(
+): PredictorProduct[] => {
+  return PREDICTOR_PRODUCTS.filter(
     (predictor) => predictor.category === category && predictor.isActive
   );
 };
 
-export const getPredictorBySlug = (slug: string): Predictor | undefined => {
-  return PREDICTORS.find((predictor) => predictor.slug === slug);
+export const getPredictorBySlug = (
+  slug: string
+): PredictorProduct | undefined => {
+  return PREDICTOR_PRODUCTS.find((predictor) => predictor.slug === slug);
 };
 
-export const getPredictorByRoute = (route: string): Predictor | undefined => {
-  return PREDICTORS.find((predictor) => predictor.route === route);
+export const getPredictorByRoute = (
+  route: string
+): PredictorProduct | undefined => {
+  // Route is derived from slug: /predictor/{slug}
+  const slug = route.replace("/", "");
+  return PREDICTOR_PRODUCTS.find((predictor) => predictor.slug === slug);
 };

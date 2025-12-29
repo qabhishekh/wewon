@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import PredictorCard from "./PredictorCard";
-import { getActivePredictors } from "@/data/predictors";
+import { getActivePredictors } from "@/data/counsellingProducts";
 import { PredictorCategory } from "@/store/types";
 
 const PredictorsGrid: React.FC = () => {
@@ -49,7 +49,7 @@ const PredictorsGrid: React.FC = () => {
       {filteredPredictors.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredPredictors.map((predictor) => (
-            <PredictorCard key={predictor.id} predictor={predictor} />
+            <PredictorCard key={predictor.slug} predictor={predictor} />
           ))}
         </div>
       ) : (

@@ -449,19 +449,8 @@ export enum PredictorCategory {
   OTHER = "Other",
 }
 
-export interface Predictor {
-  id: string;
-  name: string;
-  shortName: string;
-  description: string;
-  route: string;
-  price: number;
-  discountPrice?: number;
-  icon: string;
-  category: PredictorCategory;
-  isActive: boolean;
-  features: string[];
-}
+// Import PredictorProduct from counsellingProducts.ts
+// export type { PredictorProduct } from "@/data/counsellingProducts";
 
 export interface PredictorPurchase {
   predictorId: string;
