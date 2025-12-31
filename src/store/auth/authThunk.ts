@@ -43,6 +43,10 @@ export const fetchUserProfile = createAsyncThunk<
 
     return res.data.profile;
   } catch (err: any) {
+    // Handle 401 - Invalid or expired token
+    if (err.response?.status === 401) {
+      localStorage.removeItem("token");
+    }
     return rejectWithValue(
       err.response?.data?.message || "Failed to fetch user"
     );

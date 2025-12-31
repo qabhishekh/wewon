@@ -2,18 +2,36 @@
 import AuthForm from "@/components/auth/AuthForm";
 import Loader from "@/components/loader/Loader";
 import { setLoadingFalse } from "@/store/auth/authSlice";
+import { fetchUserProfile } from "@/store/auth/authThunk";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function HomePage() {
   const { loading, isAuthenticated } = useAppSelector((state) => state.auth);
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const router = useRouter();
+  const [initialized, setInitialized] = useState(false);
 
+  // Initialize auth state on mount
   useEffect(() => {
-    dispatch(setLoadingFalse())
-  }, [loading, isAuthenticated, router]);
+    const token = localStorage.getItem("token");
+    if (token) {
+      // If token exists, try to fetch user profile
+      dispatch(fetchUserProfile());
+    } else {
+      // No token, set loading to false
+      dispatch(setLoadingFalse());
+    }
+    setInitialized(true);
+  }, [dispatch]);
+
+  // Redirect if authenticated
+  useEffect(() => {
+    if (isAuthenticated && initialized) {
+      router.push("/");
+    }
+  }, [isAuthenticated, initialized, router]);
 
   if (loading) {
     return <Loader manualLoading={true} />;
