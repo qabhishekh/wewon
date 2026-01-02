@@ -16,3 +16,17 @@ export const getUPTACBranches = () => {
 export const predictUPTAC = (data: any) => {
   return apiClient.post("/api/uptac/predict", data);
 };
+
+// MMMUT Predictor APIs
+export const getMMMUTBranches = () => {
+  return apiClient.get("/api/mmmut/branches");
+};
+
+export const predictMMMUT = (data: any) => {
+  return apiClient.post("/api/mmmut/predict", data);
+};
+
+// HBTU Predictor API
+export const predictHBTU = (data: any) => {
+  return apiClient.post("/api/hbtu/predict", data);
+};

@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 
-export default function PredictionResults({ results, userGender }) {
+export default function PredictionResults({
+  results,
+  userGender,
+  hideSeatType = false,
+  hideQuota = false,
+  hideOpeningRank = false,
+}) {
   const [activeTab, setActiveTab] = useState("JoSAA");
   const [activeProbabilityTab, setActiveProbabilityTab] = useState("High");
   const [genderFilter, setGenderFilter] = useState("All");
@@ -221,15 +227,21 @@ export default function PredictionResults({ results, userGender }) {
                       <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
                         Gender
                       </th>
-                      <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
-                        Quota
-                      </th>
-                      <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
-                        Seat Type
-                      </th>
-                      <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
-                        Opening Rank
-                      </th>
+                      {!hideQuota && (
+                        <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
+                          Quota
+                        </th>
+                      )}
+                      {!hideSeatType && (
+                        <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
+                          Seat Type
+                        </th>
+                      )}
+                      {!hideOpeningRank && (
+                        <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
+                          Opening Rank
+                        </th>
+                      )}
                       <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
                         Closing Rank
                       </th>
@@ -265,20 +277,24 @@ export default function PredictionResults({ results, userGender }) {
                                 : "bg-blue-100 text-blue-700"
                             }`}
                           >
-                            {item.gender.toLowerCase().includes("female")
-                              ? "Female"
-                              : "Neutral"}
+                            {item.gender}
                           </span>
                         </td>
-                        <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)] whitespace-nowrap">
-                          {item.quota}
-                        </td>
-                        <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)] whitespace-nowrap">
-                          {item.seatType}
-                        </td>
-                        <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)] whitespace-nowrap">
-                          {item.openingRank}
-                        </td>
+                        {!hideQuota && (
+                          <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)] whitespace-nowrap">
+                            {item.quota}
+                          </td>
+                        )}
+                        {!hideSeatType && (
+                          <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)] whitespace-nowrap">
+                            {item.seatType}
+                          </td>
+                        )}
+                        {!hideOpeningRank && (
+                          <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)] whitespace-nowrap">
+                            {item.openingRank}
+                          </td>
+                        )}
                         <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)] whitespace-nowrap">
                           {item.closingRank}
                         </td>

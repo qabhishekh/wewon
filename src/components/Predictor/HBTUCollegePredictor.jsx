@@ -2,22 +2,21 @@
 
 import { useState, useRef, useEffect } from "react";
 import GoogleAds from "../sections/GoogleAds";
-import { predict } from "@/network/predictor";
-import options from "./data/options.json";
+import { predictHBTU } from "@/network/predictor";
+import hbtuOptions from "./data/hbtuOptions.json";
 import PredictionResults from "./PredictionResults";
 import { toast } from "sonner";
 
-export default function CollegePredictor() {
+export default function HBTUCollegePredictor() {
   const [formData, setFormData] = useState({
+    counselingType: "B.TECH",
+    phase: "",
+    round: "",
     crlRank: "",
-    categoryRank: "",
-    category: "OPEN", // Default to OPEN (General)
-    gender: "Male",
+    category: "OPEN",
+    subCategory: "NOT APPLICABLE",
     homeState: "",
-    counselingType: "JoSAA",
-    roundNumber: 1,
-    instituteType: "",
-    branchGroup: "",
+    gender: "Male",
   });
 
   const [results, setResults] = useState(null);
@@ -34,31 +33,16 @@ export default function CollegePredictor() {
     }
   }, [results]);
 
+  // Get available sub-categories for selected category
+  const getSubCategories = () => {
+    return hbtuOptions.subCategories[formData.category] || [];
+  };
+
   const handleChange = (e) => {
     const { id, value, type } = e.target;
 
-    // Validate categoryRank to accept only numbers
-    if (id === "categoryRank") {
-      // Allow empty value (for clearing the field)
-      if (value === "") {
-        setFormData((prev) => ({
-          ...prev,
-          [id]: value,
-        }));
-        return;
-      }
-
-      // Validate format: must be a number
-      const categoryRankPattern = /^\d+$/;
-      if (!categoryRankPattern.test(value)) {
-        // Don't update state if format is invalid
-        return;
-      }
-    }
-
     // Validate number inputs to prevent negative values
     if (type === "number") {
-      // If value is empty, allow it (for clearing the field)
       if (value === "") {
         setFormData((prev) => ({
           ...prev,
@@ -67,20 +51,18 @@ export default function CollegePredictor() {
         return;
       }
 
-      // Convert to number and check if it's negative or zero
       const numValue = Number(value);
       if (numValue < 1) {
-        // Don't update state if value is negative or zero
         return;
       }
     }
 
-    // Reset round number to 1 when counseling type changes
-    if (id === "counselingType") {
+    // Reset sub-category when category changes
+    if (id === "category") {
       setFormData((prev) => ({
         ...prev,
         [id]: value,
-        roundNumber: 1, // Reset to round 1 when counseling type changes
+        subCategory: "NOT APPLICABLE",
       }));
       return;
     }
@@ -103,45 +85,58 @@ export default function CollegePredictor() {
     setLoading(true);
     setResults(null);
 
-    // Validate that category rank is provided when category is not OPEN
-    if (formData.category !== "OPEN" && !formData.categoryRank) {
-      toast.error("Please enter Category Rank for the selected category");
+    // Validate required fields
+    if (!formData.crlRank) {
+      toast.error("Please enter CRL Rank");
       setLoading(false);
       return;
     }
 
-    // Validate categoryRank format if provided
-    if (formData.categoryRank) {
-      const categoryRankPattern = /^\d+$/;
-      if (!categoryRankPattern.test(formData.categoryRank)) {
-        toast.error("Category Rank must be a number");
-        setLoading(false);
-        return;
-      }
+    if (!formData.phase) {
+      toast.error("Please select Phase");
+      setLoading(false);
+      return;
+    }
+
+    if (!formData.round) {
+      toast.error("Please select Round Number");
+      setLoading(false);
+      return;
+    }
+
+    if (!formData.homeState) {
+      toast.error("Please select Home State");
+      setLoading(false);
+      return;
     }
 
     try {
       const payload = {
-        crlRank: Number(formData.crlRank),
-        categoryRank: formData.categoryRank
-          ? Number(formData.categoryRank)
-          : undefined,
-        category: formData.category,
-        gender: formData.gender,
-        homeState: formData.homeState,
         counselingType: formData.counselingType,
-        roundNumber: Number(formData.roundNumber),
-        instituteType: formData.instituteType || undefined,
-        branchGroup: formData.branchGroup || undefined,
+        phase: Number(formData.phase),
+        round: Number(formData.round),
+        crlRank: Number(formData.crlRank),
+        category: formData.category,
+        subCategory: formData.subCategory,
+        homeState: formData.homeState,
+        gender: formData.gender,
       };
 
-      console.log("Sending payload:", payload);
-      const response = await predict(payload);
-      console.log("Prediction response:", response.data);
-      setResults(response.data);
-      // alert("Prediction successful! Check console for results.");
+      console.log("Sending HBTU payload:", payload);
+      const response = await predictHBTU(payload);
+      console.log("HBTU prediction response:", response.data);
+
+      // Transform HBTU response to match PredictionResults expected format
+      // HBTU API returns { predictions: [...] }
+      // PredictionResults expects { homestatePredictions: [] }
+      const transformedResults = {
+        homestatePredictions: response.data.predictions || [],
+      };
+
+      console.log("Transformed results:", transformedResults);
+      setResults(transformedResults);
     } catch (error) {
-      console.error("Prediction error:", error);
+      console.error("HBTU prediction error:", error);
       toast.error("Failed to get prediction. Please try again.");
     } finally {
       setLoading(false);
@@ -159,15 +154,15 @@ export default function CollegePredictor() {
               Enter your exam details
             </h3>
             <p className="text-xs sm:text-sm text-[var(--muted-text)] mt-1">
-              Select your stream, exam, and rank
+              Select your rank, category, and preferences
             </p>
           </div>
           <div className="p-3 sm:p-6 bg-[var(--background)] border border-[var(--border)] rounded-lg sm:rounded-xl shadow-sm">
             <h3 className="text-base sm:text-xl font-semibold text-[var(--foreground)]">
-              Add your preferences
+              Choose your program
             </h3>
             <p className="text-xs sm:text-sm text-[var(--muted-text)] mt-1">
-              Category, gender, and home state
+              B.TECH or BS-MS program selection
             </p>
           </div>
           <div className="p-3 sm:p-6 bg-[var(--background)] border border-[var(--border)] rounded-lg sm:rounded-xl shadow-sm">
@@ -188,15 +183,91 @@ export default function CollegePredictor() {
           {/* Header */}
           <div className="flex flex-col justify-between gap-2 sm:gap-4 mb-4 sm:mb-6">
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[var(--primary)]">
-              JEE MAIN COLLEGE PREDICTOR
+              HBTU COLLEGE PREDICTOR
             </h2>
             <span className="bg-[var(--light-blue)] text-[var(--primary)] text-[10px] sm:text-xs font-semibold px-2 sm:px-4 py-1 sm:py-2 rounded-full whitespace-nowrap w-fit">
-              Trusted by 50,000+ students
+              Trusted by thousands of students
             </span>
           </div>
 
           {/* Form */}
           <form className="space-y-3 sm:space-y-5" onSubmit={handleSubmit}>
+            {/* Counseling Type */}
+            <div>
+              <label className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5">
+                Counseling Type
+              </label>
+              <div className="flex space-x-1.5 sm:space-x-2">
+                {hbtuOptions.counselingTypes.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        counselingType: option.value,
+                      }))
+                    }
+                    className={`flex-1 p-2 sm:p-3 border rounded-lg text-xs sm:text-sm font-medium transition ${
+                      formData.counselingType === option.value
+                        ? "bg-[var(--primary)] text-white border-[var(--primary)]"
+                        : "bg-white text-[var(--muted-text)] border-[var(--border)] hover:bg-[var(--muted-background)]"
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Phase */}
+            <div>
+              <label
+                htmlFor="phase"
+                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
+              >
+                Phase (Required)
+              </label>
+              <select
+                required
+                id="phase"
+                value={formData.phase}
+                onChange={handleChange}
+                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
+              >
+                <option value="">Select Phase</option>
+                {hbtuOptions.phases.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Round Number */}
+            <div>
+              <label
+                htmlFor="round"
+                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
+              >
+                Round Number (Required)
+              </label>
+              <select
+                required
+                id="round"
+                value={formData.round}
+                onChange={handleChange}
+                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
+              >
+                <option value="">Select Round Number</option>
+                {hbtuOptions.rounds.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             {/* CRL Rank */}
             <div>
               <label
@@ -210,30 +281,9 @@ export default function CollegePredictor() {
                 id="crlRank"
                 value={formData.crlRank}
                 onChange={handleChange}
-                placeholder="15000"
+                placeholder="25000"
                 min="1"
                 required
-                onWheel={(e) => e.currentTarget.blur()}
-                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
-              />
-            </div>
-
-            {/* Category Rank */}
-            <div>
-              <label
-                htmlFor="categoryRank"
-                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
-              >
-                Enter Category Rank{" "}
-                {formData.category !== "OPEN" ? "(Required)" : "(Optional)"}
-              </label>
-              <input
-                type="text"
-                id="categoryRank"
-                value={formData.categoryRank}
-                onChange={handleChange}
-                placeholder="2000"
-                required={formData.category !== "OPEN"}
                 onWheel={(e) => e.currentTarget.blur()}
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
               />
@@ -245,7 +295,7 @@ export default function CollegePredictor() {
                 Gender
               </label>
               <div className="flex space-x-1.5 sm:space-x-2">
-                {options.genders.map((option) => (
+                {hbtuOptions.genders.map((option) => (
                   <button
                     key={option.value}
                     type="button"
@@ -276,7 +326,7 @@ export default function CollegePredictor() {
                 onChange={handleChange}
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
               >
-                {options.categories.map((option) => (
+                {hbtuOptions.categories.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
                   </option>
@@ -284,13 +334,35 @@ export default function CollegePredictor() {
               </select>
             </div>
 
-            {/* Select Home State */}
+            {/* Sub-Category */}
+            <div>
+              <label
+                htmlFor="subCategory"
+                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
+              >
+                Select Sub-Category
+              </label>
+              <select
+                id="subCategory"
+                value={formData.subCategory}
+                onChange={handleChange}
+                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
+              >
+                {getSubCategories().map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Home State */}
             <div>
               <label
                 htmlFor="homeState"
                 className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
               >
-                Select Your Home State
+                Select Your Home State (Required)
               </label>
               <select
                 required
@@ -299,105 +371,12 @@ export default function CollegePredictor() {
                 onChange={handleChange}
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
               >
-                <option value="">Select Your Home State</option>
-                {options.states.map((state) => (
-                  <option key={state} value={state}>
-                    {state}
+                <option value="">Select Home State</option>
+                {hbtuOptions.homeStates.map((state) => (
+                  <option key={state.value} value={state.value}>
+                    {state.label}
                   </option>
                 ))}
-              </select>
-            </div>
-
-            {/* Counseling Type */}
-            <div>
-              <label
-                htmlFor="counselingType"
-                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
-              >
-                Counseling Type
-              </label>
-              <select
-                id="counselingType"
-                value={formData.counselingType}
-                onChange={handleChange}
-                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
-              >
-                {options.counselingTypes.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Round Number */}
-            <div>
-              <label
-                htmlFor="roundNumber"
-                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
-              >
-                Round Number
-              </label>
-              <select
-                required
-                id="roundNumber"
-                onChange={handleChange}
-                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
-              >
-                <option value="">Select Round Number</option>
-                {options.rounds[formData.counselingType]?.map((round) => (
-                  <option key={round.value} value={round.value}>
-                    {round.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Institute Type (Optional) */}
-            <div>
-              <label
-                htmlFor="instituteType"
-                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
-              >
-                Institute Type (Optional)
-              </label>
-              <select
-                id="instituteType"
-                value={formData.instituteType}
-                onChange={handleChange}
-                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
-              >
-                <option value="">All</option>
-                {options.instituteTypes.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Branch Group (Optional) */}
-            <div>
-              <label
-                htmlFor="branchGroup"
-                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
-              >
-                Branch Group (Optional)
-              </label>
-              <select
-                id="branchGroup"
-                value={formData.branchGroup}
-                onChange={handleChange}
-                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
-              >
-                <option value="">All</option>
-                {options.branchGroups
-                  .filter((group) => group !== "Mining / Geo")
-                  .map((group) => (
-                    <option key={group} value={group}>
-                      {group}
-                    </option>
-                  ))}
               </select>
             </div>
 
@@ -414,7 +393,7 @@ export default function CollegePredictor() {
 
             {/* Footer Text */}
             <p className="text-center text-[10px] sm:text-xs text-[var(--muted-text)] pt-2">
-              Powered by real-time admissions data and official 2025 cutoff
+              Powered by official HBTU cutoff data
             </p>
           </form>
         </div>
@@ -423,10 +402,7 @@ export default function CollegePredictor() {
       {/* Results Section */}
       <div ref={resultsRef}>
         {results && (
-          <PredictionResults
-            results={results}
-            userGender={formData.gender}
-          />
+          <PredictionResults results={results} userGender={formData.gender} />
         )}
       </div>
     </div>

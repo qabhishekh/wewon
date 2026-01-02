@@ -156,6 +156,72 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
       "TFW Seat Predictions",
     ],
   },
+  {
+    title: "MMMUT College Predictor",
+    slug: "mmmut-predictor",
+    description:
+      "Predict colleges for MMMUT (Madan Mohan Malaviya University of Technology) counseling. Get predictions based on your rank and category.",
+    price: 299,
+    discountPrice: 199,
+    validityInDays: 365,
+    features: {
+      hasMentorship: false,
+      choiceFilling: {
+        isEnabled: false,
+        usageLimit: 0,
+      },
+      collegePredictor: {
+        isEnabled: true,
+        usageLimit: -1, // Unlimited
+      },
+      hasCourseContent: false,
+    },
+    totalMaterialCount: 0,
+    isActive: true,
+    // Frontend-specific fields
+    icon: "🎓",
+    category: PredictorCategory.STATE,
+    purchased: true,
+    displayFeatures: [
+      "MMMUT College Predictions",
+      "Branch-wise Analysis",
+      "Round-wise Cutoffs",
+      "Category-wise Predictions",
+    ],
+  },
+  {
+    title: "HBTU College Predictor",
+    slug: "hbtu-predictor",
+    description:
+      "Predict colleges for HBTU (Harcourt Butler Technical University) counseling. Get predictions for B.TECH and BS-MS programs based on your rank.",
+    price: 299,
+    discountPrice: 199,
+    validityInDays: 365,
+    features: {
+      hasMentorship: false,
+      choiceFilling: {
+        isEnabled: false,
+        usageLimit: 0,
+      },
+      collegePredictor: {
+        isEnabled: true,
+        usageLimit: -1, // Unlimited
+      },
+      hasCourseContent: false,
+    },
+    totalMaterialCount: 0,
+    isActive: true,
+    // Frontend-specific fields
+    icon: "🎓",
+    category: PredictorCategory.STATE,
+    purchased: true,
+    displayFeatures: [
+      "HBTU College Predictions",
+      "B.TECH & BS-MS Programs",
+      "Round-wise Cutoffs",
+      "TFW Seat Predictions",
+    ],
+  },
   // Placeholder for future predictors (15 more to be added)
   // Examples:
   // - NEET UG Predictor

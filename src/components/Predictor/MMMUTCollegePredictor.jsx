@@ -2,27 +2,24 @@
 
 import { useState, useRef, useEffect } from "react";
 import GoogleAds from "../sections/GoogleAds";
-import { predictUPTAC, getUPTACInstitutes } from "@/network/predictor";
-import uptacOptions from "./data/uptacOptions.json";
+import { predictMMMUT, getMMMUTBranches } from "@/network/predictor";
+import mmmutOptions from "./data/mmmutOptions.json";
 import PredictionResults from "./PredictionResults";
 import { toast } from "sonner";
 
-export default function UPTACCollegePredictor() {
+export default function MMMUTCollegePredictor() {
   const [formData, setFormData] = useState({
     crlRank: "",
-    categoryRank: "",
     category: "OPEN",
     subCategory: "NOT APPLICABLE",
     gender: "Male",
     homeState: "",
     roundNumber: "",
-    instituteType: "ALL",
-    instituteName: [],
     programName: [],
   });
 
-  const [availableInstitutes, setAvailableInstitutes] = useState([]);
-  const [loadingInstitutes, setLoadingInstitutes] = useState(false);
+  const [availableBranches, setAvailableBranches] = useState([]);
+  const [loadingBranches, setLoadingBranches] = useState(false);
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
   const resultsRef = useRef(null);
@@ -37,54 +34,28 @@ export default function UPTACCollegePredictor() {
     }
   }, [results]);
 
-  // Fetch institutes when institute type changes
+  // Fetch branches on component mount
   useEffect(() => {
-    const fetchInstitutes = async () => {
-      if (!formData.instituteType) return;
-
-      setLoadingInstitutes(true);
+    const fetchBranches = async () => {
+      setLoadingBranches(true);
       try {
-        const response = await getUPTACInstitutes(formData.instituteType);
-        setAvailableInstitutes(response.data || []);
+        const response = await getMMMUTBranches();
+        setAvailableBranches(response.data || []);
       } catch (error) {
-        console.error("Error fetching institutes:", error);
-        toast.error("Failed to load institutes");
-        setAvailableInstitutes([]);
+        console.error("Error fetching branches:", error);
+        toast.error("Failed to load branches");
+        setAvailableBranches([]);
       } finally {
-        setLoadingInstitutes(false);
+        setLoadingBranches(false);
       }
     };
 
-    fetchInstitutes();
-  }, [formData.instituteType]);
-
-  // Map category to backend format
-  const mapCategoryToBackend = (category) => {
-    if (category === "EWS") {
-      return "EWS(OPEN)";
-    }
-    return category;
-  };
+    fetchBranches();
+  }, []);
 
   // Get available sub-categories for selected category
   const getSubCategories = () => {
-    return uptacOptions.subCategories[formData.category] || [];
-  };
-
-  // Get available program groups based on sub-category
-  const getAvailablePrograms = () => {
-    // If TFW is selected, show only TFW BRANCHES
-    if (formData.subCategory.includes("(TF)")) {
-      return ["TFW BRANCHES"];
-    }
-    // Otherwise show all program groups
-    return uptacOptions.programGroups;
-  };
-
-  // Get available rounds based on home state
-  const getAvailableRounds = () => {
-    if (!formData.homeState) return [];
-    return uptacOptions.rounds[formData.homeState] || [];
+    return mmmutOptions.subCategories[formData.category] || [];
   };
 
   const handleChange = (e) => {
@@ -127,26 +98,6 @@ export default function UPTACCollegePredictor() {
       return;
     }
 
-    // Reset round and institute selection when home state changes
-    if (id === "homeState") {
-      setFormData((prev) => ({
-        ...prev,
-        [id]: value,
-        roundNumber: "",
-      }));
-      return;
-    }
-
-    // Reset institute name when institute type changes
-    if (id === "instituteType") {
-      setFormData((prev) => ({
-        ...prev,
-        [id]: value,
-        instituteName: [],
-      }));
-      return;
-    }
-
     setFormData((prev) => ({
       ...prev,
       [id]: value,
@@ -160,53 +111,9 @@ export default function UPTACCollegePredictor() {
     }));
   };
 
-  const handleInstituteSelection = (instituteName) => {
-    setFormData((prev) => {
-      const isSelected = prev.instituteName.includes(instituteName);
-      return {
-        ...prev,
-        instituteName: isSelected
-          ? prev.instituteName.filter((name) => name !== instituteName)
-          : [...prev.instituteName, instituteName],
-      };
-    });
-  };
-
-  const handleSelectAllInstitutes = () => {
-    if (formData.instituteName.length === availableInstitutes.length) {
-      // Deselect all
-      setFormData((prev) => ({
-        ...prev,
-        instituteName: [],
-      }));
-    } else {
-      // Select all
-      setFormData((prev) => ({
-        ...prev,
-        instituteName: [...availableInstitutes],
-      }));
-    }
-  };
-
   const handleProgramSelection = (program) => {
     setFormData((prev) => {
       const isSelected = prev.programName.includes(program);
-
-      // If "ALL" is selected, select all programs
-      if (program === "ALL" && !isSelected) {
-        return {
-          ...prev,
-          programName: [...getAvailablePrograms()],
-        };
-      }
-
-      // If deselecting "ALL", deselect all
-      if (program === "ALL" && isSelected) {
-        return {
-          ...prev,
-          programName: [],
-        };
-      }
 
       return {
         ...prev,
@@ -215,6 +122,22 @@ export default function UPTACCollegePredictor() {
           : [...prev.programName, program],
       };
     });
+  };
+
+  const handleSelectAllPrograms = () => {
+    if (formData.programName.length === availableBranches.length) {
+      // Deselect all
+      setFormData((prev) => ({
+        ...prev,
+        programName: [],
+      }));
+    } else {
+      // Select all
+      setFormData((prev) => ({
+        ...prev,
+        programName: [...availableBranches],
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -229,18 +152,6 @@ export default function UPTACCollegePredictor() {
       return;
     }
 
-    if (formData.category !== "OPEN" && !formData.categoryRank) {
-      toast.error("Please enter Category Rank for the selected category");
-      setLoading(false);
-      return;
-    }
-
-    if (!formData.homeState) {
-      toast.error("Please select Home State");
-      setLoading(false);
-      return;
-    }
-
     if (!formData.roundNumber) {
       toast.error("Please select Round Number");
       setLoading(false);
@@ -250,36 +161,34 @@ export default function UPTACCollegePredictor() {
     try {
       const payload = {
         crlRank: Number(formData.crlRank),
-        categoryRank: formData.categoryRank
-          ? Number(formData.categoryRank)
-          : undefined,
-        category: mapCategoryToBackend(formData.category),
+        category: formData.category,
         subCategory: formData.subCategory,
         gender: formData.gender,
-        homeState: formData.homeState,
+        homeState: formData.homeState || undefined,
         roundNumber: Number(formData.roundNumber),
-        instituteType: formData.instituteType,
-        instituteName:
-          formData.instituteName.length > 0
-            ? formData.instituteName
-            : undefined,
         programName:
           formData.programName.length > 0 ? formData.programName : undefined,
       };
 
-      console.log("Sending UPTAC payload:", payload);
-      const response = await predictUPTAC(payload);
-      console.log("UPTAC prediction response:", response.data);
+      console.log("Sending MMMUT payload:", payload);
+      const response = await predictMMMUT(payload);
+      console.log("MMMUT prediction response:", response.data);
 
-      // Transform UPTAC response to match PredictionResults expected format
+      // Transform MMMUT response to match PredictionResults expected format
+      // MMMUT API returns { highProbability: [], mediumProbability: [], lowProbability: [] }
+      // PredictionResults expects { homestatePredictions: [] } with probability field in each item
       const transformedResults = {
-        homestatePredictions: response.data.results || [],
+        homestatePredictions: [
+          ...(response.data.highProbability || []),
+          ...(response.data.mediumProbability || []),
+          ...(response.data.lowProbability || []),
+        ],
       };
 
       console.log("Transformed results:", transformedResults);
       setResults(transformedResults);
     } catch (error) {
-      console.error("UPTAC prediction error:", error);
+      console.error("MMMUT prediction error:", error);
       toast.error("Failed to get prediction. Please try again.");
     } finally {
       setLoading(false);
@@ -305,7 +214,7 @@ export default function UPTACCollegePredictor() {
               Choose your preferences
             </h3>
             <p className="text-xs sm:text-sm text-[var(--muted-text)] mt-1">
-              Home state, institutes, and programs
+              Home state and program preferences
             </p>
           </div>
           <div className="p-3 sm:p-6 bg-[var(--background)] border border-[var(--border)] rounded-lg sm:rounded-xl shadow-sm">
@@ -326,7 +235,7 @@ export default function UPTACCollegePredictor() {
           {/* Header */}
           <div className="flex flex-col justify-between gap-2 sm:gap-4 mb-4 sm:mb-6">
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[var(--primary)]">
-              UPTAC COLLEGE PREDICTOR
+              MMMUT COLLEGE PREDICTOR
             </h2>
             <span className="bg-[var(--light-blue)] text-[var(--primary)] text-[10px] sm:text-xs font-semibold px-2 sm:px-4 py-1 sm:py-2 rounded-full whitespace-nowrap w-fit">
               Trusted by thousands of students
@@ -356,35 +265,13 @@ export default function UPTACCollegePredictor() {
               />
             </div>
 
-            {/* Category Rank */}
-            <div>
-              <label
-                htmlFor="categoryRank"
-                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
-              >
-                Enter Category Rank{" "}
-                {formData.category !== "OPEN" ? "(Required)" : "(Optional)"}
-              </label>
-              <input
-                type="number"
-                id="categoryRank"
-                value={formData.categoryRank}
-                onChange={handleChange}
-                placeholder="2000"
-                min="1"
-                required={formData.category !== "OPEN"}
-                onWheel={(e) => e.currentTarget.blur()}
-                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
-              />
-            </div>
-
             {/* Gender */}
             <div>
               <label className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5">
                 Gender
               </label>
               <div className="flex space-x-1.5 sm:space-x-2">
-                {uptacOptions.genders.map((option) => (
+                {mmmutOptions.genders.map((option) => (
                   <button
                     key={option.value}
                     type="button"
@@ -415,7 +302,7 @@ export default function UPTACCollegePredictor() {
                 onChange={handleChange}
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
               >
-                {uptacOptions.categories.map((option) => (
+                {mmmutOptions.categories.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
                   </option>
@@ -451,17 +338,16 @@ export default function UPTACCollegePredictor() {
                 htmlFor="homeState"
                 className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
               >
-                Select Your Home State
+                Select Your Home State (Optional)
               </label>
               <select
-                required
                 id="homeState"
                 value={formData.homeState}
                 onChange={handleChange}
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
               >
                 <option value="">Select Home State</option>
-                {uptacOptions.homeStates.map((state) => (
+                {mmmutOptions.homeStates.map((state) => (
                   <option key={state.value} value={state.value}>
                     {state.label}
                   </option>
@@ -475,100 +361,22 @@ export default function UPTACCollegePredictor() {
                 htmlFor="roundNumber"
                 className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
               >
-                Round Number
+                Round Number (Required)
               </label>
               <select
                 required
                 id="roundNumber"
                 value={formData.roundNumber}
                 onChange={handleChange}
-                disabled={!formData.homeState}
-                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
               >
                 <option value="">Select Round Number</option>
-                {getAvailableRounds().map((round) => (
+                {mmmutOptions.rounds.map((round) => (
                   <option key={round.value} value={round.value}>
                     {round.label}
                   </option>
                 ))}
               </select>
-            </div>
-
-            {/* Institute Type */}
-            <div>
-              <label
-                htmlFor="instituteType"
-                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
-              >
-                Institute Type
-              </label>
-              <select
-                id="instituteType"
-                value={formData.instituteType}
-                onChange={handleChange}
-                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
-              >
-                {uptacOptions.instituteTypes.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Institute Name - Multi-select */}
-            <div>
-              <label className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5">
-                Institute Name (Optional)
-              </label>
-              <div className="border border-[var(--border)] rounded-lg p-2 max-h-48 overflow-y-auto bg-white">
-                {loadingInstitutes ? (
-                  <p className="text-xs text-[var(--muted-text)] p-2">
-                    Loading institutes...
-                  </p>
-                ) : availableInstitutes.length > 0 ? (
-                  <>
-                    <label className="flex items-center p-2 hover:bg-[var(--muted-background)] rounded cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={
-                          formData.instituteName.length ===
-                          availableInstitutes.length
-                        }
-                        onChange={handleSelectAllInstitutes}
-                        className="mr-2"
-                      />
-                      <span className="text-xs sm:text-sm font-semibold">
-                        Select All
-                      </span>
-                    </label>
-                    <div className="border-t border-[var(--border)] my-1"></div>
-                    {availableInstitutes.map((institute) => (
-                      <label
-                        key={institute}
-                        className="flex items-center p-2 hover:bg-[var(--muted-background)] rounded cursor-pointer"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={formData.instituteName.includes(institute)}
-                          onChange={() => handleInstituteSelection(institute)}
-                          className="mr-2"
-                        />
-                        <span className="text-xs sm:text-sm">{institute}</span>
-                      </label>
-                    ))}
-                  </>
-                ) : (
-                  <p className="text-xs text-[var(--muted-text)] p-2">
-                    No institutes available
-                  </p>
-                )}
-              </div>
-              {formData.instituteName.length > 0 && (
-                <p className="text-xs text-[var(--muted-text)] mt-1">
-                  {formData.instituteName.length} institute(s) selected
-                </p>
-              )}
             </div>
 
             {/* Program Name - Multi-select */}
@@ -577,20 +385,47 @@ export default function UPTACCollegePredictor() {
                 Program Name (Optional)
               </label>
               <div className="border border-[var(--border)] rounded-lg p-2 max-h-48 overflow-y-auto bg-white">
-                {getAvailablePrograms().map((program) => (
-                  <label
-                    key={program}
-                    className="flex items-center p-2 hover:bg-[var(--muted-background)] rounded cursor-pointer"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={formData.programName.includes(program)}
-                      onChange={() => handleProgramSelection(program)}
-                      className="mr-2"
-                    />
-                    <span className="text-xs sm:text-sm">{program}</span>
-                  </label>
-                ))}
+                {loadingBranches ? (
+                  <p className="text-xs text-[var(--muted-text)] p-2">
+                    Loading branches...
+                  </p>
+                ) : availableBranches.length > 0 ? (
+                  <>
+                    <label className="flex items-center p-2 hover:bg-[var(--muted-background)] rounded cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={
+                          formData.programName.length ===
+                          availableBranches.length
+                        }
+                        onChange={handleSelectAllPrograms}
+                        className="mr-2"
+                      />
+                      <span className="text-xs sm:text-sm font-semibold">
+                        Select All
+                      </span>
+                    </label>
+                    <div className="border-t border-[var(--border)] my-1"></div>
+                    {availableBranches.map((program) => (
+                      <label
+                        key={program}
+                        className="flex items-center p-2 hover:bg-[var(--muted-background)] rounded cursor-pointer"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={formData.programName.includes(program)}
+                          onChange={() => handleProgramSelection(program)}
+                          className="mr-2"
+                        />
+                        <span className="text-xs sm:text-sm">{program}</span>
+                      </label>
+                    ))}
+                  </>
+                ) : (
+                  <p className="text-xs text-[var(--muted-text)] p-2">
+                    No branches available
+                  </p>
+                )}
               </div>
               {formData.programName.length > 0 && (
                 <p className="text-xs text-[var(--muted-text)] mt-1">
@@ -612,7 +447,7 @@ export default function UPTACCollegePredictor() {
 
             {/* Footer Text */}
             <p className="text-center text-[10px] sm:text-xs text-[var(--muted-text)] pt-2">
-              Powered by official UPTAC cutoff data
+              Powered by official MMMUT cutoff data
             </p>
           </form>
         </div>
@@ -621,7 +456,13 @@ export default function UPTACCollegePredictor() {
       {/* Results Section */}
       <div ref={resultsRef}>
         {results && (
-          <PredictionResults results={results} userGender={formData.gender} hideSeatType={true} />
+          <PredictionResults
+            results={results}
+            userGender={formData.gender}
+            hideQuota={true}
+            hideSeatType={true}
+            hideOpeningRank={true}
+          />
         )}
       </div>
     </div>

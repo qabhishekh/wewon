@@ -1,0 +1,48 @@
+{
+  "categories": [
+    { "value": "OPEN", "label": "OPEN" },
+    { "value": "EWS", "label": "EWS" },
+    { "value": "BC", "label": "BC" },
+    { "value": "SC", "label": "SC" },
+    { "value": "ST", "label": "ST" }
+  ],
+  "subCategories": {
+    "OPEN": [
+      { "value": "NOT APPLICABLE", "label": "Not Applicable" },
+      { "value": "OPEN(AF)", "label": "OPEN (Armed Forces)" },
+      { "value": "OPEN(FF)", "label": "OPEN (Freedom Fighter)" },
+      { "value": "OPEN(PH)", "label": "OPEN (Physically Handicapped)" },
+      { "value": "OPEN(TF)", "label": "OPEN (Tuition Fee Waiver)" }
+    ],
+    "EWS": [
+      { "value": "NOT APPLICABLE", "label": "Not Applicable" },
+      { "value": "EWS(TF)", "label": "EWS (Tuition Fee Waiver)" }
+    ],
+    "BC": [
+      { "value": "NOT APPLICABLE", "label": "Not Applicable" },
+      { "value": "BC(TF)", "label": "BC (Tuition Fee Waiver)" }
+    ],
+    "SC": [
+      { "value": "NOT APPLICABLE", "label": "Not Applicable" },
+      { "value": "SC(TF)", "label": "SC (Tuition Fee Waiver)" }
+    ],
+    "ST": [
+      { "value": "NOT APPLICABLE", "label": "Not Applicable" },
+      { "value": "ST(TF)", "label": "ST (Tuition Fee Waiver)" }
+    ]
+  },
+  "genders": [
+    { "value": "Male", "label": "Male" },
+    { "value": "Female", "label": "Female" }
+  ],
+  "homeStates": [
+    { "value": "Uttar Pradesh", "label": "Uttar Pradesh" },
+    { "value": "Outside Uttar Pradesh", "label": "Outside Uttar Pradesh" }
+  ],
+  "rounds": [
+    { "value": 1, "label": "Round 1" },
+    { "value": 2, "label": "Round 2" },
+    { "value": 3, "label": "Round 3" },
+    { "value": 4, "label": "Round 4" }
+  ]
+}

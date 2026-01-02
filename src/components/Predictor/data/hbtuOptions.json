@@ -1,0 +1,57 @@
+{
+  "counselingTypes": [
+    { "value": "B.TECH", "label": "B.TECH" },
+    { "value": "BS-MS", "label": "BS-MS (Mathematics and Data Science)" }
+  ],
+  "phases": [
+    { "value": 1, "label": "Phase 1" },
+    { "value": 2, "label": "Phase 2" }
+  ],
+  "rounds": [
+    { "value": 1, "label": "Round 1" },
+    { "value": 2, "label": "Round 2" },
+    { "value": 3, "label": "Round 3" }
+  ],
+  "categories": [
+    { "value": "OPEN", "label": "OPEN" },
+    { "value": "EWS", "label": "EWS" },
+    { "value": "BC", "label": "BC" },
+    { "value": "SC", "label": "SC" },
+    { "value": "ST", "label": "ST" }
+  ],
+  "subCategories": {
+    "OPEN": [
+      { "value": "NOT APPLICABLE", "label": "Not Applicable" },
+      { "value": "OPEN(TF)", "label": "OPEN (Tuition Fee Waiver)" },
+      { "value": "OPEN(AF)", "label": "OPEN (Armed Forces)" },
+      { "value": "OPEN(FF)", "label": "OPEN (Freedom Fighter)" },
+      { "value": "OPEN(PH)", "label": "OPEN (Physically Handicapped)" }
+    ],
+    "EWS": [
+      { "value": "NOT APPLICABLE", "label": "Not Applicable" },
+      { "value": "EWS(TF)", "label": "EWS (Tuition Fee Waiver)" }
+    ],
+    "BC": [
+      { "value": "NOT APPLICABLE", "label": "Not Applicable" },
+      { "value": "BC(TF)", "label": "BC (Tuition Fee Waiver)" },
+      { "value": "BC(GIRL)", "label": "BC (Girl)" }
+    ],
+    "SC": [
+      { "value": "NOT APPLICABLE", "label": "Not Applicable" },
+      { "value": "SC(TF)", "label": "SC (Tuition Fee Waiver)" },
+      { "value": "SC(GIRL)", "label": "SC (Girl)" }
+    ],
+    "ST": [
+      { "value": "NOT APPLICABLE", "label": "Not Applicable" },
+      { "value": "ST(TF)", "label": "ST (Tuition Fee Waiver)" }
+    ]
+  },
+  "homeStates": [
+    { "value": "Uttar Pradesh", "label": "Uttar Pradesh" },
+    { "value": "Outside Uttar Pradesh", "label": "Outside Uttar Pradesh" }
+  ],
+  "genders": [
+    { "value": "Male", "label": "Male" },
+    { "value": "Female", "label": "Female" }
+  ]
+}
