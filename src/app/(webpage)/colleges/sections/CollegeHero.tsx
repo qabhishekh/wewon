@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   MapPin,
   Star,
@@ -9,6 +9,8 @@ import {
   TrendingUp,
   Users,
   BookOpen,
+  ChevronDown,
+  Images,
 } from "lucide-react";
 
 interface CollegeHeroProps {
@@ -35,6 +37,7 @@ const tabIcons: { [key: string]: React.ReactNode } = {
   Facilities: <Building2 size={20} />,
   Fees: <IndianRupee size={20} />,
   "Fee Waivers": <Award size={20} />,
+  Gallery: <Images size={20} />,
   Placements: <TrendingUp size={20} />,
   Rankings: <Star size={20} />,
   "Seat Matrix": <Users size={20} />,
@@ -49,6 +52,15 @@ export default function CollegeHero({
   tabs,
   onTabChange,
 }: CollegeHeroProps) {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedTab, setSelectedTab] = useState(tabs?.[0] || "");
+
+  const handleTabSelect = (tab: string) => {
+    setSelectedTab(tab);
+    setIsDropdownOpen(false);
+    onTabChange?.(tab);
+  };
+
   return (
     <div className="bg-[#0f3a67] text-white">
       {/* Hero Content */}
@@ -111,18 +123,63 @@ export default function CollegeHero({
 
         {/* Navigation Tabs */}
         {tabs && tabs.length > 0 && (
-          <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-4">
-            {tabs.map((tab) => (
+          <>
+            {/* Mobile Dropdown */}
+            <div className="md:hidden relative mb-4">
               <button
-                key={tab}
-                onClick={() => onTabChange?.(tab)}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all bg-transparent text-white hover:bg-white/10 hover:scale-105"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="w-full flex items-center justify-between px-4 py-3 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20"
               >
-                {tabIcons[tab]}
-                <span className="text-sm md:text-base">{tab}</span>
+                <div className="flex items-center gap-2">
+                  {tabIcons[selectedTab]}
+                  <span className="text-sm font-medium">
+                    {selectedTab || "Select Section"}
+                  </span>
+                </div>
+                <ChevronDown
+                  className={`w-5 h-5 transition-transform ${
+                    isDropdownOpen ? "rotate-180" : ""
+                  }`}
+                />
               </button>
-            ))}
-          </div>
+
+              {/* Dropdown Menu */}
+              {isDropdownOpen && (
+                <div className="absolute top-full left-0 right-0 mt-2 bg-[#0D3A66] rounded-lg border border-white/20 shadow-lg z-50 max-h-64 overflow-y-auto">
+                  {tabs.map((tab) => (
+                    <button
+                      key={tab}
+                      onClick={() => handleTabSelect(tab)}
+                      className={`w-full flex items-center gap-3 px-4 py-3 text-left text-sm transition-colors hover:bg-white/10 ${
+                        selectedTab === tab ? "bg-white/20" : ""
+                      }`}
+                    >
+                      {tabIcons[tab]}
+                      <span>{tab}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Desktop Horizontal Tabs */}
+            <div className="hidden md:flex flex-wrap justify-center gap-2 md:gap-4 mb-4">
+              {tabs.map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => handleTabSelect(tab)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all hover:scale-105 ${
+                    selectedTab === tab
+                      ? "bg-white text-[#0D3A66] font-semibold shadow-md"
+                      : "bg-transparent text-white hover:bg-white/10"
+                  }`}
+                >
+                  {tabIcons[tab]}
+                  <span className="text-sm md:text-base">{tab}</span>
+                </button>
+              ))}
+            </div>
+          </>
         )}
       </div>
     </div>
