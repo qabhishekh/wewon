@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Star, Download, BookOpen } from "lucide-react";
+import { Star } from "lucide-react";
 import SubHeading from "@/components/sections/SubHeading";
 
 interface Course {
@@ -9,8 +9,8 @@ interface Course {
   duration: string;
   seatsOffered: number;
   examsAccepted: string;
-  medianSalary: string;
-  totalFees: string;
+  seatsGenderNeutral: number;
+  seatsFemaleOnly: number;
 }
 
 interface CourseSummary {
@@ -31,47 +31,19 @@ interface TabData {
 
 interface CoursesFeesProps {
   tabsData: TabData[];
-  onCompare?: (courseId: string, tabName: string) => void;
-  onDownloadBrochure?: (courseId: string, tabName: string) => void;
-  onDownloadMainBrochure?: (tabName: string) => void;
 }
 
-export default function CoursesFees({
-  tabsData,
-  onCompare,
-  onDownloadBrochure,
-  onDownloadMainBrochure,
-}: CoursesFeesProps) {
+export default function CoursesFees({ tabsData }: CoursesFeesProps) {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
-  const [comparedCourses, setComparedCourses] = useState<Set<string>>(
-    new Set()
-  );
 
   const activeTab = tabsData[activeTabIndex];
 
   const handleTabChange = (index: number) => {
     setActiveTabIndex(index);
-    setComparedCourses(new Set()); // Reset compared courses when switching tabs
-  };
-
-  const handleCompare = (courseId: string) => {
-    const newCompared = new Set(comparedCourses);
-    if (newCompared.has(courseId)) {
-      newCompared.delete(courseId);
-    } else {
-      newCompared.add(courseId);
-    }
-    setComparedCourses(newCompared);
-    if (onCompare) {
-      onCompare(courseId, activeTab.name);
-    }
   };
 
   return (
-    <div
-      className="w-full"
-      style={{ fontFamily: "Poppins, sans-serif" }}
-    >
+    <div className="w-full" style={{ fontFamily: "Poppins, sans-serif" }}>
       <SubHeading top={"Courses & Fees"} align="left" />
       <div className="w-full mx-auto mt-10">
         {/* Tabs */}
@@ -150,16 +122,6 @@ export default function CoursesFees({
                   </span>
                 </div>
               </div>
-
-              {/* Brochure Button */}
-              <button
-                onClick={() => onDownloadMainBrochure?.(activeTab.name)}
-                className="w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
-                style={{ backgroundColor: "var(--accent)" }}
-              >
-                <Download className="w-5 h-5" />
-                Brochure
-              </button>
             </div>
           </div>
 
@@ -191,35 +153,6 @@ export default function CoursesFees({
                           <span>{course.duration}</span>
                         </div>
                       </div>
-
-                      <div className="flex gap-3 flex-wrap">
-                        <button
-                          onClick={() => handleCompare(course.id)}
-                          className={`flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${
-                            comparedCourses.has(course.id)
-                              ? "bg-primary text-white"
-                              : "bg-gray-100 text-primary hover:bg-gray-200"
-                          }`}
-                          style={
-                            comparedCourses.has(course.id)
-                              ? { backgroundColor: "var(--primary)" }
-                              : { color: "var(--primary)" }
-                          }
-                        >
-                          <BookOpen className="w-5 h-5" />
-                          Compare
-                        </button>
-                        <button
-                          onClick={() =>
-                            onDownloadBrochure?.(course.id, activeTab.name)
-                          }
-                          className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-white hover:opacity-90 transition-opacity"
-                          style={{ backgroundColor: "var(--accent)" }}
-                        >
-                          <Download className="w-5 h-5" />
-                          Brochure
-                        </button>
-                      </div>
                     </div>
 
                     {/* Course Details Grid */}
@@ -242,18 +175,18 @@ export default function CoursesFees({
                       </div>
                       <div>
                         <div className="text-xs text-gray-500 mb-1">
-                          Median Salary
+                          Seats Gender Neutral
                         </div>
                         <div className="font-bold text-gray-900">
-                          {course.medianSalary}
+                          {course.seatsGenderNeutral}
                         </div>
                       </div>
                       <div>
                         <div className="text-xs text-gray-500 mb-1">
-                          Total Tution Fees
+                          Seats Female Only
                         </div>
                         <div className="font-bold text-gray-900">
-                          {course.totalFees}
+                          {course.seatsFemaleOnly}
                         </div>
                       </div>
                     </div>

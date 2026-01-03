@@ -124,8 +124,8 @@ export default function CollegePage() {
         duration: course.Duration,
         seatsOffered: course.Total_Seats,
         examsAccepted: course.Entrance_Exam,
-        medianSalary: "N/A",
-        totalFees: "Contact College",
+        seatsGenderNeutral: course.Seats_Gender_Neutral,
+        seatsFemaleOnly: course.Seats_Female_Only,
       })),
     }));
   };
@@ -220,20 +220,6 @@ export default function CollegePage() {
           },
         ],
       }));
-  };
-
-  const onCompare = (courseId: string, tabName: string) => {
-    console.log(`Comparing course ${courseId} in tab ${tabName}`);
-  };
-
-  const onDownloadBrochure = (courseId: string, tabName: string) => {
-    console.log(
-      `Downloading brochure for course ${courseId} in tab ${tabName}`
-    );
-  };
-
-  const onDownloadMainBrochure = (tabName: string) => {
-    console.log(`Downloading main brochure for tab ${tabName}`);
   };
 
   // Loading state
@@ -400,14 +386,7 @@ export default function CollegePage() {
             sectionRefs.current["Courses"] = el;
           }}
         >
-          {tabsData.length > 0 && (
-            <CoursesFees
-              tabsData={tabsData}
-              onCompare={onCompare}
-              onDownloadBrochure={onDownloadBrochure}
-              onDownloadMainBrochure={onDownloadMainBrochure}
-            />
-          )}
+          {tabsData.length > 0 && <CoursesFees tabsData={tabsData} />}
         </div>
 
         {/* Facilities Section */}
