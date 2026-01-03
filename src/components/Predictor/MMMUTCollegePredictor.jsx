@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import GoogleAds from "../sections/GoogleAds";
-import { predictMMMUT, getMMMUTBranches } from "@/network/predictor";
+import { predictMMMUT } from "@/network/predictor";
 import mmmutOptions from "./data/mmmutOptions.json";
 import PredictionResults from "./PredictionResults";
 import { toast } from "sonner";
@@ -10,6 +10,7 @@ import { toast } from "sonner";
 export default function MMMUTCollegePredictor() {
   const [formData, setFormData] = useState({
     crlRank: "",
+    categoryRank: "",
     category: "OPEN",
     subCategory: "NOT APPLICABLE",
     gender: "Male",
@@ -18,8 +19,6 @@ export default function MMMUTCollegePredictor() {
     programName: [],
   });
 
-  const [availableBranches, setAvailableBranches] = useState([]);
-  const [loadingBranches, setLoadingBranches] = useState(false);
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
   const resultsRef = useRef(null);
@@ -34,28 +33,22 @@ export default function MMMUTCollegePredictor() {
     }
   }, [results]);
 
-  // Fetch branches on component mount
-  useEffect(() => {
-    const fetchBranches = async () => {
-      setLoadingBranches(true);
-      try {
-        const response = await getMMMUTBranches();
-        setAvailableBranches(response.data || []);
-      } catch (error) {
-        console.error("Error fetching branches:", error);
-        toast.error("Failed to load branches");
-        setAvailableBranches([]);
-      } finally {
-        setLoadingBranches(false);
-      }
-    };
-
-    fetchBranches();
-  }, []);
-
   // Get available sub-categories for selected category
   const getSubCategories = () => {
     return mmmutOptions.subCategories[formData.category] || [];
+  };
+
+  // Check if TFW is selected
+  const isTFWSelected = () => {
+    return formData.subCategory.includes("(TF)");
+  };
+
+  // Get available programs based on TFW selection
+  const getAvailablePrograms = () => {
+    if (isTFWSelected()) {
+      return mmmutOptions.tfwPrograms;
+    }
+    return mmmutOptions.normalPrograms;
   };
 
   const handleChange = (e) => {
@@ -125,7 +118,8 @@ export default function MMMUTCollegePredictor() {
   };
 
   const handleSelectAllPrograms = () => {
-    if (formData.programName.length === availableBranches.length) {
+    const availablePrograms = getAvailablePrograms();
+    if (formData.programName.length === availablePrograms.length) {
       // Deselect all
       setFormData((prev) => ({
         ...prev,
@@ -135,7 +129,7 @@ export default function MMMUTCollegePredictor() {
       // Select all
       setFormData((prev) => ({
         ...prev,
-        programName: [...availableBranches],
+        programName: [...availablePrograms],
       }));
     }
   };
@@ -152,6 +146,18 @@ export default function MMMUTCollegePredictor() {
       return;
     }
 
+    if (formData.category !== "OPEN" && !formData.categoryRank) {
+      toast.error("Please enter Category Rank for the selected category");
+      setLoading(false);
+      return;
+    }
+
+    if (!formData.homeState) {
+      toast.error("Please select Home State");
+      setLoading(false);
+      return;
+    }
+
     if (!formData.roundNumber) {
       toast.error("Please select Round Number");
       setLoading(false);
@@ -161,11 +167,15 @@ export default function MMMUTCollegePredictor() {
     try {
       const payload = {
         crlRank: Number(formData.crlRank),
+        categoryRank: formData.categoryRank
+          ? Number(formData.categoryRank)
+          : undefined,
         category: formData.category,
         subCategory: formData.subCategory,
         gender: formData.gender,
-        homeState: formData.homeState || undefined,
+        homeState: formData.homeState,
         roundNumber: Number(formData.roundNumber),
+        instituteName: mmmutOptions.instituteName,
         programName:
           formData.programName.length > 0 ? formData.programName : undefined,
       };
@@ -194,6 +204,8 @@ export default function MMMUTCollegePredictor() {
       setLoading(false);
     }
   };
+
+  const availablePrograms = getAvailablePrograms();
 
   return (
     <div className="container mx-auto px-2 sm:px-4 my-6 sm:my-10">
@@ -260,6 +272,28 @@ export default function MMMUTCollegePredictor() {
                 placeholder="15000"
                 min="1"
                 required
+                onWheel={(e) => e.currentTarget.blur()}
+                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
+              />
+            </div>
+
+            {/* Category Rank */}
+            <div>
+              <label
+                htmlFor="categoryRank"
+                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
+              >
+                Enter Category Rank{" "}
+                {formData.category !== "OPEN" ? "(Required)" : "(Optional)"}
+              </label>
+              <input
+                type="number"
+                id="categoryRank"
+                value={formData.categoryRank}
+                onChange={handleChange}
+                placeholder="2000"
+                min="1"
+                required={formData.category !== "OPEN"}
                 onWheel={(e) => e.currentTarget.blur()}
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
               />
@@ -338,9 +372,10 @@ export default function MMMUTCollegePredictor() {
                 htmlFor="homeState"
                 className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
               >
-                Select Your Home State (Optional)
+                Select Your Home State (Required)
               </label>
               <select
+                required
                 id="homeState"
                 value={formData.homeState}
                 onChange={handleChange}
@@ -379,53 +414,71 @@ export default function MMMUTCollegePredictor() {
               </select>
             </div>
 
+            {/* Institute Name - Pre-selected and locked */}
+            <div>
+              <label className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5">
+                Institute Name
+              </label>
+              <div className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg bg-gray-100 text-[var(--foreground)]">
+                {mmmutOptions.instituteName}
+              </div>
+              <p className="text-xs text-[var(--muted-text)] mt-1">
+                Institute is pre-selected for MMMUT predictions
+              </p>
+            </div>
+
             {/* Program Name - Multi-select */}
             <div>
               <label className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5">
                 Program Name (Optional)
+                {isTFWSelected() && (
+                  <span className="ml-2 text-xs text-orange-600 font-normal">
+                    (TFW Programs Only)
+                  </span>
+                )}
               </label>
               <div className="border border-[var(--border)] rounded-lg p-2 max-h-48 overflow-y-auto bg-white">
-                {loadingBranches ? (
-                  <p className="text-xs text-[var(--muted-text)] p-2">
-                    Loading branches...
-                  </p>
-                ) : availableBranches.length > 0 ? (
-                  <>
-                    <label className="flex items-center p-2 hover:bg-[var(--muted-background)] rounded cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={
-                          formData.programName.length ===
-                          availableBranches.length
-                        }
-                        onChange={handleSelectAllPrograms}
-                        className="mr-2"
-                      />
-                      <span className="text-xs sm:text-sm font-semibold">
-                        Select All
-                      </span>
-                    </label>
-                    <div className="border-t border-[var(--border)] my-1"></div>
-                    {availableBranches.map((program) => (
-                      <label
-                        key={program}
-                        className="flex items-center p-2 hover:bg-[var(--muted-background)] rounded cursor-pointer"
+                <label className="flex items-center p-2 hover:bg-[var(--muted-background)] rounded cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={
+                      formData.programName.length === availablePrograms.length
+                    }
+                    onChange={handleSelectAllPrograms}
+                    className="mr-2 accent-[var(--primary)]"
+                  />
+                  <span className="text-xs sm:text-sm font-semibold">
+                    Select All ({availablePrograms.length})
+                  </span>
+                </label>
+                <div className="border-t border-[var(--border)] my-1"></div>
+                {availablePrograms.map((program) => (
+                  <label
+                    key={program}
+                    className="flex items-center p-2 hover:bg-[var(--muted-background)] rounded cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={formData.programName.includes(program)}
+                      onChange={() => handleProgramSelection(program)}
+                      className="mr-2 accent-[var(--primary)]"
+                    />
+                    <span className="text-xs sm:text-sm flex-1">{program}</span>
+                    {formData.programName.includes(program) && (
+                      <svg
+                        className="w-4 h-4 text-green-500 flex-shrink-0"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
                       >
-                        <input
-                          type="checkbox"
-                          checked={formData.programName.includes(program)}
-                          onChange={() => handleProgramSelection(program)}
-                          className="mr-2"
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
                         />
-                        <span className="text-xs sm:text-sm">{program}</span>
-                      </label>
-                    ))}
-                  </>
-                ) : (
-                  <p className="text-xs text-[var(--muted-text)] p-2">
-                    No branches available
-                  </p>
-                )}
+                      </svg>
+                    )}
+                  </label>
+                ))}
               </div>
               {formData.programName.length > 0 && (
                 <p className="text-xs text-[var(--muted-text)] mt-1">

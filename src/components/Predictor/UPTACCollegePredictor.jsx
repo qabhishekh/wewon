@@ -23,6 +23,7 @@ export default function UPTACCollegePredictor() {
 
   const [availableInstitutes, setAvailableInstitutes] = useState([]);
   const [loadingInstitutes, setLoadingInstitutes] = useState(false);
+  const [instituteSearch, setInstituteSearch] = useState("");
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
   const resultsRef = useRef(null);
@@ -137,13 +138,14 @@ export default function UPTACCollegePredictor() {
       return;
     }
 
-    // Reset institute name when institute type changes
+    // Reset institute name and search when institute type changes
     if (id === "instituteType") {
       setFormData((prev) => ({
         ...prev,
         [id]: value,
         instituteName: [],
       }));
+      setInstituteSearch("");
       return;
     }
 
@@ -516,53 +518,100 @@ export default function UPTACCollegePredictor() {
               </select>
             </div>
 
-            {/* Institute Name - Multi-select */}
+            {/* Institute Name - Multi-select with Search */}
             <div>
               <label className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5">
                 Institute Name (Optional)
               </label>
-              <div className="border border-[var(--border)] rounded-lg p-2 max-h-48 overflow-y-auto bg-white">
-                {loadingInstitutes ? (
-                  <p className="text-xs text-[var(--muted-text)] p-2">
-                    Loading institutes...
-                  </p>
-                ) : availableInstitutes.length > 0 ? (
-                  <>
-                    <label className="flex items-center p-2 hover:bg-[var(--muted-background)] rounded cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={
-                          formData.instituteName.length ===
-                          availableInstitutes.length
-                        }
-                        onChange={handleSelectAllInstitutes}
-                        className="mr-2"
-                      />
-                      <span className="text-xs sm:text-sm font-semibold">
-                        Select All
-                      </span>
-                    </label>
-                    <div className="border-t border-[var(--border)] my-1"></div>
-                    {availableInstitutes.map((institute) => (
-                      <label
-                        key={institute}
-                        className="flex items-center p-2 hover:bg-[var(--muted-background)] rounded cursor-pointer"
-                      >
+              <div className="border border-[var(--border)] rounded-lg bg-white">
+                {/* Search Input */}
+                <div className="p-2 border-b border-[var(--border)]">
+                  <input
+                    type="text"
+                    placeholder="Search institutes..."
+                    value={instituteSearch}
+                    onChange={(e) => setInstituteSearch(e.target.value)}
+                    className="w-full p-2 text-xs sm:text-sm border border-[var(--border)] rounded-lg focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
+                  />
+                </div>
+                {/* Institute List */}
+                <div className="max-h-48 overflow-y-auto p-2">
+                  {loadingInstitutes ? (
+                    <p className="text-xs text-[var(--muted-text)] p-2">
+                      Loading institutes...
+                    </p>
+                  ) : availableInstitutes.length > 0 ? (
+                    <>
+                      <label className="flex items-center p-2 hover:bg-[var(--muted-background)] rounded cursor-pointer">
                         <input
                           type="checkbox"
-                          checked={formData.instituteName.includes(institute)}
-                          onChange={() => handleInstituteSelection(institute)}
-                          className="mr-2"
+                          checked={
+                            formData.instituteName.length ===
+                            availableInstitutes.length
+                          }
+                          onChange={handleSelectAllInstitutes}
+                          className="mr-2 accent-[var(--primary)]"
                         />
-                        <span className="text-xs sm:text-sm">{institute}</span>
+                        <span className="text-xs sm:text-sm font-semibold">
+                          Select All ({availableInstitutes.length})
+                        </span>
                       </label>
-                    ))}
-                  </>
-                ) : (
-                  <p className="text-xs text-[var(--muted-text)] p-2">
-                    No institutes available
-                  </p>
-                )}
+                      <div className="border-t border-[var(--border)] my-1"></div>
+                      {availableInstitutes
+                        .filter((institute) =>
+                          institute
+                            .toLowerCase()
+                            .includes(instituteSearch.toLowerCase())
+                        )
+                        .map((institute) => (
+                          <label
+                            key={institute}
+                            className="flex items-center p-2 hover:bg-[var(--muted-background)] rounded cursor-pointer"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={formData.instituteName.includes(
+                                institute
+                              )}
+                              onChange={() =>
+                                handleInstituteSelection(institute)
+                              }
+                              className="mr-2 accent-[var(--primary)]"
+                            />
+                            <span className="text-xs sm:text-sm flex-1">
+                              {institute}
+                            </span>
+                            {formData.instituteName.includes(institute) && (
+                              <svg
+                                className="w-4 h-4 text-green-500 flex-shrink-0"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            )}
+                          </label>
+                        ))}
+                      {availableInstitutes.filter((institute) =>
+                        institute
+                          .toLowerCase()
+                          .includes(instituteSearch.toLowerCase())
+                      ).length === 0 && (
+                        <p className="text-xs text-[var(--muted-text)] p-2">
+                          No institutes match your search
+                        </p>
+                      )}
+                    </>
+                  ) : (
+                    <p className="text-xs text-[var(--muted-text)] p-2">
+                      No institutes available
+                    </p>
+                  )}
+                </div>
               </div>
               {formData.instituteName.length > 0 && (
                 <p className="text-xs text-[var(--muted-text)] mt-1">
@@ -621,7 +670,11 @@ export default function UPTACCollegePredictor() {
       {/* Results Section */}
       <div ref={resultsRef}>
         {results && (
-          <PredictionResults results={results} userGender={formData.gender} hideSeatType={true} />
+          <PredictionResults
+            results={results}
+            userGender={formData.gender}
+            hideSeatType={true}
+          />
         )}
       </div>
     </div>

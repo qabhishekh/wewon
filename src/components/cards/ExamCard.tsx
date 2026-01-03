@@ -2,6 +2,23 @@ import React from "react";
 import { Calendar, MapPin, GraduationCap, ArrowRight } from "lucide-react";
 import { Exam } from "@/store/types";
 
+// Helper function to strip HTML tags and get plain text
+const stripHtmlTags = (html: string): string => {
+  if (!html) return "";
+  // Remove HTML tags and decode entities
+  const text = html
+    .replace(/<[^>]*>/g, " ") // Remove HTML tags
+    .replace(/&nbsp;/g, " ") // Replace &nbsp; with space
+    .replace(/&amp;/g, "&") // Replace &amp; with &
+    .replace(/&lt;/g, "<") // Replace &lt; with <
+    .replace(/&gt;/g, ">") // Replace &gt; with >
+    .replace(/&quot;/g, '"') // Replace &quot; with "
+    .replace(/&#39;/g, "'") // Replace &#39; with '
+    .replace(/\s+/g, " ") // Replace multiple spaces with single space
+    .trim();
+  return text;
+};
+
 const ExamCard = ({
   exam,
   handleKnowMore,
@@ -9,11 +26,19 @@ const ExamCard = ({
   exam: Exam;
   handleKnowMore: (id: string) => void;
 }) => {
-  // Create a brief description from the first section if available
-  const description =
-    exam.sections && exam.sections.length > 0
-      ? exam.sections[0].sectionTitle
-      : "Click to learn more about this exam";
+  // Create a brief description from the first section's description content
+  const getDescription = (): string => {
+    if (exam.sections && exam.sections.length > 0) {
+      const firstSection = exam.sections[0];
+      if (firstSection.description) {
+        const plainText = stripHtmlTags(firstSection.description);
+        return plainText || "Click to learn more about this exam";
+      }
+    }
+    return "Click to learn more about this exam";
+  };
+
+  const description = getDescription();
 
   return (
     <div
@@ -25,12 +50,12 @@ const ExamCard = ({
       }}
     >
       {/* exam Image */}
-      <div className="relative h-48 overflow-hidden bg-gray-100 flex items-center justify-center">
+      <div className="relative h-48 overflow-hidden flex items-center justify-center border-b">
         {exam.logoUrl ? (
           <img
             src={exam.logoUrl}
             alt={exam.examName}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain"
             onError={(e) => {
               e.currentTarget.style.display = "none";
               e.currentTarget.parentElement!.innerHTML = `<div class="text-4xl font-bold text-gray-400">${
@@ -48,8 +73,9 @@ const ExamCard = ({
       {/* exam Info */}
       <div className="p-4">
         <h3
-          className="text-lg text-center font-bold mb-1"
+          className="text-lg text-center font-bold mb-1 truncate"
           style={{ color: "#0D3A66" }}
+          title={exam.examName}
         >
           {exam.examName}
         </h3>

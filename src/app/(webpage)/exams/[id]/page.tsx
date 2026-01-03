@@ -13,6 +13,14 @@ import { ArrowLeft } from "lucide-react";
 import ExamHero from "../sections/ExamHero";
 import ExamSidebar from "../sections/ExamSidebar";
 
+// Helper function to remove 'open' attribute from details elements
+// This ensures accordions are closed by default
+const removeDetailsOpen = (html: string): string => {
+  if (!html) return "";
+  // Remove open="" or open from <details> tags
+  return html.replace(/<details\s+open(?:="[^"]*")?/gi, "<details");
+};
+
 export default function ExamDetailPage() {
   const { id } = useParams();
   const router = useRouter();
@@ -228,7 +236,6 @@ export default function ExamDetailPage() {
         }
 
         .prose details > *:not(summary) {
-          display: grid;
           grid-template-rows: 0fr;
           transition: grid-template-rows 0.3s ease;
         }
@@ -238,7 +245,7 @@ export default function ExamDetailPage() {
         }
 
         .prose details > *:not(summary) > * {
-          overflow: hidden;
+          overflow: visible;
         }
 
         .prose details p {
@@ -272,16 +279,41 @@ export default function ExamDetailPage() {
           padding-left: 2rem;
           margin: 1rem 0;
           color: #374151;
+          list-style-position: outside;
         }
 
         .prose ul li {
           margin: 0.5rem 0;
           padding-left: 0.5rem;
+          display: list-item;
         }
 
         .prose ul li p {
           margin: 0;
           display: inline;
+        }
+
+        /* Lists inside details/accordions */
+        .prose details ul,
+        .prose details ol {
+          padding: 0.5rem 1.25rem 1rem 2.5rem;
+          margin: 0;
+        }
+
+        .prose details ul {
+          list-style-type: disc;
+          list-style-position: outside;
+        }
+
+        .prose details ol {
+          list-style-type: decimal;
+          list-style-position: outside;
+        }
+
+        .prose details ul li,
+        .prose details ol li {
+          display: list-item;
+          padding-left: 0.25rem;
         }
 
         /* Tables */
@@ -374,7 +406,7 @@ export default function ExamDetailPage() {
                       <div
                         className="prose prose-lg max-w-none text-gray-700 py-4"
                         dangerouslySetInnerHTML={{
-                          __html: section.description,
+                          __html: removeDetailsOpen(section.description),
                         }}
                         style={{
                           lineHeight: "1.8",
@@ -400,7 +432,7 @@ export default function ExamDetailPage() {
                     <div
                       className="prose prose-lg max-w-none text-gray-700"
                       dangerouslySetInnerHTML={{
-                        __html: section.description,
+                        __html: removeDetailsOpen(section.description),
                       }}
                       style={{
                         lineHeight: "1.8",

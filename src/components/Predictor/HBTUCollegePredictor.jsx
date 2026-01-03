@@ -10,13 +10,14 @@ import { toast } from "sonner";
 export default function HBTUCollegePredictor() {
   const [formData, setFormData] = useState({
     counselingType: "B.TECH",
-    phase: "",
     round: "",
     crlRank: "",
+    categoryRank: "",
     category: "OPEN",
     subCategory: "NOT APPLICABLE",
     homeState: "",
     gender: "Male",
+    programName: [],
   });
 
   const [results, setResults] = useState(null);
@@ -33,9 +34,51 @@ export default function HBTUCollegePredictor() {
     }
   }, [results]);
 
-  // Get available sub-categories for selected category
+  // Check if TFW is selected
+  const isTFWSelected = () => {
+    return formData.subCategory.includes("(TF)");
+  };
+
+  // Check if BS-MS is selected
+  const isBSMSSelected = () => {
+    return formData.counselingType === "BS-MS";
+  };
+
+  // Get available rounds based on counseling type
+  const getAvailableRounds = () => {
+    return hbtuOptions.rounds[formData.counselingType] || [];
+  };
+
+  // Get available sub-categories for selected category and counseling type
   const getSubCategories = () => {
-    return hbtuOptions.subCategories[formData.category] || [];
+    const typeSubCategories =
+      hbtuOptions.subCategories[formData.counselingType];
+    if (typeSubCategories) {
+      return typeSubCategories[formData.category] || [];
+    }
+    return [];
+  };
+
+  // Get available programs based on TFW selection (only for B.TECH)
+  const getAvailablePrograms = () => {
+    if (isBSMSSelected()) {
+      return []; // BS-MS has fixed program
+    }
+    if (isTFWSelected()) {
+      return hbtuOptions.tfwPrograms;
+    }
+    return hbtuOptions.normalPrograms;
+  };
+
+  const handleCounselingTypeChange = (type) => {
+    setFormData((prev) => ({
+      ...prev,
+      counselingType: type,
+      round: "",
+      category: "OPEN",
+      subCategory: "NOT APPLICABLE",
+      programName: [],
+    }));
   };
 
   const handleChange = (e) => {
@@ -57,12 +100,23 @@ export default function HBTUCollegePredictor() {
       }
     }
 
-    // Reset sub-category when category changes
+    // Reset sub-category and programs when category changes
     if (id === "category") {
       setFormData((prev) => ({
         ...prev,
         [id]: value,
         subCategory: "NOT APPLICABLE",
+        programName: [],
+      }));
+      return;
+    }
+
+    // Reset programs when sub-category changes
+    if (id === "subCategory") {
+      setFormData((prev) => ({
+        ...prev,
+        [id]: value,
+        programName: [],
       }));
       return;
     }
@@ -80,6 +134,36 @@ export default function HBTUCollegePredictor() {
     }));
   };
 
+  const handleProgramSelection = (program) => {
+    setFormData((prev) => {
+      const isSelected = prev.programName.includes(program);
+
+      return {
+        ...prev,
+        programName: isSelected
+          ? prev.programName.filter((name) => name !== program)
+          : [...prev.programName, program],
+      };
+    });
+  };
+
+  const handleSelectAllPrograms = () => {
+    const availablePrograms = getAvailablePrograms();
+    if (formData.programName.length === availablePrograms.length) {
+      // Deselect all
+      setFormData((prev) => ({
+        ...prev,
+        programName: [],
+      }));
+    } else {
+      // Select all
+      setFormData((prev) => ({
+        ...prev,
+        programName: [...availablePrograms],
+      }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -92,14 +176,14 @@ export default function HBTUCollegePredictor() {
       return;
     }
 
-    if (!formData.phase) {
-      toast.error("Please select Phase");
+    if (formData.category !== "OPEN" && !formData.categoryRank) {
+      toast.error("Please enter Category Rank for the selected category");
       setLoading(false);
       return;
     }
 
     if (!formData.round) {
-      toast.error("Please select Round Number");
+      toast.error("Please select Round");
       setLoading(false);
       return;
     }
@@ -113,13 +197,21 @@ export default function HBTUCollegePredictor() {
     try {
       const payload = {
         counselingType: formData.counselingType,
-        phase: Number(formData.phase),
-        round: Number(formData.round),
+        round: formData.round,
         crlRank: Number(formData.crlRank),
+        categoryRank: formData.categoryRank
+          ? Number(formData.categoryRank)
+          : undefined,
         category: formData.category,
         subCategory: formData.subCategory,
         homeState: formData.homeState,
         gender: formData.gender,
+        instituteName: hbtuOptions.instituteName,
+        programName: isBSMSSelected()
+          ? [hbtuOptions.bsmsProgram]
+          : formData.programName.length > 0
+          ? formData.programName
+          : undefined,
       };
 
       console.log("Sending HBTU payload:", payload);
@@ -127,10 +219,13 @@ export default function HBTUCollegePredictor() {
       console.log("HBTU prediction response:", response.data);
 
       // Transform HBTU response to match PredictionResults expected format
-      // HBTU API returns { predictions: [...] }
-      // PredictionResults expects { homestatePredictions: [] }
       const transformedResults = {
-        homestatePredictions: response.data.predictions || [],
+        homestatePredictions: [
+          ...(response.data.highProbability || []),
+          ...(response.data.mediumProbability || []),
+          ...(response.data.lowProbability || []),
+          ...(response.data.predictions || []),
+        ],
       };
 
       console.log("Transformed results:", transformedResults);
@@ -142,6 +237,8 @@ export default function HBTUCollegePredictor() {
       setLoading(false);
     }
   };
+
+  const availablePrograms = getAvailablePrograms();
 
   return (
     <div className="container mx-auto px-2 sm:px-4 my-6 sm:my-10">
@@ -202,12 +299,7 @@ export default function HBTUCollegePredictor() {
                   <button
                     key={option.value}
                     type="button"
-                    onClick={() =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        counselingType: option.value,
-                      }))
-                    }
+                    onClick={() => handleCounselingTypeChange(option.value)}
                     className={`flex-1 p-2 sm:p-3 border rounded-lg text-xs sm:text-sm font-medium transition ${
                       formData.counselingType === option.value
                         ? "bg-[var(--primary)] text-white border-[var(--primary)]"
@@ -218,54 +310,6 @@ export default function HBTUCollegePredictor() {
                   </button>
                 ))}
               </div>
-            </div>
-
-            {/* Phase */}
-            <div>
-              <label
-                htmlFor="phase"
-                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
-              >
-                Phase (Required)
-              </label>
-              <select
-                required
-                id="phase"
-                value={formData.phase}
-                onChange={handleChange}
-                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
-              >
-                <option value="">Select Phase</option>
-                {hbtuOptions.phases.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Round Number */}
-            <div>
-              <label
-                htmlFor="round"
-                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
-              >
-                Round Number (Required)
-              </label>
-              <select
-                required
-                id="round"
-                value={formData.round}
-                onChange={handleChange}
-                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
-              >
-                <option value="">Select Round Number</option>
-                {hbtuOptions.rounds.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
             </div>
 
             {/* CRL Rank */}
@@ -284,6 +328,28 @@ export default function HBTUCollegePredictor() {
                 placeholder="25000"
                 min="1"
                 required
+                onWheel={(e) => e.currentTarget.blur()}
+                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
+              />
+            </div>
+
+            {/* Category Rank */}
+            <div>
+              <label
+                htmlFor="categoryRank"
+                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
+              >
+                Enter Category Rank{" "}
+                {formData.category !== "OPEN" ? "(Required)" : "(Optional)"}
+              </label>
+              <input
+                type="number"
+                id="categoryRank"
+                value={formData.categoryRank}
+                onChange={handleChange}
+                placeholder="2000"
+                min="1"
+                required={formData.category !== "OPEN"}
                 onWheel={(e) => e.currentTarget.blur()}
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
               />
@@ -341,6 +407,11 @@ export default function HBTUCollegePredictor() {
                 className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
               >
                 Select Sub-Category
+                {isBSMSSelected() && (
+                  <span className="ml-2 text-xs text-blue-600 font-normal">
+                    (No TFW for BS-MS)
+                  </span>
+                )}
               </label>
               <select
                 id="subCategory"
@@ -380,6 +451,122 @@ export default function HBTUCollegePredictor() {
               </select>
             </div>
 
+            {/* Round */}
+            <div>
+              <label
+                htmlFor="round"
+                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
+              >
+                Round (Required)
+              </label>
+              <select
+                required
+                id="round"
+                value={formData.round}
+                onChange={handleChange}
+                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
+              >
+                <option value="">Select Round</option>
+                {getAvailableRounds().map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Institute Name - Pre-selected and locked */}
+            <div>
+              <label className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5">
+                Institute Name
+              </label>
+              <div className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg bg-gray-100 text-[var(--foreground)]">
+                {hbtuOptions.instituteName}
+              </div>
+              <p className="text-xs text-[var(--muted-text)] mt-1">
+                Institute is pre-selected for HBTU predictions
+              </p>
+            </div>
+
+            {/* Program Name - Multi-select for B.TECH, locked for BS-MS */}
+            <div>
+              <label className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5">
+                Program Name
+                {!isBSMSSelected() && isTFWSelected() && (
+                  <span className="ml-2 text-xs text-orange-600 font-normal">
+                    (TFW Programs Only)
+                  </span>
+                )}
+              </label>
+
+              {isBSMSSelected() ? (
+                // BS-MS has fixed program
+                <div className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg bg-gray-100 text-[var(--foreground)]">
+                  {hbtuOptions.bsmsProgram}
+                </div>
+              ) : (
+                // B.TECH has multi-select programs
+                <>
+                  <div className="border border-[var(--border)] rounded-lg p-2 max-h-48 overflow-y-auto bg-white">
+                    <label className="flex items-center p-2 hover:bg-[var(--muted-background)] rounded cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={
+                          formData.programName.length ===
+                          availablePrograms.length
+                        }
+                        onChange={handleSelectAllPrograms}
+                        className="mr-2 accent-[var(--primary)]"
+                      />
+                      <span className="text-xs sm:text-sm font-semibold">
+                        Select All ({availablePrograms.length})
+                      </span>
+                    </label>
+                    <div className="border-t border-[var(--border)] my-1"></div>
+                    {availablePrograms.map((program) => (
+                      <label
+                        key={program}
+                        className="flex items-center p-2 hover:bg-[var(--muted-background)] rounded cursor-pointer"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={formData.programName.includes(program)}
+                          onChange={() => handleProgramSelection(program)}
+                          className="mr-2 accent-[var(--primary)]"
+                        />
+                        <span className="text-xs sm:text-sm flex-1">
+                          {program}
+                        </span>
+                        {formData.programName.includes(program) && (
+                          <svg
+                            className="w-4 h-4 text-green-500 flex-shrink-0"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        )}
+                      </label>
+                    ))}
+                  </div>
+                  {formData.programName.length > 0 && (
+                    <p className="text-xs text-[var(--muted-text)] mt-1">
+                      {formData.programName.length} program(s) selected
+                    </p>
+                  )}
+                </>
+              )}
+              {isBSMSSelected() && (
+                <p className="text-xs text-[var(--muted-text)] mt-1">
+                  Program is pre-selected for BS-MS predictions
+                </p>
+              )}
+            </div>
+
             {/* Submit Button */}
             <div>
               <button
@@ -402,7 +589,13 @@ export default function HBTUCollegePredictor() {
       {/* Results Section */}
       <div ref={resultsRef}>
         {results && (
-          <PredictionResults results={results} userGender={formData.gender} />
+          <PredictionResults
+            results={results}
+            userGender={formData.gender}
+            hideQuota={true}
+            hideSeatType={true}
+            hideOpeningRank={true}
+          />
         )}
       </div>
     </div>

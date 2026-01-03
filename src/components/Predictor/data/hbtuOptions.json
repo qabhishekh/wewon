@@ -3,15 +3,19 @@
     { "value": "B.TECH", "label": "B.TECH" },
     { "value": "BS-MS", "label": "BS-MS (Mathematics and Data Science)" }
   ],
-  "phases": [
-    { "value": 1, "label": "Phase 1" },
-    { "value": 2, "label": "Phase 2" }
-  ],
-  "rounds": [
-    { "value": 1, "label": "Round 1" },
-    { "value": 2, "label": "Round 2" },
-    { "value": 3, "label": "Round 3" }
-  ],
+  "rounds": {
+    "B.TECH": [
+      { "value": "PHASE 1 Round 1", "label": "PHASE 1 Round 1" },
+      { "value": "PHASE 1 Round 2", "label": "PHASE 1 Round 2" },
+      { "value": "PHASE 1 Round 3", "label": "PHASE 1 Round 3" },
+      { "value": "PHASE 2 Round 1", "label": "PHASE 2 Round 1" }
+    ],
+    "BS-MS": [
+      { "value": "PHASE 1 Round 1", "label": "PHASE 1 Round 1" },
+      { "value": "PHASE 1 Round 2", "label": "PHASE 1 Round 2" },
+      { "value": "PHASE 1 Round 3", "label": "PHASE 1 Round 3" }
+    ]
+  },
   "categories": [
     { "value": "OPEN", "label": "OPEN" },
     { "value": "EWS", "label": "EWS" },
@@ -20,31 +24,61 @@
     { "value": "ST", "label": "ST" }
   ],
   "subCategories": {
-    "OPEN": [
-      { "value": "NOT APPLICABLE", "label": "Not Applicable" },
-      { "value": "OPEN(TF)", "label": "OPEN (Tuition Fee Waiver)" },
-      { "value": "OPEN(AF)", "label": "OPEN (Armed Forces)" },
-      { "value": "OPEN(FF)", "label": "OPEN (Freedom Fighter)" },
-      { "value": "OPEN(PH)", "label": "OPEN (Physically Handicapped)" }
-    ],
-    "EWS": [
-      { "value": "NOT APPLICABLE", "label": "Not Applicable" },
-      { "value": "EWS(TF)", "label": "EWS (Tuition Fee Waiver)" }
-    ],
-    "BC": [
-      { "value": "NOT APPLICABLE", "label": "Not Applicable" },
-      { "value": "BC(TF)", "label": "BC (Tuition Fee Waiver)" },
-      { "value": "BC(GIRL)", "label": "BC (Girl)" }
-    ],
-    "SC": [
-      { "value": "NOT APPLICABLE", "label": "Not Applicable" },
-      { "value": "SC(TF)", "label": "SC (Tuition Fee Waiver)" },
-      { "value": "SC(GIRL)", "label": "SC (Girl)" }
-    ],
-    "ST": [
-      { "value": "NOT APPLICABLE", "label": "Not Applicable" },
-      { "value": "ST(TF)", "label": "ST (Tuition Fee Waiver)" }
-    ]
+    "B.TECH": {
+      "OPEN": [
+        { "value": "NOT APPLICABLE", "label": "Not Applicable" },
+        { "value": "OPEN(TF)", "label": "OPEN (Tuition Fee Waiver)" },
+        { "value": "OPEN(AF)", "label": "OPEN (Armed Forces)" },
+        { "value": "OPEN(GIRL)", "label": "OPEN (Girl)" },
+        { "value": "OPEN(PH)", "label": "OPEN (Physically Handicapped)" },
+        { "value": "OPEN(FF)", "label": "OPEN (Freedom Fighter)" }
+      ],
+      "EWS": [
+        { "value": "NOT APPLICABLE", "label": "Not Applicable" },
+        { "value": "EWS(GL)", "label": "EWS (GL)" },
+        { "value": "EWS(AF)", "label": "EWS (Armed Forces)" },
+        { "value": "EWS(PH)", "label": "EWS (Physically Handicapped)" }
+      ],
+      "BC": [
+        { "value": "NOT APPLICABLE", "label": "Not Applicable" },
+        { "value": "BC(AF)", "label": "BC (Armed Forces)" },
+        { "value": "BC(GIRL)", "label": "BC (Girl)" },
+        { "value": "BC(PH)", "label": "BC (Physically Handicapped)" },
+        { "value": "BC(FF)", "label": "BC (Freedom Fighter)" }
+      ],
+      "SC": [
+        { "value": "NOT APPLICABLE", "label": "Not Applicable" },
+        { "value": "SC(GIRL)", "label": "SC (Girl)" },
+        { "value": "SC(AF)", "label": "SC (Armed Forces)" },
+        { "value": "SC(PH)", "label": "SC (Physically Handicapped)" }
+      ],
+      "ST": [
+        { "value": "NOT APPLICABLE", "label": "Not Applicable" },
+        { "value": "ST(GIRL)", "label": "ST (Girl)" }
+      ]
+    },
+    "BS-MS": {
+      "OPEN": [
+        { "value": "NOT APPLICABLE", "label": "Not Applicable" },
+        { "value": "OPEN(AF)", "label": "OPEN (Armed Forces)" },
+        { "value": "OPEN(GIRL)", "label": "OPEN (Girl)" },
+        { "value": "OPEN(PH)", "label": "OPEN (Physically Handicapped)" }
+      ],
+      "EWS": [
+        { "value": "NOT APPLICABLE", "label": "Not Applicable" },
+        { "value": "EWS(GIRL)", "label": "EWS (Girl)" }
+      ],
+      "BC": [
+        { "value": "NOT APPLICABLE", "label": "Not Applicable" },
+        { "value": "BC(AF)", "label": "BC (Armed Forces)" },
+        { "value": "BC(GIRL)", "label": "BC (Girl)" }
+      ],
+      "SC": [
+        { "value": "NOT APPLICABLE", "label": "Not Applicable" },
+        { "value": "SC(GIRL)", "label": "SC (Girl)" }
+      ],
+      "ST": [{ "value": "NOT APPLICABLE", "label": "Not Applicable" }]
+    }
   },
   "homeStates": [
     { "value": "Uttar Pradesh", "label": "Uttar Pradesh" },
@@ -53,5 +87,37 @@
   "genders": [
     { "value": "Male", "label": "Male" },
     { "value": "Female", "label": "Female" }
+  ],
+  "instituteName": "Harcourt Butler Technical University, Kanpur",
+  "bsmsProgram": "BS-MS (Mathematics and Data Science)",
+  "normalPrograms": [
+    "CHEMICAL TECHNOLOGY (FOOD TECHNOLOGY)",
+    "CHEMICAL TECHNOLOGY (PAINT TECHNOLOGY)",
+    "CIVIL ENGG.",
+    "COMPUTER SC. & ENGG.",
+    "ELECTRICAL ENGG.",
+    "ELECTRONICS ENGG.",
+    "MECHANICAL ENGG.",
+    "CHEMICAL ENGG.",
+    "CHEMICAL TECHNOLOGY (BIOCHEMICAL ENGG.)",
+    "CHEMICAL TECHNOLOGY (OIL TECHNOLOGY)",
+    "INFORMATION TECHNOLOGY",
+    "CHEMICAL TECHNOLOGY (PLASTIC TECHNOLOGY)",
+    "CHEMICAL TECHNOLOGY (LEATHER & FASHION TECHNOLOGY)"
+  ],
+  "tfwPrograms": [
+    "CHEMICAL TECHNOLOGY (FOOD TECHNOLOGY) (TFW)",
+    "CHEMICAL TECHNOLOGY (PAINT TECHNOLOGY) (TFW)",
+    "CIVIL ENGG. (TFW)",
+    "COMPUTER SC. & ENGG. (TFW)",
+    "ELECTRICAL ENGG. (TFW)",
+    "ELECTRONICS ENGG. (TFW)",
+    "MECHANICAL ENGG. (TFW)",
+    "CHEMICAL ENGG. (TFW)",
+    "CHEMICAL TECHNOLOGY (BIOCHEMICAL ENGG.) (TFW)",
+    "CHEMICAL TECHNOLOGY (OIL TECHNOLOGY) (TFW)",
+    "INFORMATION TECHNOLOGY (TFW)",
+    "CHEMICAL TECHNOLOGY (PLASTIC TECHNOLOGY) (TFW)",
+    "CHEMICAL TECHNOLOGY (LEATHER & FASHION TECHNOLOGY) (TFW)"
   ]
 }

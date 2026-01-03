@@ -9,26 +9,33 @@
   "subCategories": {
     "OPEN": [
       { "value": "NOT APPLICABLE", "label": "Not Applicable" },
+      { "value": "OPEN(TF)", "label": "OPEN (Tuition Fee Waiver)" },
       { "value": "OPEN(AF)", "label": "OPEN (Armed Forces)" },
-      { "value": "OPEN(FF)", "label": "OPEN (Freedom Fighter)" },
+      { "value": "OPEN(GIRL)", "label": "OPEN (Girl)" },
       { "value": "OPEN(PH)", "label": "OPEN (Physically Handicapped)" },
-      { "value": "OPEN(TF)", "label": "OPEN (Tuition Fee Waiver)" }
+      { "value": "OPEN(FF)", "label": "OPEN (Freedom Fighter)" }
     ],
     "EWS": [
       { "value": "NOT APPLICABLE", "label": "Not Applicable" },
-      { "value": "EWS(TF)", "label": "EWS (Tuition Fee Waiver)" }
+      { "value": "EWS(GL)", "label": "EWS (GL)" },
+      { "value": "EWS(AF)", "label": "EWS (Armed Forces)" },
+      { "value": "EWS(PH)", "label": "EWS (Physically Handicapped)" }
     ],
     "BC": [
       { "value": "NOT APPLICABLE", "label": "Not Applicable" },
-      { "value": "BC(TF)", "label": "BC (Tuition Fee Waiver)" }
+      { "value": "BC(AF)", "label": "BC (Armed Forces)" },
+      { "value": "BC(GIRL)", "label": "BC (Girl)" },
+      { "value": "BC(PH)", "label": "BC (Physically Handicapped)" },
+      { "value": "BC(FF)", "label": "BC (Freedom Fighter)" }
     ],
     "SC": [
       { "value": "NOT APPLICABLE", "label": "Not Applicable" },
-      { "value": "SC(TF)", "label": "SC (Tuition Fee Waiver)" }
+      { "value": "SC(GIRL)", "label": "SC (Girl)" },
+      { "value": "SC(AF)", "label": "SC (Armed Forces)" }
     ],
     "ST": [
       { "value": "NOT APPLICABLE", "label": "Not Applicable" },
-      { "value": "ST(TF)", "label": "ST (Tuition Fee Waiver)" }
+      { "value": "ST(GIRL)", "label": "ST (Girl)" }
     ]
   },
   "genders": [
@@ -40,9 +47,30 @@
     { "value": "Outside Uttar Pradesh", "label": "Outside Uttar Pradesh" }
   ],
   "rounds": [
-    { "value": 1, "label": "Round 1" },
-    { "value": 2, "label": "Round 2" },
+    { "value": 4, "label": "Round 4" },
     { "value": 3, "label": "Round 3" },
-    { "value": 4, "label": "Round 4" }
+    { "value": 2, "label": "Round 2" },
+    { "value": 1, "label": "Round 1" }
+  ],
+  "instituteName": "Madan Mohan Malaviya University of Technology Gorakhpur, Uttar Pradesh",
+  "normalPrograms": [
+    "Chemical Engineering",
+    "Civil Engineering",
+    "Computer Science and Engineering",
+    "Electrical Engineering",
+    "Electronics & Communication Engineering",
+    "Electronics and Communication Engineering (Internet of Things)",
+    "Information Technology",
+    "Mechanical Engineering"
+  ],
+  "tfwPrograms": [
+    "Chemical Engineering -TFW",
+    "Civil Engineering -TFW",
+    "Computer Science and Engineering -TFW",
+    "Electrical Engineering -TFW",
+    "Electronics & Communication Engineering -TFW",
+    "Electronics and Communication Engineering (Internet of Things) -TFW",
+    "Information Technology -TFW",
+    "Mechanical Engineering -TFW"
   ]
 }
