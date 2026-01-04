@@ -47,12 +47,20 @@ export default function IITCollegePredictor() {
         return;
       }
 
-      // Validate format: must be a number or number ending with capital 'P'
-      const categoryRankPattern = /^\d+P?$/;
+      // Validate format: must be a number or number ending with 'P' or 'p'
+      const categoryRankPattern = /^\d+[Pp]?$/;
       if (!categoryRankPattern.test(value)) {
         // Don't update state if format is invalid
         return;
       }
+
+      // Convert lowercase 'p' to uppercase 'P'
+      const normalizedValue = value.replace(/p$/, "P");
+      setFormData((prev) => ({
+        ...prev,
+        [id]: normalizedValue,
+      }));
+      return;
     }
 
     // Validate number inputs to prevent negative values

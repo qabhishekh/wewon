@@ -2,7 +2,11 @@
 
 import { useState, useRef, useEffect } from "react";
 import GoogleAds from "../sections/GoogleAds";
-import { predictUPTAC, getUPTACInstitutes } from "@/network/predictor";
+import {
+  predictUPTAC,
+  getUPTACInstitutes,
+  getUPTACBranches,
+} from "@/network/predictor";
 import uptacOptions from "./data/uptacOptions.json";
 import PredictionResults from "./PredictionResults";
 import { toast } from "sonner";
@@ -26,6 +30,8 @@ export default function UPTACCollegePredictor() {
   const [instituteSearch, setInstituteSearch] = useState("");
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [branchesData, setBranchesData] = useState({});
+  const [loadingBranches, setLoadingBranches] = useState(false);
   const resultsRef = useRef(null);
 
   // Auto-scroll to results when they become available
@@ -37,6 +43,23 @@ export default function UPTACCollegePredictor() {
       });
     }
   }, [results]);
+
+  // Fetch branches on component mount
+  useEffect(() => {
+    const fetchBranches = async () => {
+      setLoadingBranches(true);
+      try {
+        const response = await getUPTACBranches();
+        setBranchesData(response.data || {});
+      } catch (error) {
+        console.error("Error fetching branches:", error);
+        toast.error("Failed to load branches");
+      } finally {
+        setLoadingBranches(false);
+      }
+    };
+    fetchBranches();
+  }, []);
 
   // Fetch institutes when institute type changes
   useEffect(() => {
@@ -78,8 +101,9 @@ export default function UPTACCollegePredictor() {
     if (formData.subCategory.includes("(TF)")) {
       return ["TFW BRANCHES"];
     }
-    // Otherwise show all program groups
-    return uptacOptions.programGroups;
+    // Otherwise show all program groups from API data
+    const programKeys = Object.keys(branchesData);
+    return programKeys.length > 0 ? programKeys : [];
   };
 
   // Get available rounds based on home state
@@ -626,20 +650,43 @@ export default function UPTACCollegePredictor() {
                 Program Name (Optional)
               </label>
               <div className="border border-[var(--border)] rounded-lg p-2 max-h-48 overflow-y-auto bg-white">
-                {getAvailablePrograms().map((program) => (
-                  <label
-                    key={program}
-                    className="flex items-center p-2 hover:bg-[var(--muted-background)] rounded cursor-pointer"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={formData.programName.includes(program)}
-                      onChange={() => handleProgramSelection(program)}
-                      className="mr-2"
-                    />
-                    <span className="text-xs sm:text-sm">{program}</span>
-                  </label>
-                ))}
+                {loadingBranches ? (
+                  <p className="text-xs text-[var(--muted-text)] p-2">
+                    Loading programs...
+                  </p>
+                ) : getAvailablePrograms().length > 0 ? (
+                  getAvailablePrograms().map((program) => (
+                    <label
+                      key={program}
+                      className="flex items-center p-2 hover:bg-[var(--muted-background)] rounded cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={formData.programName.includes(program)}
+                        onChange={() => handleProgramSelection(program)}
+                        className="mr-2 accent-[var(--primary)]"
+                      />
+                      <span className="text-xs sm:text-sm">{program}</span>
+                      {formData.programName.includes(program) && (
+                        <svg
+                          className="w-4 h-4 text-green-500 flex-shrink-0 ml-auto"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      )}
+                    </label>
+                  ))
+                ) : (
+                  <p className="text-xs text-[var(--muted-text)] p-2">
+                    No programs available
+                  </p>
+                )}
               </div>
               {formData.programName.length > 0 && (
                 <p className="text-xs text-[var(--muted-text)] mt-1">

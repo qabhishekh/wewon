@@ -195,9 +195,17 @@ export default function HBTUCollegePredictor() {
     }
 
     try {
+      // Parse phase and round from the combined value (e.g., "PHASE 1 Round 2" -> phase: 1, round: 2)
+      const phaseRoundMatch = formData.round.match(
+        /PHASE\s+(\d+)\s+Round\s+(\d+)/i
+      );
+      const phase = phaseRoundMatch ? Number(phaseRoundMatch[1]) : 1;
+      const round = phaseRoundMatch ? Number(phaseRoundMatch[2]) : 1;
+
       const payload = {
         counselingType: formData.counselingType,
-        round: formData.round,
+        phase: phase,
+        round: round,
         crlRank: Number(formData.crlRank),
         categoryRank: formData.categoryRank
           ? Number(formData.categoryRank)

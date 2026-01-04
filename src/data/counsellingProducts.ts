@@ -82,7 +82,7 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
     // Frontend-specific fields
     icon: "🎓",
     category: PredictorCategory.JEE,
-    purchased: false,
+    purchased: true,
     displayFeatures: [
       "NIT, IIIT & GFTI Predictions",
       "Branch-wise Analysis",
