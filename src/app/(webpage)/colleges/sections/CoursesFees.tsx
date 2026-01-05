@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { Star } from "lucide-react";
 import SubHeading from "@/components/sections/SubHeading";
 
 interface Course {
   id: string;
   name: string;
-  rating: number;
   duration: string;
   seatsOffered: number;
   examsAccepted: string;
@@ -15,7 +13,6 @@ interface Course {
 
 interface CourseSummary {
   description: string;
-  rating: number;
   totalReviews: number;
   totalCourses: number;
   exams: string[];
@@ -84,13 +81,9 @@ export default function CoursesFees({ tabsData }: CoursesFeesProps) {
                 {activeTab.summary.description}
               </p>
 
-              {/* Rating */}
+              {/* Course Count */}
               <div className="flex items-center gap-2 mb-4 pb-4 border-b border-white/20">
-                <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                 <span className="font-semibold">
-                  {activeTab.summary.rating}({activeTab.summary.totalReviews})
-                </span>
-                <span className="ml-auto">
                   {activeTab.summary.totalCourses} Courses
                 </span>
               </div>
@@ -112,13 +105,6 @@ export default function CoursesFees({ tabsData }: CoursesFeesProps) {
                   <span className="text-sm opacity-90">Fees:</span>
                   <span className="font-semibold">
                     {activeTab.summary.fees}
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-center pt-4 border-t border-white/20">
-                  <span className="text-sm opacity-90">Graduation score:</span>
-                  <span className="font-semibold">
-                    {activeTab.summary.graduationScore}
                   </span>
                 </div>
               </div>
@@ -143,13 +129,6 @@ export default function CoursesFees({ tabsData }: CoursesFeesProps) {
                           {course.name}
                         </h3>
                         <div className="flex items-center gap-3 text-sm text-gray-600">
-                          <div className="flex items-center gap-1">
-                            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                            <span className="font-semibold">
-                              {course.rating}
-                            </span>
-                          </div>
-                          <span>•</span>
                           <span>{course.duration}</span>
                         </div>
                       </div>

@@ -16,7 +16,6 @@ import {
 interface CollegeHeroProps {
   name: string;
   location?: string;
-  rating?: number;
   image?: string;
   logo: string;
   conductedBy?: string;
@@ -46,7 +45,6 @@ const tabIcons: { [key: string]: React.ReactNode } = {
 export default function CollegeHero({
   name,
   location,
-  rating,
   logo,
   tags,
   tabs,
@@ -87,24 +85,13 @@ export default function CollegeHero({
           {/* College Name */}
           <h1 className="text-3xl md:text-4xl font-bold mb-4">{name}</h1>
 
-          {/* Location and Rating */}
-          <div className="flex flex-wrap items-center justify-center gap-4 mb-4">
-            {location && (
-              <div className="flex items-center gap-2 text-white/90">
-                <MapPin className="w-5 h-5" />
-                <span className="text-sm md:text-base">{location}</span>
-              </div>
-            )}
-
-            {rating && (
-              <div className="flex items-center gap-2 text-white/90">
-                <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                <span className="text-sm md:text-base font-semibold">
-                  {rating}/5
-                </span>
-              </div>
-            )}
-          </div>
+          {/* Location */}
+          {location && (
+            <div className="flex items-center justify-center gap-2 text-white/90 mb-4">
+              <MapPin className="w-5 h-5" />
+              <span className="text-sm md:text-base">{location}</span>
+            </div>
+          )}
 
           {/* Tags */}
           {tags && tags.length > 0 && (

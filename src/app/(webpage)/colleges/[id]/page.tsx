@@ -110,7 +110,6 @@ export default function CollegePage() {
       name: degree,
       summary: {
         description: `${degree} program at ${college?.Name || "this college"}`,
-        rating: 4.5,
         totalReviews: 0,
         totalCourses: courses.length,
         exams: [...new Set(courses.map((c) => c.Entrance_Exam))],
@@ -120,7 +119,6 @@ export default function CollegePage() {
       courses: courses.map((course, index) => ({
         id: course._id,
         name: `${degree} in ${course.Branch_Name}`,
-        rating: 4.5,
         duration: course.Duration,
         seatsOffered: course.Total_Seats,
         examsAccepted: course.Entrance_Exam,
@@ -276,7 +274,6 @@ export default function CollegePage() {
         <CollegeHero
           name={college.Name}
           location={`${college.City}, ${college.State}`}
-          rating={4.5}
           logo={
             logo ||
             "https://images.unsplash.com/photo-1738464024478-2a60ac914513?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y29sbGVnZSUyMGxvZ298ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=900"
@@ -322,39 +319,10 @@ export default function CollegePage() {
             state: college?.State,
             address: college?.Address,
           }}
-          admissionHighlights={
-            collegeDetails?.admissionRules
-              ?.slice(0, 1)
-              .map((r) => r.Eligibility_Criteria || "") || []
-          }
-          topRankings={
-            collegeDetails?.rankings?.slice(0, 3).map((r) => ({
-              category: r.Category,
-              rank: parseInt(r.Rank_Range),
-            })) || []
-          }
-          feeRange={
-            collegeDetails?.fees && collegeDetails.fees.length > 0
-              ? {
-                  min: Math.min(...collegeDetails.fees.map((f) => f.Amount)),
-                  max: Math.max(...collegeDetails.fees.map((f) => f.Amount)),
-                }
-              : undefined
-          }
         />
 
         {/* Also Known As */}
         <AlsoKnownAs alternateNames={[]} />
-
-        {/* Address */}
-        <Address
-          address={college?.Address || ""}
-          city={college?.City}
-          state={college?.State}
-          pincode=""
-          phone=""
-          email=""
-        />
 
         {/* Admission Rules Section */}
         <div
@@ -380,6 +348,15 @@ export default function CollegePage() {
             )}
         </div>
 
+        {/* Address */}
+        <Address
+          address={college?.Address || ""}
+          city={college?.City}
+          state={college?.State}
+          pincode=""
+          phone=""
+          email=""
+        />
         {/* Courses Section */}
         <div
           ref={(el) => {
@@ -387,18 +364,6 @@ export default function CollegePage() {
           }}
         >
           {tabsData.length > 0 && <CoursesFees tabsData={tabsData} />}
-        </div>
-
-        {/* Facilities Section */}
-        <div
-          ref={(el) => {
-            sectionRefs.current["Facilities"] = el;
-          }}
-        >
-          {collegeDetails?.facilities &&
-            collegeDetails.facilities.length > 0 && (
-              <Facilities facilities={collegeDetails.facilities} />
-            )}
         </div>
 
         {/* Fees Section */}
@@ -484,7 +449,17 @@ export default function CollegePage() {
           websiteUrl={college?.Website || ""}
           collegeName={college?.Name || ""}
         />
-
+        {/* Facilities Section */}
+        <div
+          ref={(el) => {
+            sectionRefs.current["Facilities"] = el;
+          }}
+        >
+          {collegeDetails?.facilities &&
+            collegeDetails.facilities.length > 0 && (
+              <Facilities facilities={collegeDetails.facilities} />
+            )}
+        </div>
         {/* Ads and Recommended */}
         <GoogleAds />
         <Recommended />

@@ -1,13 +1,17 @@
 import React from "react";
 import SubHeading from "@/components/sections/SubHeading";
-import { Connectivity as ConnectivityType } from "@/store/types";
+import {
+  Connectivity as ConnectivityType,
+} from "@/store/types";
 import { Bus, Train, Plane } from "lucide-react";
 
 interface ConnectivityProps {
   connectivity: ConnectivityType[];
 }
 
-export default function Connectivity({ connectivity }: ConnectivityProps) {
+export default function Connectivity({
+  connectivity,
+}: ConnectivityProps) {
   if (!connectivity || connectivity.length === 0) {
     return null;
   }

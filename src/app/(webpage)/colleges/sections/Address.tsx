@@ -20,12 +20,8 @@ export default function Address({
   email,
 }: AddressProps) {
   return (
-    <div className="py-8">
-      <SubHeading
-        align="left"
-        top="Address"
-        bottom="College location and contact details"
-      />
+    <div className="py-4">
+      <div className="text-xl text-[var(--primary)] font-bold">Address</div>
 
       <div className="mt-6 bg-white rounded-lg border border-gray-200 p-6">
         <div className="space-y-4">

@@ -144,8 +144,8 @@ export default function ExamDetailPage() {
 
   // Mock data for sidebar (replace with real data when available)
   const socialLinks = {
-    facebook: "https://facebook.com",
-    twitter: "https://twitter.com",
+    youtube: "https://youtube.com",
+    telegram: "https://telegram.com",
     instagram: "https://instagram.com",
   };
 
@@ -473,10 +473,12 @@ export default function ExamDetailPage() {
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <ExamSidebar
-              socialLinks={socialLinks}
-              popularExams={popularExams}
-            />
+            <div className="sticky top-24 self-start">
+              <ExamSidebar
+                socialLinks={socialLinks}
+                popularExams={popularExams}
+              />
+            </div>
           </div>
         </div>
       </div>

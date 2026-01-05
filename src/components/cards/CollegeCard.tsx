@@ -7,7 +7,7 @@ import {
   CircleChevronRight,
   Building2,
 } from "lucide-react";
-import { getCollegeMedia, getLogoFromMedia } from "@/network/collegeMedia";
+import { getBannerFromMedia, getCollegeMedia } from "@/network/collegeMedia";
 
 // Fallback placeholder image
 const FALLBACK_IMAGE =
@@ -48,7 +48,7 @@ const CollegeCard = ({ college, handleKnowMore }: CollegeCardProps) => {
 
       try {
         const media = await getCollegeMedia(college.id);
-        const logo = getLogoFromMedia(media);
+        const logo = getBannerFromMedia(media);
         setLogoUrl(logo);
       } catch (error: any) {
         // Silently handle 404 errors - expected when no media exists for a college

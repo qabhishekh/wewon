@@ -1,5 +1,5 @@
 import React from "react";
-import { Facebook, Twitter, Instagram } from "lucide-react";
+import { Instagram, Youtube,Send } from "lucide-react";
 import Link from "next/link";
 
 interface PopularExam {
@@ -11,8 +11,8 @@ interface PopularExam {
 
 interface ExamSidebarProps {
   socialLinks?: {
-    facebook?: string;
-    twitter?: string;
+    youtube?: string;
+    telegram?: string;
     instagram?: string;
   };
   popularExams?: PopularExam[];
@@ -31,34 +31,34 @@ export default function ExamSidebar({
             Connect With Us
           </h3>
           <div className="flex flex-col gap-3">
-            {socialLinks.facebook && (
+            {socialLinks.youtube && (
               <a
-                href={socialLinks.facebook}
+                href={socialLinks.youtube}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 p-3 rounded-lg bg-[#1877F2]/10 hover:bg-[#1877F2]/20 transition-colors group"
+                className="flex items-center gap-3 p-3 rounded-lg bg-[#FF0000]/10 hover:bg-[#FF0000]/20 transition-colors group"
               >
-                <div className="w-10 h-10 rounded-full bg-[#1877F2] flex items-center justify-center text-white">
-                  <Facebook size={20} />
+                <div className="w-10 h-10 rounded-full bg-[#FF0000] flex items-center justify-center text-white">
+                  <Youtube size={20} />
                 </div>
                 <span className="text-[#0D3A66] font-medium group-hover:underline">
-                  Facebook
+                  Youtube
                 </span>
               </a>
             )}
 
-            {socialLinks.twitter && (
+            {socialLinks.telegram && (
               <a
-                href={socialLinks.twitter}
+                href={socialLinks.telegram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 p-3 rounded-lg bg-[#1DA1F2]/10 hover:bg-[#1DA1F2]/20 transition-colors group"
               >
                 <div className="w-10 h-10 rounded-full bg-[#1DA1F2] flex items-center justify-center text-white">
-                  <Twitter size={20} />
+                  <Send size={20} />
                 </div>
                 <span className="text-[#0D3A66] font-medium group-hover:underline">
-                  Twitter
+                  Telegram
                 </span>
               </a>
             )}
