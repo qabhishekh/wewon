@@ -32,6 +32,7 @@ import {
 } from "@/store/college/collegeSlice";
 import CollegeGallery from "@/components/sections/CollegeGallery";
 import useCollegeMedia from "@/hooks/useCollegeMedia";
+import SubHeading from "@/components/sections/SubHeading";
 
 export default function CollegePage() {
   const { id } = useParams();
@@ -342,6 +343,18 @@ export default function CollegePage() {
             sectionRefs.current["Connectivity"] = el;
           }}
         >
+          <SubHeading align="left" top="How to Reach" />
+          <Address
+            address={college?.Address || ""}
+            city={college?.City}
+            state={college?.State}
+            pincode=""
+            phone=""
+            email=""
+          />
+          <div className="text-xl text-[var(--primary)] font-bold mt-4">
+            Transportation and connectivity options
+          </div>
           {collegeDetails?.connectivity &&
             collegeDetails.connectivity.length > 0 && (
               <Connectivity connectivity={collegeDetails.connectivity} />
@@ -349,14 +362,7 @@ export default function CollegePage() {
         </div>
 
         {/* Address */}
-        <Address
-          address={college?.Address || ""}
-          city={college?.City}
-          state={college?.State}
-          pincode=""
-          phone=""
-          email=""
-        />
+
         {/* Courses Section */}
         <div
           ref={(el) => {

@@ -32,7 +32,27 @@ export default function FilterColleges() {
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [debouncedSearch, setDebouncedSearch] = useState<string>("");
+  // Pending filters (selected but not yet applied)
+  const [selectedInstituteTypes, setSelectedInstituteTypes] = useState<
+    string[]
+  >([]);
+  const [selectedCities, setSelectedCities] = useState<string[]>([]);
+  // Applied filters (used for API calls)
+  const [appliedInstituteTypes, setAppliedInstituteTypes] = useState<string[]>(
+    []
+  );
+  const [appliedCities, setAppliedCities] = useState<string[]>([]);
   const itemsPerPage = 10;
+
+  // Institute type options for ranking filters
+  const instituteTypeOptions = [
+    { label: "IIT", value: "IIT" },
+    { label: "IIIT", value: "IIIT" },
+    { label: "NIT", value: "NIT" },
+    { label: "GFTI", value: "GFTI" },
+    { label: "Government Colleges", value: "Government" },
+    { label: "Private Colleges", value: "Private" },
+  ];
 
   // Debounce search query
   useEffect(() => {
@@ -43,16 +63,24 @@ export default function FilterColleges() {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Fetch colleges on mount and when page or search changes
+  // Fetch colleges on mount and when page, search, or applied filters change
   useEffect(() => {
     dispatch(
       fetchColleges({
         page: currentPage,
         limit: itemsPerPage,
         searchQuery: debouncedSearch,
+        instituteTypes: appliedInstituteTypes,
+        cities: appliedCities,
       })
     );
-  }, [dispatch, currentPage, debouncedSearch]);
+  }, [
+    dispatch,
+    currentPage,
+    debouncedSearch,
+    appliedInstituteTypes,
+    appliedCities,
+  ]);
 
   const handlePageChange = (page: number) => {
     dispatch(
@@ -60,6 +88,8 @@ export default function FilterColleges() {
         page,
         limit: itemsPerPage,
         searchQuery: debouncedSearch,
+        instituteTypes: appliedInstituteTypes,
+        cities: appliedCities,
       })
     );
   };
@@ -68,9 +98,39 @@ export default function FilterColleges() {
     router.push(`/colleges/${collegeId}`);
   };
 
-  const handleApplyFilter = (filters: any) => {
+  const handleApplyFilter = () => {
+    // Apply the pending filters
+    setAppliedInstituteTypes([...selectedInstituteTypes]);
+    setAppliedCities([...selectedCities]);
     setIsFilterOpen(false);
-    // TODO: Implement filter logic with API
+  };
+
+  // Handle institute type filter change
+  const handleInstituteTypeChange = (value: string) => {
+    setSelectedInstituteTypes((prev) =>
+      prev.includes(value)
+        ? prev.filter((type) => type !== value)
+        : [...prev, value]
+    );
+  };
+
+  // Handle city filter change
+  const handleCityChange = (value: string) => {
+    setSelectedCities((prev) =>
+      prev.includes(value)
+        ? prev.filter((city) => city !== value)
+        : [...prev, value]
+    );
+  };
+
+  // Clear all filters
+  const handleClearAllFilters = () => {
+    setSelectedInstituteTypes([]);
+    setAppliedInstituteTypes([]);
+    setSelectedCities([]);
+    setAppliedCities([]);
+    setSearchQuery("");
+    setDebouncedSearch("");
   };
 
   const handleSearch = () => {
@@ -154,6 +214,8 @@ export default function FilterColleges() {
                     >
                       <input
                         type="checkbox"
+                        checked={selectedCities.includes(location)}
+                        onChange={() => handleCityChange(location)}
                         className="w-4 h-4 cursor-pointer"
                         style={{ accentColor: "#0D3A66" }}
                       />
@@ -260,28 +322,24 @@ export default function FilterColleges() {
                 </div>
               </div>
 
-              {/* Rating Filter */}
-              {/* <div className="p-5 border-b border-gray-200">
+              {/* Institute Type / Ranking Filter */}
+              <div className="p-5 border-b border-gray-200">
                 <h3
                   className="text-sm font-semibold mb-3"
                   style={{ color: "#0D3A66" }}
                 >
-                  Rating
+                  Institute Type / Ranking
                 </h3>
                 <div className="space-y-2">
-                  {[
-                    "4.5 & Above",
-                    "4.0 - 4.5",
-                    "3.5 - 4.0",
-                    "3.0 - 3.5",
-                    "Below 3.0",
-                  ].map((rating) => (
+                  {instituteTypeOptions.map((option) => (
                     <label
-                      key={rating}
+                      key={option.value}
                       className="flex items-center cursor-pointer"
                     >
                       <input
                         type="checkbox"
+                        checked={selectedInstituteTypes.includes(option.value)}
+                        onChange={() => handleInstituteTypeChange(option.value)}
                         className="w-4 h-4 cursor-pointer"
                         style={{ accentColor: "#0D3A66" }}
                       />
@@ -289,12 +347,12 @@ export default function FilterColleges() {
                         className="ml-2 text-sm"
                         style={{ color: "#0D3A66" }}
                       >
-                        {rating}
+                        {option.label}
                       </span>
                     </label>
                   ))}
                 </div>
-              </div> */}
+              </div>
 
               {/* Ownership Filter */}
               <div className="p-5 border-b border-gray-200">
@@ -500,13 +558,14 @@ export default function FilterColleges() {
             {/* Action Buttons */}
             <div className="p-5 border-t border-gray-200 bg-gray-50 space-y-2">
               <button
-                onClick={() => handleApplyFilter({})}
+                onClick={handleApplyFilter}
                 className="w-full py-2.5 rounded-lg font-medium text-sm transition-all hover:opacity-90"
                 style={{ backgroundColor: "#0D3A66", color: "#ffffff" }}
               >
                 Apply Filters
               </button>
               <button
+                onClick={handleClearAllFilters}
                 className="w-full py-2.5 rounded-lg font-medium text-sm transition-all hover:bg-gray-100 border border-gray-300"
                 style={{ color: "#0D3A66" }}
               >

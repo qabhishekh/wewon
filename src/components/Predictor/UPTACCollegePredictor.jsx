@@ -655,33 +655,69 @@ export default function UPTACCollegePredictor() {
                     Loading programs...
                   </p>
                 ) : getAvailablePrograms().length > 0 ? (
-                  getAvailablePrograms().map((program) => (
-                    <label
-                      key={program}
-                      className="flex items-center p-2 hover:bg-[var(--muted-background)] rounded cursor-pointer"
-                    >
+                  <>
+                    <label className="flex items-center p-2 hover:bg-[var(--muted-background)] rounded cursor-pointer">
                       <input
                         type="checkbox"
-                        checked={formData.programName.includes(program)}
-                        onChange={() => handleProgramSelection(program)}
+                        checked={
+                          formData.programName.length ===
+                            getAvailablePrograms().length &&
+                          getAvailablePrograms().length > 0
+                        }
+                        onChange={() => {
+                          const availablePrograms = getAvailablePrograms();
+                          if (
+                            formData.programName.length ===
+                            availablePrograms.length
+                          ) {
+                            // Deselect all
+                            setFormData((prev) => ({
+                              ...prev,
+                              programName: [],
+                            }));
+                          } else {
+                            // Select all
+                            setFormData((prev) => ({
+                              ...prev,
+                              programName: [...availablePrograms],
+                            }));
+                          }
+                        }}
                         className="mr-2 accent-[var(--primary)]"
                       />
-                      <span className="text-xs sm:text-sm">{program}</span>
-                      {formData.programName.includes(program) && (
-                        <svg
-                          className="w-4 h-4 text-green-500 flex-shrink-0 ml-auto"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      )}
+                      <span className="text-xs sm:text-sm font-semibold">
+                        Select All ({getAvailablePrograms().length})
+                      </span>
                     </label>
-                  ))
+                    <div className="border-t border-[var(--border)] my-1"></div>
+                    {getAvailablePrograms().map((program) => (
+                      <label
+                        key={program}
+                        className="flex items-center p-2 hover:bg-[var(--muted-background)] rounded cursor-pointer"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={formData.programName.includes(program)}
+                          onChange={() => handleProgramSelection(program)}
+                          className="mr-2 accent-[var(--primary)]"
+                        />
+                        <span className="text-xs sm:text-sm">{program}</span>
+                        {formData.programName.includes(program) && (
+                          <svg
+                            className="w-4 h-4 text-green-500 flex-shrink-0 ml-auto"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        )}
+                      </label>
+                    ))}
+                  </>
                 ) : (
                   <p className="text-xs text-[var(--muted-text)] p-2">
                     No programs available

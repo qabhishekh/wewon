@@ -1,5 +1,4 @@
 import React from "react";
-import SubHeading from "@/components/sections/SubHeading";
 import {
   Connectivity as ConnectivityType,
 } from "@/store/types";
@@ -32,14 +31,10 @@ export default function Connectivity({
   };
 
   return (
-    <div className="py-12">
-      <SubHeading
-        align="left"
-        top="How to Reach"
-        bottom="Transportation and connectivity options"
-      />
+    <div className="py-2">
+      
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-2">
         {connectivity.map((item) => (
           <div
             key={item._id}
@@ -60,7 +55,7 @@ export default function Connectivity({
                   {item.Type}
                 </h4>
                 <p className="text-gray-600 mb-2">{item.Name}</p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 font-bold">
                   Distance: {item.Distance_KM} km
                 </p>
               </div>

@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import apiClient from "@/hooks/Axios";
 import { College, CollegeDetails } from "../types";
 
-// Fetch Colleges with pagination and search
+// Fetch Colleges with pagination, search, and filters
 export const fetchColleges = createAsyncThunk(
   "college/fetchColleges",
   async (
@@ -10,11 +10,19 @@ export const fetchColleges = createAsyncThunk(
       page?: number;
       limit?: number;
       searchQuery?: string;
+      instituteTypes?: string[];
+      cities?: string[];
     } = {},
     { rejectWithValue }
   ) => {
     try {
-      const { page = 1, limit = 10, searchQuery = "" } = params;
+      const {
+        page = 1,
+        limit = 10,
+        searchQuery = "",
+        instituteTypes = [],
+        cities = [],
+      } = params;
 
       // Build query parameters
       const queryParams = new URLSearchParams({
@@ -24,6 +32,21 @@ export const fetchColleges = createAsyncThunk(
 
       if (searchQuery) {
         queryParams.append("search", searchQuery);
+      }
+
+      // Add institute type filter (API expects 'Type')
+      // Append each type as a separate query param for multiple selections
+      if (instituteTypes.length > 0) {
+        instituteTypes.forEach((type) => {
+          queryParams.append("Type", type);
+        });
+      }
+
+      // Add city filter
+      if (cities.length > 0) {
+        cities.forEach((city) => {
+          queryParams.append("city", city);
+        });
       }
 
       const response = await apiClient.get(

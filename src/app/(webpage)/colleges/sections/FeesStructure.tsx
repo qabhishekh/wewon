@@ -43,7 +43,6 @@ export default function FeesStructure({ fees }: FeesStructureProps) {
                     <th className="text-left p-3 border">Fee Component</th>
                     <th className="text-right p-3 border">Amount (₹)</th>
                     <th className="text-center p-3 border">Frequency</th>
-                    <th className="text-center p-3 border">Refundable</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -56,15 +55,7 @@ export default function FeesStructure({ fees }: FeesStructureProps) {
                       <td className="text-center p-3 border">
                         {fee.Frequency}
                       </td>
-                      <td className="text-center p-3 border">
-                        {fee.Is_Refundable ? (
-                          <span className="text-green-600 font-medium">
-                            Yes
-                          </span>
-                        ) : (
-                          <span className="text-red-600 font-medium">No</span>
-                        )}
-                      </td>
+                      
                     </tr>
                   ))}
                   <tr className="bg-gray-100 font-semibold">
