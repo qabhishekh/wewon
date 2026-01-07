@@ -4,42 +4,49 @@ import { X, Search, ChevronDown } from "lucide-react";
 interface FilterModalProps {
   isOpen: boolean;
   onClose: () => void;
-  handleApplyFilter: (filters: any) => void;
+  handleApplyFilter: () => void;
+  selectedInstituteTypes: string[];
+  onInstituteTypeChange: (value: string) => void;
+  selectedCities: string[];
+  onCityChange: (value: string) => void;
+  onClearAllFilters: () => void;
 }
 
 export default function FilterModal({
   isOpen,
   onClose,
   handleApplyFilter,
+  selectedInstituteTypes,
+  onInstituteTypeChange,
+  selectedCities,
+  onCityChange,
+  onClearAllFilters,
 }: FilterModalProps) {
   const [activeTab, setActiveTab] = useState("Location");
   const [searchLocation, setSearchLocation] = useState("");
   const [searchSpecialization, setSearchSpecialization] = useState("");
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
-  const [selectedFilters, setSelectedFilters] = useState<{
-    [key: string]: string[];
-  }>({
-    Location: [],
-    Course: [],
-    TotalFees: [],
-    Rating: [],
-    Specialization: [],
-    Credential: [],
-    CourseLevel: [],
-    ModeOfStudy: [],
-    Ownership: [],
-  });
+
+  // Institute type options for ranking filters (same as desktop sidebar)
+  const instituteTypeOptions = [
+    { label: "IIT", value: "IIT" },
+    { label: "IIIT", value: "IIIT" },
+    { label: "NIT", value: "NIT" },
+    { label: "GFTI", value: "GFTI" },
+    { label: "Government Colleges", value: "Government" },
+    { label: "Private Colleges", value: "Private" },
+  ];
 
   const filterCategories = [
     "Location",
     "Course",
     "Total Fees",
-    "Rating",
+    "Institute Type",
+    "Ownership",
+    "Mode Of Study",
     "Specialization",
     "Credential",
     "Course Level",
-    "Mode Of Study",
-    "Ownership",
   ];
 
   const filterData: {
@@ -105,13 +112,6 @@ export default function FilterModal({
       { label: "3 - 5 Lakh", count: 1183 },
       { label: "> 5 Lakh", count: 830 },
     ],
-    Rating: [
-      { label: "4.5 & Above" },
-      { label: "4.0 - 4.5" },
-      { label: "3.5 - 4.0" },
-      { label: "3.0 - 3.5" },
-      { label: "Below 3.0" },
-    ],
     Specialization: [
       { label: "Finance" },
       { label: "Marketing" },
@@ -168,33 +168,8 @@ export default function FilterModal({
     ],
   };
 
-  const handleCheckboxChange = (category: string, option: string) => {
-    setSelectedFilters((prev) => {
-      const categoryKey = category.replace(/\s+/g, "");
-      const current = prev[categoryKey] || [];
-      const isSelected = current.includes(option);
-
-      return {
-        ...prev,
-        [categoryKey]: isSelected
-          ? current.filter((item) => item !== option)
-          : [...current, option],
-      };
-    });
-  };
-
   const handleClearFilters = () => {
-    setSelectedFilters({
-      Location: [],
-      Course: [],
-      TotalFees: [],
-      Rating: [],
-      Specialization: [],
-      Credential: [],
-      CourseLevel: [],
-      ModeOfStudy: [],
-      Ownership: [],
-    });
+    onClearAllFilters();
     setSearchLocation("");
     setSearchSpecialization("");
   };
@@ -242,7 +217,7 @@ export default function FilterModal({
           </h2>
           <div className="flex items-center gap-3 max-sm:gap-2">
             <button
-              onClick={() => handleApplyFilter(selectedFilters)}
+              onClick={handleApplyFilter}
               className="px-6 py-2.5 rounded-lg font-semibold text-sm transition-all hover:opacity-90 max-sm:px-4 max-sm:py-2 max-sm:text-xs"
               style={{
                 backgroundColor: "var(--accent)",
@@ -392,34 +367,80 @@ export default function FilterModal({
               {/* Checkboxes - Scrollable */}
               <div className="flex-1 overflow-y-auto p-6 pt-4 max-sm:p-4 max-sm:pt-3">
                 <div className="space-y-4 max-sm:space-y-3">
-                  {getFilteredOptions(activeTab).map((option) => (
-                    <label
-                      key={option.label}
-                      className="flex items-center cursor-pointer group"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={
-                          selectedFilters[getCategoryKey(activeTab)]?.includes(
-                            option.label
-                          ) || false
-                        }
-                        onChange={() =>
-                          handleCheckboxChange(activeTab, option.label)
-                        }
-                        className="w-5 h-5 cursor-pointer max-sm:w-4 max-sm:h-4"
-                        style={{
-                          accentColor: "#0D3A66",
-                        }}
-                      />
-                      <span
-                        className="ml-3 text-sm font-medium group-hover:opacity-80 max-sm:text-xs max-sm:ml-2"
-                        style={{ color: "#0D3A66" }}
-                      >
-                        {option.label}
-                      </span>
-                    </label>
-                  ))}
+                  {activeTab === "Institute Type"
+                    ? // Institute Type filter with controlled state from parent
+                      instituteTypeOptions.map((option) => (
+                        <label
+                          key={option.value}
+                          className="flex items-center cursor-pointer group"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={
+                              selectedInstituteTypes?.includes(option.value) ??
+                              false
+                            }
+                            onChange={() => onInstituteTypeChange(option.value)}
+                            className="w-5 h-5 cursor-pointer max-sm:w-4 max-sm:h-4"
+                            style={{
+                              accentColor: "#0D3A66",
+                            }}
+                          />
+                          <span
+                            className="ml-3 text-sm font-medium group-hover:opacity-80 max-sm:text-xs max-sm:ml-2"
+                            style={{ color: "#0D3A66" }}
+                          >
+                            {option.label}
+                          </span>
+                        </label>
+                      ))
+                    : activeTab === "Location"
+                    ? // Location filter with controlled state from parent
+                      getFilteredOptions(activeTab).map((option) => (
+                        <label
+                          key={option.label}
+                          className="flex items-center cursor-pointer group"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={
+                              selectedCities?.includes(option.label) ?? false
+                            }
+                            onChange={() => onCityChange(option.label)}
+                            className="w-5 h-5 cursor-pointer max-sm:w-4 max-sm:h-4"
+                            style={{
+                              accentColor: "#0D3A66",
+                            }}
+                          />
+                          <span
+                            className="ml-3 text-sm font-medium group-hover:opacity-80 max-sm:text-xs max-sm:ml-2"
+                            style={{ color: "#0D3A66" }}
+                          >
+                            {option.label}
+                          </span>
+                        </label>
+                      ))
+                    : // Other filters (currently display only - not connected to API)
+                      getFilteredOptions(activeTab).map((option) => (
+                        <label
+                          key={option.label}
+                          className="flex items-center cursor-pointer group"
+                        >
+                          <input
+                            type="checkbox"
+                            className="w-5 h-5 cursor-pointer max-sm:w-4 max-sm:h-4"
+                            style={{
+                              accentColor: "#0D3A66",
+                            }}
+                          />
+                          <span
+                            className="ml-3 text-sm font-medium group-hover:opacity-80 max-sm:text-xs max-sm:ml-2"
+                            style={{ color: "#0D3A66" }}
+                          >
+                            {option.label}
+                          </span>
+                        </label>
+                      ))}
                 </div>
               </div>
             </div>

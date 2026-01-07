@@ -710,9 +710,14 @@ export default function FilterColleges() {
 
       {/* Mobile Filter Modal */}
       <FilterModal
-        handleApplyFilter={handleApplyFilter}
         isOpen={isFilterOpen}
         onClose={() => setIsFilterOpen(false)}
+        handleApplyFilter={handleApplyFilter}
+        selectedInstituteTypes={selectedInstituteTypes}
+        onInstituteTypeChange={handleInstituteTypeChange}
+        selectedCities={selectedCities}
+        onCityChange={handleCityChange}
+        onClearAllFilters={handleClearAllFilters}
       />
     </div>
   );

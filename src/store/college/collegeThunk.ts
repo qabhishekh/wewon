@@ -38,7 +38,7 @@ export const fetchColleges = createAsyncThunk(
       // Append each type as a separate query param for multiple selections
       if (instituteTypes.length > 0) {
         instituteTypes.forEach((type) => {
-          queryParams.append("Type", type);
+          queryParams.append("type", type);
         });
       }
 
