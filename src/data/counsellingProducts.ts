@@ -222,6 +222,39 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
       "TFW Seat Predictions",
     ],
   },
+  {
+    title: "JAC Delhi College Predictor",
+    slug: "jac-delhi-predictor",
+    description:
+      "Predict colleges for JAC Delhi counseling. Get predictions for DTU, NSUT, IIIT-D, and IGDTU based on your JEE Mains rank.",
+    price: 399,
+    discountPrice: 249,
+    validityInDays: 365,
+    features: {
+      hasMentorship: false,
+      choiceFilling: {
+        isEnabled: false,
+        usageLimit: 0,
+      },
+      collegePredictor: {
+        isEnabled: true,
+        usageLimit: -1, // Unlimited
+      },
+      hasCourseContent: false,
+    },
+    totalMaterialCount: 0,
+    isActive: true,
+    // Frontend-specific fields
+    icon: "🏛️",
+    category: PredictorCategory.STATE,
+    purchased: true,
+    displayFeatures: [
+      "DTU, NSUT, IIIT-D, IGDTU Predictions",
+      "Round-wise Analysis",
+      "Delhi & Outside Delhi Quotas",
+      "Category-wise Cutoffs",
+    ],
+  },
   // Placeholder for future predictors (15 more to be added)
   // Examples:
   // - NEET UG Predictor

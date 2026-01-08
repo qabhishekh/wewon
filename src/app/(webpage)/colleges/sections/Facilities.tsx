@@ -15,6 +15,22 @@ export default function Facilities({ facilities }: FacilitiesProps) {
     return null;
   }
 
+  // Define priority order for types (Top_Recruiters first, then Past_Recruiters)
+  const typePriority: { [key: string]: number } = {
+    Top_Recruiters: 1,
+    Past_Recruiters: 2,
+    Recruiter: 3,
+    Facility: 4,
+  };
+
+  // Display labels for better readability
+  const typeLabels: { [key: string]: string } = {
+    Top_Recruiters: "Top Recruiters",
+    Past_Recruiters: "Past Recruiters",
+    Recruiter: "Recruiters",
+    Facility: "Facilities",
+  };
+
   // Group facilities by type
   const facilitiesByType: { [key: string]: FacilityType[] } = {};
   facilities.forEach((facility) => {
@@ -22,6 +38,13 @@ export default function Facilities({ facilities }: FacilitiesProps) {
       facilitiesByType[facility.Type] = [];
     }
     facilitiesByType[facility.Type].push(facility);
+  });
+
+  // Sort types by priority
+  const sortedTypes = Object.keys(facilitiesByType).sort((a, b) => {
+    const priorityA = typePriority[a] ?? 99;
+    const priorityB = typePriority[b] ?? 99;
+    return priorityA - priorityB;
   });
 
   const toggleType = (type: string) => {
@@ -36,11 +59,17 @@ export default function Facilities({ facilities }: FacilitiesProps) {
 
   return (
     <div className="py-8">
-      <SubHeading align="left" top="Facilities" bottom="Campus facilities and amenities" />
+      <SubHeading
+        align="left"
+        top="Facilities"
+        bottom="Campus facilities and amenities"
+      />
 
       <div className="flex flex-col gap-3 mt-6">
-        {Object.entries(facilitiesByType).map(([type, items]) => {
+        {sortedTypes.map((type) => {
+          const items = facilitiesByType[type];
           const isExpanded = expandedTypes.has(type);
+          const displayLabel = typeLabels[type] || type;
 
           return (
             <div
@@ -54,7 +83,7 @@ export default function Facilities({ facilities }: FacilitiesProps) {
               >
                 <div className="flex items-center gap-3">
                   <h3 className="text-base font-semibold text-gray-800">
-                    {type}
+                    {displayLabel}
                   </h3>
                   <span className="text-xs font-medium text-white bg-blue-600 px-2.5 py-1 rounded-full">
                     {items.length}

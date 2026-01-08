@@ -32,7 +32,8 @@ interface CoursesFeesProps {
 
 export default function CoursesFees({ tabsData }: CoursesFeesProps) {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
-
+  console.log(tabsData);
+  
   const activeTab = tabsData[activeTabIndex];
 
   const handleTabChange = (index: number) => {

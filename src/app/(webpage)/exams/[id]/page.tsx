@@ -382,8 +382,43 @@ export default function ExamDetailPage() {
       <div className="container mx-auto px-4 py-8">
         {/* Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main Content Area */}
-          <div className="lg:col-span-2 space-y-6">
+          {/* Main Content Area with Watermark and Copy Protection */}
+          <div
+            className="lg:col-span-2 space-y-6 relative"
+            style={{ userSelect: "none" }}
+            onCopy={(e) => e.preventDefault()}
+            onCut={(e) => e.preventDefault()}
+            onContextMenu={(e) => e.preventDefault()}
+          >
+            {/* Watermark Background */}
+            <div
+              className="pointer-events-none fixed inset-0 z-10 overflow-hidden opacity-[0.03]"
+              style={{
+                background: `repeating-linear-gradient(
+                  -45deg,
+                  transparent,
+                  transparent 100px,
+                  rgba(13, 58, 102, 0.15) 100px,
+                  rgba(13, 58, 102, 0.15) 200px
+                )`,
+              }}
+            >
+              <div
+                className="absolute inset-0 flex flex-wrap items-center justify-center gap-20 p-10"
+                style={{
+                  transform: "rotate(-30deg) scale(1.5)",
+                }}
+              >
+                {Array.from({ length: 50 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="text-[#0D3A66] font-bold text-2xl whitespace-nowrap opacity-50"
+                  >
+                    We Won Academy
+                  </div>
+                ))}
+              </div>
+            </div>
             {/* Render all sections grouped by tabs */}
             {availableTabs.map((tabName) => {
               const sectionsForTab = groupedSections?.[tabName] || [];

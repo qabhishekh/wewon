@@ -30,3 +30,12 @@ export const predictMMMUT = (data: any) => {
 export const predictHBTU = (data: any) => {
   return apiClient.post("/api/hbtu/predict", data);
 };
+
+// JAC Delhi Predictor APIs
+export const getJACDelhiBranches = () => {
+  return apiClient.get("/api/jac-delhi/branches");
+};
+
+export const predictJACDelhi = (data: any) => {
+  return apiClient.post("/api/jac-delhi/predict", data);
+};

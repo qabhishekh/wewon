@@ -1,0 +1,75 @@
+{
+  "categories": [
+    { "label": "OPEN", "value": "OPEN" },
+    { "label": "EWS", "value": "EWS" },
+    { "label": "OBC", "value": "OBC" },
+    { "label": "SC", "value": "SC" },
+    { "label": "ST", "value": "ST" }
+  ],
+  "subCategories": [
+    { "label": "Not Applicable", "value": "NOT APPLICABLE" },
+    { "label": "Defence", "value": "Defence" },
+    { "label": "Single Girl Child", "value": "Single Girl Child" },
+    { "label": "Kashmiri Migrant", "value": "Kashmiri Migrant" },
+    {
+      "label": "Persons with Disabilities",
+      "value": "Persons with Disabilities"
+    }
+  ],
+  "regions": [
+    { "label": "Delhi", "value": "Delhi" },
+    { "label": "Outside Delhi", "value": "Outside Delhi" }
+  ],
+  "rounds": [
+    { "label": "Round 1", "value": "Round 1" },
+    { "label": "Round 2", "value": "Round 2" },
+    { "label": "Round 3", "value": "Round 3" },
+    { "label": "Round 4", "value": "Round 4" },
+    { "label": "Round 5", "value": "Round 5" },
+    { "label": "Upgradation Round", "value": "Upgradation Round" },
+    { "label": "Spot Round", "value": "Spot Round" },
+    { "label": "Upgradation Round 2", "value": "Upgradation Round 2" },
+    { "label": "Special Spot Round", "value": "Special Spot Round" }
+  ],
+  "institutes": [
+    { "label": "ALL", "value": "ALL" },
+    {
+      "label": "Delhi Technological University - DTU",
+      "value": "Delhi Technological University"
+    },
+    {
+      "label": "Indira Gandhi Delhi Technical University for Women - IGDTU Delhi",
+      "value": "Indira Gandhi Delhi Technical University for Women"
+    },
+    {
+      "label": "Indraprastha Institute of Information Technology, New Delhi - IIIT-D",
+      "value": "Indraprastha Institute of Information Technology Delhi"
+    },
+    {
+      "label": "Netaji Subhas University of Technology (Main Campus) - NSUT Delhi (Main Campus)",
+      "value": "Netaji Subhas University of Technology, Delhi"
+    },
+    {
+      "label": "Netaji Subhas University of Technology (East Campus) - NSUT Delhi (East Campus)",
+      "value": "Netaji Subhas University of Technology, East Campus"
+    },
+    {
+      "label": "Netaji Subhas University of Technology (West Campus) - NSUT Delhi (West Campus)",
+      "value": "Netaji Subhas University of Technology, West Campus"
+    }
+  ],
+  "specialSpotRoundInstitutes": [
+    {
+      "label": "Indira Gandhi Delhi Technical University for Women - IGDTU Delhi",
+      "value": "Indira Gandhi Delhi Technical University for Women"
+    },
+    {
+      "label": "Indraprastha Institute of Information Technology, New Delhi - IIIT-D",
+      "value": "Indraprastha Institute of Information Technology Delhi"
+    }
+  ],
+  "genders": [
+    { "label": "Male", "value": "Male" },
+    { "label": "Female", "value": "Female" }
+  ]
+}
