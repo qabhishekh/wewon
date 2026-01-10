@@ -39,3 +39,16 @@ export const getJACDelhiBranches = () => {
 export const predictJACDelhi = (data: any) => {
   return apiClient.post("/api/jac-delhi/predict", data);
 };
+
+// JAC Chandigarh Predictor APIs
+export const getJACChandigarhInstitutes = () => {
+  return apiClient.get("/api/jac-chandigarh/institutes");
+};
+
+export const getJACChandigarhBranches = () => {
+  return apiClient.get("/api/jac-chandigarh/branches");
+};
+
+export const predictJACChandigarh = (data: any) => {
+  return apiClient.post("/api/jac-chandigarh/predict", data);
+};
