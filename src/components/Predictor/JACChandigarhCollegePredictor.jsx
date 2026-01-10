@@ -2,25 +2,29 @@
 
 import { useState, useRef, useEffect } from "react";
 import GoogleAds from "../sections/GoogleAds";
-import { getJACDelhiBranches, predictJACDelhi } from "@/network/predictor";
-import jacDelhiOptions from "./data/jacDelhiOptions.json";
+import {
+  getJACChandigarhBranches,
+  predictJACChandigarh,
+} from "@/network/predictor";
+import jacChandigarhOptions from "./data/jacChandigarhOptions.json";
 import PredictionResults from "./PredictionResults";
 import { toast } from "sonner";
 
-export default function JACDelhiCollegePredictor() {
+export default function JACChandigarhCollegePredictor() {
   const [formData, setFormData] = useState({
+    crlRank: "",
+    categoryRank: "",
     category: "OPEN",
-    subCategory: "NOT APPLICABLE",
-    gender: "Male",
-    region: "Delhi",
+    quota: "Home State",
     round: "",
-    instituteName: "ALL",
+    gender: "Male",
+    instituteName: "All",
     programName: [],
   });
 
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [branchesData, setBranchesData] = useState({});
+  const [branchesData, setBranchesData] = useState({ TFW: [], NON_TFW: [] });
   const [loadingBranches, setLoadingBranches] = useState(false);
   const resultsRef = useRef(null);
 
@@ -39,8 +43,8 @@ export default function JACDelhiCollegePredictor() {
     const fetchBranches = async () => {
       setLoadingBranches(true);
       try {
-        const response = await getJACDelhiBranches();
-        setBranchesData(response.data || {});
+        const response = await getJACChandigarhBranches();
+        setBranchesData(response.data || { TFW: [], NON_TFW: [] });
       } catch (error) {
         console.error("Error fetching branches:", error);
         toast.error("Failed to load branches");
@@ -51,40 +55,26 @@ export default function JACDelhiCollegePredictor() {
     fetchBranches();
   }, []);
 
-  // Get available institutes based on gender and round
-  const getAvailableInstitutes = () => {
-    const isSpecialSpotRound = formData.round === "Special Spot Round";
-    const isMale = formData.gender === "Male";
-
-    if (isSpecialSpotRound) {
-      // Special Spot Round: Only IGDTU and IIIT-D
-      let institutes = jacDelhiOptions.specialSpotRoundInstitutes;
-      // If Male, exclude IGDTU
-      if (isMale) {
-        institutes = institutes.filter(
-          (inst) =>
-            !inst.value.includes("Indira Gandhi Delhi Technical University")
-        );
-      }
-      return institutes;
-    }
-
-    // Normal rounds
-    let institutes = jacDelhiOptions.institutes;
-    // If Male, exclude IGDTU
-    if (isMale) {
-      institutes = institutes.filter(
-        (inst) =>
-          !inst.value.includes("Indira Gandhi Delhi Technical University")
-      );
-    }
-    return institutes;
+  // Check if the selected category is a TFW category
+  const isTFWCategory = () => {
+    const selectedCategory = jacChandigarhOptions.categories.find(
+      (cat) => cat.value === formData.category
+    );
+    return selectedCategory?.isTFW === true;
   };
 
-  // Get available programs from API data
+  // Get available programs based on category (TFW or Non-TFW)
   const getAvailablePrograms = () => {
-    const programKeys = Object.keys(branchesData);
-    return programKeys.length > 0 ? programKeys : [];
+    if (isTFWCategory()) {
+      // Use API data if available, fallback to static
+      return branchesData.TFW?.length > 0
+        ? branchesData.TFW
+        : jacChandigarhOptions.tfwPrograms;
+    }
+    // Non-TFW programs
+    return branchesData.NON_TFW?.length > 0
+      ? branchesData.NON_TFW
+      : jacChandigarhOptions.nonTfwPrograms;
   };
 
   const handleChange = (e) => {
@@ -106,22 +96,12 @@ export default function JACDelhiCollegePredictor() {
       }
     }
 
-    // Reset institute selection when round changes (for Special Spot Round logic)
-    if (id === "round") {
+    // Reset program selection when category changes (TFW affects programs)
+    if (id === "category") {
       setFormData((prev) => ({
         ...prev,
         [id]: value,
-        instituteName: "ALL",
-      }));
-      return;
-    }
-
-    // Reset institute selection when gender changes (for IGDTU exclusion)
-    if (id === "gender") {
-      setFormData((prev) => ({
-        ...prev,
-        [id]: value,
-        instituteName: "ALL",
+        programName: [],
       }));
       return;
     }
@@ -136,29 +116,12 @@ export default function JACDelhiCollegePredictor() {
     setFormData((prev) => ({
       ...prev,
       gender,
-      instituteName: "ALL", // Reset institute when gender changes
     }));
   };
 
   const handleProgramSelection = (program) => {
     setFormData((prev) => {
       const isSelected = prev.programName.includes(program);
-
-      // If "ALL" is selected, select all programs
-      if (program === "ALL" && !isSelected) {
-        return {
-          ...prev,
-          programName: [...getAvailablePrograms()],
-        };
-      }
-
-      // If deselecting "ALL", deselect all
-      if (program === "ALL" && isSelected) {
-        return {
-          ...prev,
-          programName: [],
-        };
-      }
 
       return {
         ...prev,
@@ -169,12 +132,26 @@ export default function JACDelhiCollegePredictor() {
     });
   };
 
+  const handleSelectAllPrograms = () => {
+    const availablePrograms = getAvailablePrograms();
+    if (formData.programName.length === availablePrograms.length) {
+      setFormData((prev) => ({ ...prev, programName: [] }));
+    } else {
+      setFormData((prev) => ({ ...prev, programName: [...availablePrograms] }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setResults(null);
 
     // Validate required fields
+    if (!formData.crlRank) {
+      toast.error("Please enter CRL Rank");
+      setLoading(false);
+      return;
+    }
 
     if (!formData.round) {
       toast.error("Please select Round");
@@ -183,27 +160,21 @@ export default function JACDelhiCollegePredictor() {
     }
 
     try {
-      // Map "NOT APPLICABLE" to "None" for backend
-      const subCategoryValue =
-        formData.subCategory === "NOT APPLICABLE"
-          ? "None"
-          : formData.subCategory;
-
       const payload = {
+        crlRank: Number(formData.crlRank),
         category: formData.category,
-        subCategory: subCategoryValue,
-        gender: formData.gender,
-        region: formData.region,
+        quota: formData.quota,
         round: formData.round,
+        gender: formData.gender,
         instituteName:
-          formData.instituteName === "ALL" ? "ALL" : formData.instituteName,
+          formData.instituteName === "All" ? "All" : formData.instituteName,
         programName:
           formData.programName.length > 0 ? formData.programName : "All",
       };
 
-      console.log("Sending JAC Delhi payload:", payload);
-      const response = await predictJACDelhi(payload);
-      console.log("JAC Delhi prediction response:", response.data);
+      console.log("Sending JAC Chandigarh payload:", payload);
+      const response = await predictJACChandigarh(payload);
+      console.log("JAC Chandigarh prediction response:", response.data);
 
       // Transform response to match PredictionResults expected format
       const transformedResults = {
@@ -213,7 +184,7 @@ export default function JACDelhiCollegePredictor() {
       console.log("Transformed results:", transformedResults);
       setResults(transformedResults);
     } catch (error) {
-      console.error("JAC Delhi prediction error:", error);
+      console.error("JAC Chandigarh prediction error:", error);
       toast.error("Failed to get prediction. Please try again.");
     } finally {
       setLoading(false);
@@ -228,10 +199,10 @@ export default function JACDelhiCollegePredictor() {
           <GoogleAds adSlot="1234567890" />
           <div className="p-3 sm:p-6 bg-[var(--background)] border border-[var(--border)] rounded-lg sm:rounded-xl shadow-sm">
             <h3 className="text-base sm:text-xl font-semibold text-[var(--foreground)]">
-              Enter your details
+              Enter your exam details
             </h3>
             <p className="text-xs sm:text-sm text-[var(--muted-text)] mt-1">
-              Select your category and preferences
+              Enter your CRL Rank and category information
             </p>
           </div>
           <div className="p-3 sm:p-6 bg-[var(--background)] border border-[var(--border)] rounded-lg sm:rounded-xl shadow-sm">
@@ -239,7 +210,7 @@ export default function JACDelhiCollegePredictor() {
               Choose your preferences
             </h3>
             <p className="text-xs sm:text-sm text-[var(--muted-text)] mt-1">
-              Region, round, institutes, and programs
+              Quota, round, institutes, and programs
             </p>
           </div>
           <div className="p-3 sm:p-6 bg-[var(--background)] border border-[var(--border)] rounded-lg sm:rounded-xl shadow-sm">
@@ -247,7 +218,7 @@ export default function JACDelhiCollegePredictor() {
               Get instant results
             </h3>
             <p className="text-xs sm:text-sm text-[var(--muted-text)] mt-1">
-              See your personalized college matches in DTU, NSUT, IIIT-D & more
+              See your personalized college matches in Chandigarh & Punjab
             </p>
           </div>
           <p className="text-xs text-[var(--muted-text)] px-2">
@@ -260,22 +231,63 @@ export default function JACDelhiCollegePredictor() {
           {/* Header */}
           <div className="flex flex-col justify-between gap-2 sm:gap-4 mb-4 sm:mb-6">
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[var(--primary)]">
-              JAC DELHI COLLEGE PREDICTOR
+              JAC CHANDIGARH COLLEGE PREDICTOR
             </h2>
             <span className="bg-[var(--light-blue)] text-[var(--primary)] text-[10px] sm:text-xs font-semibold px-2 sm:px-4 py-1 sm:py-2 rounded-full whitespace-nowrap w-fit">
-              DTU • NSUT • IIIT-D • IGDTU
+              CCET • UIET • Dr. SSB UICET
             </span>
           </div>
 
           {/* Form */}
           <form className="space-y-3 sm:space-y-5" onSubmit={handleSubmit}>
+            {/* CRL Rank */}
+            <div>
+              <label
+                htmlFor="crlRank"
+                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
+              >
+                Enter your CRL Rank (Required)
+              </label>
+              <input
+                type="number"
+                id="crlRank"
+                value={formData.crlRank}
+                onChange={handleChange}
+                placeholder="50000"
+                min="1"
+                required
+                onWheel={(e) => e.currentTarget.blur()}
+                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
+              />
+            </div>
+
+            {/* Category Rank */}
+            <div>
+              <label
+                htmlFor="categoryRank"
+                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
+              >
+                Enter Category Rank (Optional)
+              </label>
+              <input
+                type="number"
+                id="categoryRank"
+                value={formData.categoryRank}
+                onChange={handleChange}
+                placeholder="5000"
+                min="1"
+                onWheel={(e) => e.currentTarget.blur()}
+                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
+              />
+            </div>
+
             {/* Gender */}
             <div>
               <label className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5">
                 Gender
               </label>
               <div className="flex space-x-1.5 sm:space-x-2">
-                {jacDelhiOptions.genders.map((option) => (
+                {jacChandigarhOptions.genders.map((option) => (
                   <button
                     key={option.value}
                     type="button"
@@ -290,12 +302,6 @@ export default function JACDelhiCollegePredictor() {
                   </button>
                 ))}
               </div>
-              {formData.gender === "Male" && (
-                <p className="text-xs text-amber-600 mt-1">
-                  Note: IGDTU is a women-only college and is excluded for male
-                  candidates.
-                </p>
-              )}
             </div>
 
             {/* Select Category */}
@@ -312,51 +318,34 @@ export default function JACDelhiCollegePredictor() {
                 onChange={handleChange}
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
               >
-                {jacDelhiOptions.categories.map((option) => (
+                {jacChandigarhOptions.categories.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
                   </option>
                 ))}
               </select>
+              {isTFWCategory() && (
+                <p className="text-xs text-amber-600 mt-1">
+                  Note: TFW category selected. Only TFW programs will be shown.
+                </p>
+              )}
             </div>
 
-            {/* Sub-Category */}
+            {/* Quota */}
             <div>
               <label
-                htmlFor="subCategory"
+                htmlFor="quota"
                 className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
               >
-                Select Sub-Category
+                Select Quota
               </label>
               <select
-                id="subCategory"
-                value={formData.subCategory}
+                id="quota"
+                value={formData.quota}
                 onChange={handleChange}
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
               >
-                {jacDelhiOptions.subCategories.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Region */}
-            <div>
-              <label
-                htmlFor="region"
-                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
-              >
-                Select Your Region
-              </label>
-              <select
-                id="region"
-                value={formData.region}
-                onChange={handleChange}
-                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
-              >
-                {jacDelhiOptions.regions.map((option) => (
+                {jacChandigarhOptions.quotas.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
                   </option>
@@ -380,18 +369,12 @@ export default function JACDelhiCollegePredictor() {
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
               >
                 <option value="">Select Round</option>
-                {jacDelhiOptions.rounds.map((option) => (
+                {jacChandigarhOptions.rounds.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
                   </option>
                 ))}
               </select>
-              {formData.round === "Special Spot Round" && (
-                <p className="text-xs text-amber-600 mt-1">
-                  Note: Special Spot Round is only available for IGDTU and
-                  IIIT-D.
-                </p>
-              )}
             </div>
 
             {/* Institute Name */}
@@ -408,7 +391,7 @@ export default function JACDelhiCollegePredictor() {
                 onChange={handleChange}
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
               >
-                {getAvailableInstitutes().map((option) => (
+                {jacChandigarhOptions.institutes.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
                   </option>
@@ -420,6 +403,9 @@ export default function JACDelhiCollegePredictor() {
             <div>
               <label className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5">
                 Program Name (Optional)
+                {isTFWCategory() && (
+                  <span className="text-amber-600 ml-1">(TFW Programs)</span>
+                )}
               </label>
               <div className="border border-[var(--border)] rounded-lg p-2 max-h-48 overflow-y-auto bg-white">
                 {loadingBranches ? (
@@ -436,25 +422,7 @@ export default function JACDelhiCollegePredictor() {
                             getAvailablePrograms().length &&
                           getAvailablePrograms().length > 0
                         }
-                        onChange={() => {
-                          const availablePrograms = getAvailablePrograms();
-                          if (
-                            formData.programName.length ===
-                            availablePrograms.length
-                          ) {
-                            // Deselect all
-                            setFormData((prev) => ({
-                              ...prev,
-                              programName: [],
-                            }));
-                          } else {
-                            // Select all
-                            setFormData((prev) => ({
-                              ...prev,
-                              programName: [...availablePrograms],
-                            }));
-                          }
-                        }}
+                        onChange={handleSelectAllPrograms}
                         className="mr-2 accent-[var(--primary)]"
                       />
                       <span className="text-xs sm:text-sm font-semibold">
@@ -516,7 +484,7 @@ export default function JACDelhiCollegePredictor() {
 
             {/* Footer Text */}
             <p className="text-center text-[10px] sm:text-xs text-[var(--muted-text)] pt-2">
-              Powered by official JAC Delhi cutoff data
+              Powered by official JAC Chandigarh cutoff data
             </p>
           </form>
         </div>
@@ -529,7 +497,6 @@ export default function JACDelhiCollegePredictor() {
             results={results}
             userGender={formData.gender}
             hideSeatType={true}
-            hideOpeningRank={true}
           />
         )}
       </div>

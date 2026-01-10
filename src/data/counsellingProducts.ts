@@ -255,6 +255,39 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
       "Category-wise Cutoffs",
     ],
   },
+  {
+    title: "JAC Chandigarh College Predictor",
+    slug: "jac-chandigarh-predictor",
+    description:
+      "Predict colleges for JAC Chandigarh counseling. Get predictions for CCET, UIET, and Dr. SSB UICET based on your JEE Mains rank.",
+    price: 399,
+    discountPrice: 249,
+    validityInDays: 365,
+    features: {
+      hasMentorship: false,
+      choiceFilling: {
+        isEnabled: false,
+        usageLimit: 0,
+      },
+      collegePredictor: {
+        isEnabled: true,
+        usageLimit: -1, // Unlimited
+      },
+      hasCourseContent: false,
+    },
+    totalMaterialCount: 0,
+    isActive: true,
+    // Frontend-specific fields
+    icon: "🎓",
+    category: PredictorCategory.STATE,
+    purchased: true,
+    displayFeatures: [
+      "CCET, UIET, Dr. SSB UICET Predictions",
+      "TFW & Non-TFW Programs",
+      "All India & Home State Quotas",
+      "Round-wise Cutoffs",
+    ],
+  },
   // Placeholder for future predictors (15 more to be added)
   // Examples:
   // - NEET UG Predictor

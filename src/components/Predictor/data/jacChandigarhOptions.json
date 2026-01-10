@@ -1,0 +1,104 @@
+{
+  "categories": [
+    { "label": "OPEN", "value": "OPEN" },
+    { "label": "OPEN EWS", "value": "OPEN EWS" },
+    { "label": "SC", "value": "SC" },
+    { "label": "ST", "value": "ST" },
+    { "label": "Backward Classes", "value": "Backward Classes" },
+    { "label": "Rural Area", "value": "Rural Area" },
+    {
+      "label": "Border Area for Dr. SSBUICET / UIET Chandigarh / UIET Hoshiarpur",
+      "value": "Border Area"
+    },
+    {
+      "label": "One Girl Child out of the only two girl children",
+      "value": "One Girl Child out of the only two girl children"
+    },
+    {
+      "label": "EWS TFW for UIET / Dr. SSB UICET / UIET Hoshiarpur",
+      "value": "Economically Weaker Section under Tuition Fee Waiver Scheme for UIET / Dr. SSB UICET / UIET Hoshiarpur",
+      "isTFW": true
+    },
+    {
+      "label": "EWS TFW for CCET",
+      "value": "Economically Weaker Section under Tuition Fee Waiver Scheme for CCET",
+      "isTFW": true
+    },
+    {
+      "label": "Kashmiri Migrant for UIET / Dr. SSB UICET / UIET Hoshiarpur",
+      "value": "Kashmiri Migrant for UIET / Dr. SSB UICET / UIET Hoshiarpur"
+    },
+    {
+      "label": "Kashmiri Migrant / Kashmiri Displaced for CCET / CCA",
+      "value": "Kashmiri Migrant / Kashmiri Displaced for CCET / CCA"
+    },
+    { "label": "Orphan Children", "value": "Orphan Children" },
+    {
+      "label": "Children / Grandchildren of Freedom Fighters",
+      "value": "Children / Grandchildren of Freedom Fighters"
+    },
+    {
+      "label": "Person with Disability (PwD)",
+      "value": "Person with Disability (PwD)"
+    }
+  ],
+  "quotas": [
+    { "label": "Home State", "value": "Home State" },
+    { "label": "All India", "value": "All India" },
+    { "label": "Other State", "value": "Other State" }
+  ],
+  "rounds": [
+    { "label": "Round 1", "value": "Round 1" },
+    { "label": "Round 2", "value": "Round 2" },
+    { "label": "Round 3", "value": "Round 3" },
+    { "label": "Special Round", "value": "Special Round" },
+    { "label": "First Spot Round", "value": "First Spot Round" },
+    { "label": "Second Spot Round", "value": "Second Spot Round" }
+  ],
+  "institutes": [
+    { "label": "All", "value": "All" },
+    {
+      "label": "UIET Hoshiarpur",
+      "value": "University Institute of Engineering and Technology, PUSSG Regional Centre, Hoshiarpur"
+    },
+    {
+      "label": "Dr. SSB UICET, Panjab University",
+      "value": "Dr. S. S. Bhatnagar University Institute of Chemical Engineering and Technology, Panjab University, Chandigarh"
+    },
+    {
+      "label": "UIET, Panjab University",
+      "value": "University Institute of Engineering and Technology, Panjab University, Chandigarh"
+    },
+    {
+      "label": "CCET, Chandigarh",
+      "value": "Chandigarh College of Engineering & Technology, Chandigarh"
+    }
+  ],
+  "genders": [
+    { "label": "Male", "value": "Male" },
+    { "label": "Female", "value": "Female" },
+    { "label": "Other", "value": "Other" }
+  ],
+  "tfwPrograms": [
+    "B.E. in Information Technology – TFW",
+    "B.E. in Computer Science & Engineering – TFW",
+    "B.E. in Electronics & Communication Engineering – TFW",
+    "B.E. in Mechanical Engineering – TFW",
+    "B.E. in Electrical & Electronics Engineering – TFW",
+    "B.E. in Civil Engineering – TFW",
+    "Integrated B.E. (Chemical Engineering) – MBA – TFW",
+    "B.E. in Bio Technology – TFW"
+  ],
+  "nonTfwPrograms": [
+    "B.E. in Information Technology",
+    "B.E. in Computer Science & Engineering",
+    "B.E. in Electronics & Communication Engineering",
+    "B.E. in Mechanical Engineering",
+    "B.E. in Electrical & Electronics Engineering",
+    "B.E. in Civil Engineering",
+    "B.E. in Chemical Engineering",
+    "Integrated B.E. (Chemical Engineering) – MBA",
+    "B.E. in Food Technology",
+    "B.E. in Bio Technology"
+  ]
+}
