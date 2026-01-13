@@ -370,26 +370,6 @@ export default function JACDelhiCollegePredictor() {
               </select>
             </div>
 
-            {/* Category Rank (Optional) */}
-            <div>
-              <label
-                htmlFor="categoryRank"
-                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
-              >
-                Enter Category Rank (Optional)
-              </label>
-              <input
-                type="number"
-                id="categoryRank"
-                value={formData.categoryRank}
-                onChange={handleChange}
-                placeholder="Enter your category rank"
-                min="1"
-                onWheel={(e) => e.currentTarget.blur()}
-                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
-              />
-            </div>
-
             {/* Sub-Category */}
             <div>
               <label
