@@ -763,7 +763,6 @@ export default function UPTACCollegePredictor() {
               formData.roundNumber === 6 ||
               formData.roundNumber === 7
             }
-            isPreparatoryRank={formData.category === "JEE Advanced Preparatory"}
           />
         )}
       </div>
