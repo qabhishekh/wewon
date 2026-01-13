@@ -320,7 +320,43 @@ export default function CollegePage() {
         />
       </div>
 
-      <div className="container mx-auto px-4 md:px-12 py-8">
+      <div
+        className="container mx-auto px-4 md:px-12 py-8 relative"
+        style={{ userSelect: "none" }}
+        onCopy={(e) => e.preventDefault()}
+        onCut={(e) => e.preventDefault()}
+        onContextMenu={(e) => e.preventDefault()}
+      >
+        {/* Watermark Background */}
+        <div
+          className="pointer-events-none fixed inset-0 z-10 overflow-hidden opacity-[0.03]"
+          style={{
+            background: `repeating-linear-gradient(
+              -45deg,
+              transparent,
+              transparent 100px,
+              rgba(13, 58, 102, 0.15) 100px,
+              rgba(13, 58, 102, 0.15) 200px
+            )`,
+          }}
+        >
+          <div
+            className="absolute inset-0 flex flex-wrap items-center justify-center gap-20 p-10"
+            style={{
+              transform: "rotate(-30deg) scale(1.5)",
+            }}
+          >
+            {Array.from({ length: 50 }).map((_, i) => (
+              <div
+                key={i}
+                className="text-[#0D3A66] font-bold text-2xl whitespace-nowrap opacity-50"
+              >
+                We Won Academy
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* WhatsApp Channel Follow Banner */}
         <a
           href="https://whatsapp.com/channel/0029VbAbvRB9cDDfJz1dS13L"

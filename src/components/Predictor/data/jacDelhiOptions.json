@@ -9,6 +9,7 @@
   "subCategories": [
     { "label": "Not Applicable", "value": "NOT APPLICABLE" },
     { "label": "Defence", "value": "Defence" },
+    { "label": "Girl Candidate", "value": "Girl Candidate" },
     { "label": "Single Girl Child", "value": "Single Girl Child" },
     { "label": "Kashmiri Migrant", "value": "Kashmiri Migrant" },
     {
@@ -38,7 +39,7 @@
       "value": "Delhi Technological University"
     },
     {
-      "label": "Indira Gandhi Delhi Technical University for Women - IGDTU Delhi",
+      "label": "Indira Gandhi Delhi Technical University for Women - IGDTUW Delhi",
       "value": "Indira Gandhi Delhi Technical University for Women"
     },
     {
@@ -60,7 +61,7 @@
   ],
   "specialSpotRoundInstitutes": [
     {
-      "label": "Indira Gandhi Delhi Technical University for Women - IGDTU Delhi",
+      "label": "Indira Gandhi Delhi Technical University for Women - IGDTUW Delhi",
       "value": "Indira Gandhi Delhi Technical University for Women"
     },
     {

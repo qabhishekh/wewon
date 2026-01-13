@@ -226,7 +226,7 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
     title: "JAC Delhi College Predictor",
     slug: "jac-delhi-predictor",
     description:
-      "Predict colleges for JAC Delhi counseling. Get predictions for DTU, NSUT, IIIT-D, and IGDTU based on your JEE Mains rank.",
+      "Predict colleges for JAC Delhi counseling. Get predictions for DTU, NSUT, IIIT-D, and IGDTUW based on your JEE Mains rank.",
     price: 399,
     discountPrice: 249,
     validityInDays: 365,
@@ -249,7 +249,7 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
     category: PredictorCategory.STATE,
     purchased: true,
     displayFeatures: [
-      "DTU, NSUT, IIIT-D, IGDTU Predictions",
+      "DTU, NSUT, IIIT-D, IGDTUW Predictions",
       "Round-wise Analysis",
       "Delhi & Outside Delhi Quotas",
       "Category-wise Cutoffs",
