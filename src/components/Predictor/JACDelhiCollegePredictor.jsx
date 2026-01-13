@@ -9,6 +9,7 @@ import { toast } from "sonner";
 
 export default function JACDelhiCollegePredictor() {
   const [formData, setFormData] = useState({
+    crlRank: "",
     category: "OPEN",
     subCategory: "NOT APPLICABLE",
     gender: "Male",
@@ -57,9 +58,9 @@ export default function JACDelhiCollegePredictor() {
     const isMale = formData.gender === "Male";
 
     if (isSpecialSpotRound) {
-      // Special Spot Round: Only IGDTU and IIIT-D
+      // Special Spot Round: Only IGDTUW and IIIT-D
       let institutes = jacDelhiOptions.specialSpotRoundInstitutes;
-      // If Male, exclude IGDTU
+      // If Male, exclude IGDTUW
       if (isMale) {
         institutes = institutes.filter(
           (inst) =>
@@ -71,7 +72,7 @@ export default function JACDelhiCollegePredictor() {
 
     // Normal rounds
     let institutes = jacDelhiOptions.institutes;
-    // If Male, exclude IGDTU
+    // If Male, exclude IGDTUW
     if (isMale) {
       institutes = institutes.filter(
         (inst) =>
@@ -116,7 +117,7 @@ export default function JACDelhiCollegePredictor() {
       return;
     }
 
-    // Reset institute selection when gender changes (for IGDTU exclusion)
+    // Reset institute selection when gender changes (for IGDTUW exclusion)
     if (id === "gender") {
       setFormData((prev) => ({
         ...prev,
@@ -175,6 +176,11 @@ export default function JACDelhiCollegePredictor() {
     setResults(null);
 
     // Validate required fields
+    if (!formData.crlRank) {
+      toast.error("Please enter CRL Rank");
+      setLoading(false);
+      return;
+    }
 
     if (!formData.round) {
       toast.error("Please select Round");
@@ -190,6 +196,7 @@ export default function JACDelhiCollegePredictor() {
           : formData.subCategory;
 
       const payload = {
+        crlRank: Number(formData.crlRank),
         category: formData.category,
         subCategory: subCategoryValue,
         gender: formData.gender,
@@ -263,12 +270,33 @@ export default function JACDelhiCollegePredictor() {
               JAC DELHI COLLEGE PREDICTOR
             </h2>
             <span className="bg-[var(--light-blue)] text-[var(--primary)] text-[10px] sm:text-xs font-semibold px-2 sm:px-4 py-1 sm:py-2 rounded-full whitespace-nowrap w-fit">
-              DTU • NSUT • IIIT-D • IGDTU
+              DTU • NSUT • IIIT-D • IGDTUW
             </span>
           </div>
 
           {/* Form */}
           <form className="space-y-3 sm:space-y-5" onSubmit={handleSubmit}>
+            {/* CRL Rank */}
+            <div>
+              <label
+                htmlFor="crlRank"
+                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
+              >
+                Enter CRL Rank (Required)
+              </label>
+              <input
+                type="number"
+                id="crlRank"
+                value={formData.crlRank}
+                onChange={handleChange}
+                placeholder="15000"
+                min="1"
+                required
+                onWheel={(e) => e.currentTarget.blur()}
+                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
+              />
+            </div>
+
             {/* Gender */}
             <div>
               <label className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5">
@@ -292,7 +320,7 @@ export default function JACDelhiCollegePredictor() {
               </div>
               {formData.gender === "Male" && (
                 <p className="text-xs text-amber-600 mt-1">
-                  Note: IGDTU is a women-only college and is excluded for male
+                  Note: IGDTUW is a women-only college and is excluded for male
                   candidates.
                 </p>
               )}
@@ -388,7 +416,7 @@ export default function JACDelhiCollegePredictor() {
               </select>
               {formData.round === "Special Spot Round" && (
                 <p className="text-xs text-amber-600 mt-1">
-                  Note: Special Spot Round is only available for IGDTU and
+                  Note: Special Spot Round is only available for IGDTUW and
                   IIIT-D.
                 </p>
               )}

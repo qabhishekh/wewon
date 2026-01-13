@@ -15,7 +15,7 @@ export default function JACChandigarhCollegePredictor() {
     crlRank: "",
     categoryRank: "",
     category: "OPEN",
-    quota: "Home State",
+    homeState: "Chandigarh",
     round: "",
     gender: "Male",
     instituteName: "All",
@@ -163,7 +163,7 @@ export default function JACChandigarhCollegePredictor() {
       const payload = {
         crlRank: Number(formData.crlRank),
         category: formData.category,
-        quota: formData.quota,
+        homeState: formData.homeState,
         round: formData.round,
         gender: formData.gender,
         instituteName:
@@ -210,7 +210,7 @@ export default function JACChandigarhCollegePredictor() {
               Choose your preferences
             </h3>
             <p className="text-xs sm:text-sm text-[var(--muted-text)] mt-1">
-              Quota, round, institutes, and programs
+              Home state, round, institutes, and programs
             </p>
           </div>
           <div className="p-3 sm:p-6 bg-[var(--background)] border border-[var(--border)] rounded-lg sm:rounded-xl shadow-sm">
@@ -331,21 +331,21 @@ export default function JACChandigarhCollegePredictor() {
               )}
             </div>
 
-            {/* Quota */}
+            {/* Home State */}
             <div>
               <label
-                htmlFor="quota"
+                htmlFor="homeState"
                 className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
               >
-                Select Quota
+                Choose Your Home State
               </label>
               <select
-                id="quota"
-                value={formData.quota}
+                id="homeState"
+                value={formData.homeState}
                 onChange={handleChange}
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
               >
-                {jacChandigarhOptions.quotas.map((option) => (
+                {jacChandigarhOptions.homeStates.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
                   </option>

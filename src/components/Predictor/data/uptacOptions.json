@@ -52,12 +52,12 @@
       { "label": "Round 2", "value": 2 },
       { "label": "Round 3", "value": 3 },
       { "label": "Round 4", "value": 4 },
-      { "label": "Round 6", "value": 6 },
-      { "label": "Round 7", "value": 7 }
+      { "label": "Round 6 (Spot Round)", "value": 6 },
+      { "label": "Round 7 (Spot Round)", "value": 7 }
     ],
     "Outside Uttar Pradesh": [
-      { "label": "Round 6", "value": 6 },
-      { "label": "Round 7", "value": 7 }
+      { "label": "Round 6 (Spot Round)", "value": 6 },
+      { "label": "Round 7 (Spot Round)", "value": 7 }
     ]
   },
   "instituteTypes": [

@@ -42,10 +42,9 @@
       "value": "Person with Disability (PwD)"
     }
   ],
-  "quotas": [
-    { "label": "Home State", "value": "Home State" },
-    { "label": "All India", "value": "All India" },
-    { "label": "Other State", "value": "Other State" }
+  "homeStates": [
+    { "label": "Chandigarh", "value": "Chandigarh" },
+    { "label": "Outside Chandigarh", "value": "Outside Chandigarh" }
   ],
   "rounds": [
     { "label": "Round 1", "value": "Round 1" },

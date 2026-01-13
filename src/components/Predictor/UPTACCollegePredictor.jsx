@@ -757,6 +757,13 @@ export default function UPTACCollegePredictor() {
             results={results}
             userGender={formData.gender}
             hideSeatType={true}
+            isSpotRound={
+              formData.roundNumber === "6" ||
+              formData.roundNumber === "7" ||
+              formData.roundNumber === 6 ||
+              formData.roundNumber === 7
+            }
+            isPreparatoryRank={formData.category === "JEE Advanced Preparatory"}
           />
         )}
       </div>

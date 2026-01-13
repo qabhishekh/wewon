@@ -8,6 +8,8 @@ export default function PredictionResults({
   hideSeatType = false,
   hideQuota = false,
   hideOpeningRank = false,
+  isSpotRound = false,
+  isPreparatoryRank = false,
 }) {
   const [activeTab, setActiveTab] = useState("JoSAA");
   const [activeProbabilityTab, setActiveProbabilityTab] = useState("High");
@@ -225,6 +227,16 @@ export default function PredictionResults({
                         Branch
                       </th>
                       <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
+                        Category
+                      </th>
+                      {currentProbabilityData.some(
+                        (item) => item.subCategory
+                      ) && (
+                        <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
+                          Sub-Category
+                        </th>
+                      )}
+                      <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
                         Gender
                       </th>
                       {!hideQuota && (
@@ -269,6 +281,16 @@ export default function PredictionResults({
                         <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)] max-w-[280px] break-words">
                           {item.branch}
                         </td>
+                        <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)] whitespace-nowrap">
+                          {item.category}
+                        </td>
+                        {currentProbabilityData.some(
+                          (item) => item.subCategory
+                        ) && (
+                          <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)] whitespace-nowrap">
+                            {item.subCategory || "-"}
+                          </td>
+                        )}
                         <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)]">
                           <span
                             className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium ${
@@ -307,16 +329,84 @@ export default function PredictionResults({
                 </table>
               </div>
             ) : (
-              <div className="p-6 sm:p-8 text-center text-xs sm:text-sm text-[var(--muted-text)] bg-gray-50 rounded-lg border border-[var(--border)]">
-                No {activeProbabilityTab.toLowerCase()} probability predictions
-                found matching your criteria.
+              <div className="p-6 sm:p-8 text-center bg-gray-50 rounded-lg border border-[var(--border)]">
+                {isSpotRound ? (
+                  <div className="space-y-3">
+                    <p className="text-base sm:text-lg font-bold text-[var(--foreground)]">
+                      THIS IS A SPOT ROUND.
+                    </p>
+                    <p className="text-sm sm:text-base font-semibold text-[var(--foreground)]">
+                      ALLOTMENT IN SPOT ROUNDS IS VERY LIMITED.
+                    </p>
+                    <p className="text-xs sm:text-sm text-[var(--muted-text)]">
+                      PLEASE CHECK PREDICTION RESULTS IN EARLIER ROUNDS (ROUND
+                      1, 2, 3, 4).
+                    </p>
+                    <p className="text-xs sm:text-sm text-[var(--muted-text)]">
+                      YOU MAY FIND BETTER ALLOTMENT PREDICTIONS THERE.
+                    </p>
+                  </div>
+                ) : isPreparatoryRank ? (
+                  <div className="space-y-3">
+                    <p className="text-base sm:text-lg font-bold text-[var(--foreground)]">
+                      This is a Preparatory Rank under JEE Advanced.
+                    </p>
+                    <p className="text-xs sm:text-sm text-[var(--muted-text)]">
+                      Based on last year's JEE Advanced counselling data, no
+                      seat allotment was recorded for this rank.
+                    </p>
+                    <p className="text-xs sm:text-sm text-[var(--muted-text)]">
+                      Therefore, no colleges are being displayed for this
+                      category.
+                    </p>
+                  </div>
+                ) : (
+                  <p className="text-xs sm:text-sm text-[var(--muted-text)]">
+                    No {activeProbabilityTab.toLowerCase()} probability
+                    predictions found matching your criteria.
+                  </p>
+                )}
               </div>
             )}
           </div>
         </>
       ) : (
-        <div className="p-6 sm:p-8 text-center text-xs sm:text-sm text-[var(--muted-text)]">
-          No predictions found matching your criteria.
+        <div className="p-6 sm:p-8 text-center bg-gray-50 rounded-lg border border-[var(--border)] m-4">
+          {isSpotRound ? (
+            <div className="space-y-3">
+              <p className="text-base sm:text-lg font-bold text-[var(--foreground)]">
+                THIS IS A SPOT ROUND.
+              </p>
+              <p className="text-sm sm:text-base font-semibold text-[var(--foreground)]">
+                ALLOTMENT IN SPOT ROUNDS IS VERY LIMITED.
+              </p>
+              <p className="text-xs sm:text-sm text-[var(--muted-text)]">
+                PLEASE CHECK PREDICTION RESULTS IN EARLIER ROUNDS (ROUND 1, 2,
+                3, 4).
+              </p>
+              <p className="text-xs sm:text-sm text-[var(--muted-text)]">
+                YOU MAY FIND BETTER ALLOTMENT PREDICTIONS THERE.
+              </p>
+            </div>
+          ) : isPreparatoryRank ? (
+            <div className="space-y-3">
+              <p className="text-base sm:text-lg font-bold text-[var(--foreground)]">
+                This is a Preparatory Rank under JEE Advanced.
+              </p>
+              <p className="text-xs sm:text-sm text-[var(--muted-text)]">
+                Based on last year's JEE Advanced counselling data, no seat
+                allotment was recorded for this rank.
+              </p>
+              <p className="text-xs sm:text-sm text-[var(--muted-text)]">
+                Therefore, no colleges are being displayed for this category.
+              </p>
+            </div>
+          ) : (
+            <p className="text-xs sm:text-sm text-[var(--muted-text)] font-semibold">
+              No high-probability results were found for your rank. Check the
+              Low Probability section for more options
+            </p>
+          )}
         </div>
       )}
     </div>
