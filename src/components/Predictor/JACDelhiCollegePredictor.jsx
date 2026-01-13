@@ -10,6 +10,7 @@ import { toast } from "sonner";
 export default function JACDelhiCollegePredictor() {
   const [formData, setFormData] = useState({
     crlRank: "",
+    categoryRank: "",
     category: "OPEN",
     subCategory: "NOT APPLICABLE",
     gender: "Male",
@@ -206,6 +207,9 @@ export default function JACDelhiCollegePredictor() {
           formData.instituteName === "ALL" ? "ALL" : formData.instituteName,
         programName:
           formData.programName.length > 0 ? formData.programName : "All",
+        ...(formData.categoryRank && {
+          categoryRank: Number(formData.categoryRank),
+        }),
       };
 
       console.log("Sending JAC Delhi payload:", payload);
@@ -296,6 +300,24 @@ export default function JACDelhiCollegePredictor() {
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
               />
             </div>
+            <div>
+              <label
+                htmlFor="crlRank"
+                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
+              >
+                Enter Category Rank (Optional)
+              </label>
+              <input
+                type="number"
+                id="categoryRank"
+                value={formData.categoryRank}
+                onChange={handleChange}
+                placeholder="2000"
+                min="1"
+                onWheel={(e) => e.currentTarget.blur()}
+                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
+              />
+            </div>
 
             {/* Gender */}
             <div>
@@ -346,6 +368,26 @@ export default function JACDelhiCollegePredictor() {
                   </option>
                 ))}
               </select>
+            </div>
+
+            {/* Category Rank (Optional) */}
+            <div>
+              <label
+                htmlFor="categoryRank"
+                className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
+              >
+                Enter Category Rank (Optional)
+              </label>
+              <input
+                type="number"
+                id="categoryRank"
+                value={formData.categoryRank}
+                onChange={handleChange}
+                placeholder="Enter your category rank"
+                min="1"
+                onWheel={(e) => e.currentTarget.blur()}
+                className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
+              />
             </div>
 
             {/* Sub-Category */}

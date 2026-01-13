@@ -10,6 +10,7 @@ export default function PredictionResults({
   hideOpeningRank = false,
   isSpotRound = false,
   isPreparatoryRank = false,
+  hideGender = false,
 }) {
   const [activeTab, setActiveTab] = useState("JoSAA");
   const [activeProbabilityTab, setActiveProbabilityTab] = useState("High");
@@ -236,9 +237,11 @@ export default function PredictionResults({
                           Sub-Category
                         </th>
                       )}
-                      <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
-                        Gender
-                      </th>
+                      {!hideGender && (
+                        <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
+                          Gender
+                        </th>
+                      )}
                       {!hideQuota && (
                         <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
                           Quota
@@ -291,17 +294,19 @@ export default function PredictionResults({
                             {item.subCategory || "-"}
                           </td>
                         )}
-                        <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)]">
-                          <span
-                            className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium ${
-                              item.gender.toLowerCase().includes("female")
-                                ? "bg-pink-100 text-pink-700"
-                                : "bg-blue-100 text-blue-700"
-                            }`}
-                          >
-                            {item.gender}
-                          </span>
-                        </td>
+                        {!hideGender && (
+                          <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)]">
+                            <span
+                              className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium ${
+                                item.gender.toLowerCase().includes("female")
+                                  ? "bg-pink-100 text-pink-700"
+                                  : "bg-blue-100 text-blue-700"
+                              }`}
+                            >
+                              {item.gender}
+                            </span>
+                          </td>
+                        )}
                         {!hideQuota && (
                           <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)] whitespace-nowrap">
                             {item.quota}
@@ -361,9 +366,9 @@ export default function PredictionResults({
                     </p>
                   </div>
                 ) : (
-                  <p className="text-xs sm:text-sm text-[var(--muted-text)]">
-                    No {activeProbabilityTab.toLowerCase()} probability
-                    predictions found matching your criteria.
+                  <p className="text-xs sm:text-sm text-[var(--muted-text)] font-semibold">
+                    No {activeProbabilityTab.toLowerCase()} results were found
+                    for your rank. Check the Low Probability section
                   </p>
                 )}
               </div>
@@ -404,7 +409,7 @@ export default function PredictionResults({
           ) : (
             <p className="text-xs sm:text-sm text-[var(--muted-text)] font-semibold">
               No high-probability results were found for your rank. Check the
-              Low Probability section for more options
+              Low Probability section
             </p>
           )}
         </div>

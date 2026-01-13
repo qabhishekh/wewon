@@ -497,6 +497,7 @@ export default function JACChandigarhCollegePredictor() {
             results={results}
             userGender={formData.gender}
             hideSeatType={true}
+            hideGender={true}
           />
         )}
       </div>

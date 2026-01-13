@@ -75,8 +75,7 @@
   ],
   "genders": [
     { "label": "Male", "value": "Male" },
-    { "label": "Female", "value": "Female" },
-    { "label": "Other", "value": "Other" }
+    { "label": "Female", "value": "Female" }
   ],
   "tfwPrograms": [
     "B.E. in Information Technology – TFW",
