@@ -1,10 +1,132 @@
 "use client";
-import { BarChart3, Users, Calculator } from "lucide-react";
+import { useState } from "react";
+import { BarChart3, Calculator, Copy, Check } from "lucide-react";
+import { predictJEEMainRank } from "@/network/predictor";
+import { toast } from "sonner";
+
+const categories = [
+  { value: "OPEN", label: "OPEN (General)" },
+  { value: "EWS", label: "EWS" },
+  { value: "OBC-NCL", label: "OBC-NCL" },
+  { value: "SC", label: "SC" },
+  { value: "ST", label: "ST" },
+  { value: "OPEN (PwD)", label: "OPEN (PwD)" },
+  { value: "EWS (PwD)", label: "EWS (PwD)" },
+  { value: "OBC-NCL (PwD)", label: "OBC-NCL (PwD)" },
+  { value: "SC (PwD)", label: "SC (PwD)" },
+  { value: "ST (PwD)", label: "ST (PwD)" },
+];
+
+const genders = [
+  { value: "Male", label: "Male" },
+  { value: "Female", label: "Female" },
+];
+
+interface PredictionResult {
+  crlRank: { min: number; max: number };
+  categoryRank?: { min: number; max: number; category: string };
+  percentile: number;
+}
 
 export default function PercentileConverter() {
+  const [formData, setFormData] = useState({
+    percentile: "",
+    category: "OPEN",
+    gender: "Male",
+  });
+  const [result, setResult] = useState<PredictionResult | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { id, value } = e.target;
+
+    // Validate percentile input
+    if (id === "percentile") {
+      if (value === "") {
+        setFormData((prev) => ({ ...prev, [id]: value }));
+        return;
+      }
+      // Allow numbers with up to 7 decimal places, 0 < P <= 100
+      const percentilePattern = /^(100(\.0{0,7})?|[0-9]{1,2}(\.\d{0,7})?)$/;
+      if (!percentilePattern.test(value)) {
+        return;
+      }
+    }
+
+    setFormData((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handleGenderChange = (gender: string) => {
+    setFormData((prev) => ({ ...prev, gender }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setResult(null);
+
+    const percentileNum = parseFloat(formData.percentile);
+    if (isNaN(percentileNum) || percentileNum <= 0 || percentileNum > 100) {
+      toast.error("Please enter a valid percentile between 0 and 100");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await predictJEEMainRank({
+        percentile: percentileNum,
+        category: formData.category,
+        gender: formData.gender,
+      });
+      setResult(response.data);
+    } catch (error: any) {
+      console.error("Prediction error:", error);
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to get prediction. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formatNumber = (num: number) => {
+    return num.toLocaleString("en-IN");
+  };
+
+  const getShareText = () => {
+    if (!result) return "";
+    const siteUrl = typeof window !== "undefined" ? window.location.origin : "";
+    let text = `🎯 My JEE Main Prediction:\n`;
+    text += `📊 Percentile: ${result.percentile}\n`;
+    text += `📈 CRL Rank: ${formatNumber(result.crlRank.min)} - ${formatNumber(
+      result.crlRank.max
+    )}\n`;
+    if (result.categoryRank) {
+      text += `🏷️ ${result.categoryRank.category} Rank: ${formatNumber(
+        result.categoryRank.min
+      )} - ${formatNumber(result.categoryRank.max)}\n`;
+    }
+    text += `\nCheck yours at: ${siteUrl}/percentile`;
+    return text;
+  };
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(getShareText());
+      setCopied(true);
+      toast.success("Copied to clipboard!");
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      toast.error("Failed to copy to clipboard");
+    }
+  };
+
   return (
     <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 my-10 px-4">
-      
       {/* Left Column: Ad & Steps */}
       <div className="flex flex-col space-y-6">
         {/* Google Ads Placeholder */}
@@ -20,23 +142,23 @@ export default function PercentileConverter() {
             Enter your percentile
           </h3>
           <p className="text-[var(--muted-text)] mt-1">
-            Select your stream, exam, and rank
+            Input your JEE Main percentile score
           </p>
         </div>
         <div className="p-6 bg-[var(--background)] border border-[var(--border)] rounded-xl shadow-sm">
           <h3 className="text-xl font-semibold text-[var(--foreground)]">
-            Enter total number of candidates
+            Select your category & gender
           </h3>
           <p className="text-[var(--muted-text)] mt-1">
-            Category, gender, and home state
+            Choose your reservation category and gender
           </p>
         </div>
         <div className="p-6 bg-[var(--background)] border border-[var(--border)] rounded-xl shadow-sm">
           <h3 className="text-xl font-semibold text-[var(--foreground)]">
-            Get instant results
+            Get instant rank prediction
           </h3>
           <p className="text-[var(--muted-text)] mt-1">
-            See your percentage
+            See your estimated CRL and category rank range
           </p>
         </div>
         <p className="text-xs text-[var(--muted-text)] px-2">
@@ -46,11 +168,9 @@ export default function PercentileConverter() {
 
       {/* Right Column: Converter Form */}
       <div className="bg-[var(--background)] border border-[var(--border)] rounded-xl shadow-lg p-6 sm:p-8">
-        
         {/* Header Icon */}
         <div className="flex justify-center mb-4">
           <span className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-[var(--accent)] to-[var(--primary)] bg-opacity-10 rounded-xl">
-            {/* Lucide Icon */}
             <BarChart3 className="w-8 h-8 text-background" />
           </span>
         </div>
@@ -58,39 +178,32 @@ export default function PercentileConverter() {
         {/* Header Text */}
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-[var(--primary)]">
-            Percentile Converter
+            JEE Main Rank Predictor
           </h2>
           <p className="text-[var(--muted-text)] mt-2">
-            Convert your percentile rank to percentage instantly
+            Convert your percentile to estimated All India Rank
           </p>
         </div>
 
         {/* Form */}
-        <form
-          className="space-y-5"
-          onSubmit={(e) => {
-            e.preventDefault();
-            // Handle form submission logic here
-            alert("Form submitted!");
-          }}
-        >
-          {/* Class */}
+        <form className="space-y-5" onSubmit={handleSubmit}>
+          {/* Percentile */}
           <div>
             <label
-              htmlFor="class"
+              htmlFor="percentile"
               className="block text-sm font-medium text-[var(--foreground)] mb-1.5"
             >
-              Class
+              Enter Percentile (Required)
             </label>
-            <select
-              id="class"
-              defaultValue="12th Appeared - 2025"
-              className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
-            >
-              <option>12th Appeared - 2025</option>
-              <option>12th Passed - 2024</option>
-              <option>Dropper</option>
-            </select>
+            <input
+              type="text"
+              id="percentile"
+              value={formData.percentile}
+              onChange={handleChange}
+              placeholder="e.g. 95.1234567"
+              required
+              className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
+            />
           </div>
 
           {/* Category */}
@@ -99,65 +212,125 @@ export default function PercentileConverter() {
               htmlFor="category"
               className="block text-sm font-medium text-[var(--foreground)] mb-1.5"
             >
-              Category
+              Select Category
             </label>
             <select
               id="category"
-              defaultValue=""
+              value={formData.category}
+              onChange={handleChange}
               className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm bg-white text-[var(--muted-text)] focus:text-[var(--foreground)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition"
             >
-              <option value="" disabled>Select Category</option>
-              <option>General</option>
-              <option>OBC</option>
-              <option>SC</option>
-              <option>ST</option>
-              <option>EWS</option>
+              {categories.map((cat) => (
+                <option key={cat.value} value={cat.value}>
+                  {cat.label}
+                </option>
+              ))}
             </select>
           </div>
 
-          {/* JEE Main Marks */}
+          {/* Gender */}
           <div>
-            <label
-              htmlFor="jeeMarks"
-              className="block text-sm font-medium text-[var(--foreground)] mb-1.5"
-            >
-              JEE Main Marks
+            <label className="block text-sm font-medium text-[var(--foreground)] mb-1.5">
+              Gender
             </label>
-            <input
-              type="text"
-              id="jeeMarks"
-              placeholder="Enter Marks"
-              className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
-            />
-          </div>
-
-          {/* Total Candidates */}
-          <div>
-            <div className="flex items-center gap-2 text-sm font-medium text-[var(--foreground)] mb-1.5">
-              {/* Lucide Icon */}
-              <Users className="w-5 h-5 text-[var(--primary)]" />
-              <span>Total Candidates</span>
+            <div className="flex space-x-2">
+              {genders.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => handleGenderChange(option.value)}
+                  className={`flex-1 p-3 border rounded-lg text-sm font-medium transition ${
+                    formData.gender === option.value
+                      ? "bg-[var(--primary)] text-white border-[var(--primary)]"
+                      : "bg-white text-[var(--muted-text)] border-[var(--border)] hover:bg-[var(--muted-background)]"
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
             </div>
-            <input
-              type="text"
-              id="totalCandidates"
-              placeholder="Enter total number of candidates"
-              className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
-            />
           </div>
 
           {/* Submit Button */}
           <div>
             <button
               type="submit"
-              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[var(--accent)] to-[var(--primary)] text-white font-semibold p-3.5 rounded-lg shadow-md hover:opacity-90 transition-opacity cursor-pointer"
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-2 bg-[var(--primary)] text-white font-semibold p-3.5 rounded-lg shadow-md hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50"
             >
-              {/* Lucide Icon */}
               <Calculator className="w-5 h-5" />
-              Calculate Percentage
+              {loading ? "Calculating..." : "Predict My Rank"}
             </button>
           </div>
         </form>
+
+        {/* Results Section */}
+        {result && (
+          <div className="mt-8 p-6 bg-[var(--muted-background)] border border-[var(--border)] rounded-xl">
+            <h3 className="text-lg font-bold text-[var(--foreground)] mb-4 text-center">
+              Your Predicted Rank
+            </h3>
+
+            <div className="space-y-4">
+              {/* Percentile Display */}
+              <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-[var(--border)]">
+                <span className="text-sm font-medium text-[var(--muted-text)]">
+                  📊 Percentile
+                </span>
+                <span className="text-lg font-bold text-[var(--primary)]">
+                  {result.percentile}
+                </span>
+              </div>
+
+              {/* CRL Rank */}
+              <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-[var(--border)]">
+                <span className="text-sm font-medium text-[var(--muted-text)]">
+                  📈 CRL Rank
+                </span>
+                <span className="text-lg font-bold text-[var(--foreground)]">
+                  {formatNumber(result.crlRank.min)} -{" "}
+                  {formatNumber(result.crlRank.max)}
+                </span>
+              </div>
+
+              {/* Category Rank */}
+              {result.categoryRank && (
+                <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-[var(--border)]">
+                  <span className="text-sm font-medium text-[var(--muted-text)]">
+                    🏷️ {result.categoryRank.category} Rank
+                  </span>
+                  <span className="text-lg font-bold text-[var(--foreground)]">
+                    {formatNumber(result.categoryRank.min)} -{" "}
+                    {formatNumber(result.categoryRank.max)}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* Copy Button */}
+            <button
+              onClick={handleCopy}
+              className="mt-4 w-full flex items-center justify-center gap-2 p-3 border border-[var(--primary)] text-[var(--primary)] font-medium rounded-lg hover:bg-[var(--primary)] hover:text-white transition-colors"
+            >
+              {copied ? (
+                <>
+                  <Check className="w-5 h-5" />
+                  Copied!
+                </>
+              ) : (
+                <>
+                  <Copy className="w-5 h-5" />
+                  Copy & Share Result
+                </>
+              )}
+            </button>
+          </div>
+        )}
+
+        {/* Footer Text */}
+        <p className="text-center text-xs text-[var(--muted-text)] pt-4">
+          Powered by official JEE Main 2025 candidate data
+        </p>
       </div>
     </div>
   );

@@ -52,3 +52,12 @@ export const getJACChandigarhBranches = () => {
 export const predictJACChandigarh = (data: any) => {
   return apiClient.post("/api/jac-chandigarh/predict", data);
 };
+
+// JEE Main Percentile to Rank Converter API
+export const predictJEEMainRank = (data: {
+  percentile: number;
+  category: string;
+  gender: string;
+}) => {
+  return apiClient.post("/api/jee-main/rank-predict", data);
+};
