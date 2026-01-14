@@ -241,6 +241,16 @@ export interface SeatMatrix {
   __v?: number;
 }
 
+export interface SocialMedia {
+  _id: string;
+  instituteId: string;
+  Platform: string;
+  Url: string;
+  createdAt: string;
+  updatedAt: string;
+  __v?: number;
+}
+
 export interface CollegeDetails {
   admissionRules: AdmissionRule[];
   connectivity: Connectivity[];
@@ -251,6 +261,7 @@ export interface CollegeDetails {
   placements: Placement[];
   rankings: Ranking[];
   seatMatrix: SeatMatrix[];
+  socialMedia: SocialMedia[];
 }
 
 // Counseling Product Types

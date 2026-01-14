@@ -317,6 +317,7 @@ export default function CollegePage() {
               function: () => console.log("Downloading..."),
             },
           ]}
+          socialMedia={collegeDetails?.socialMedia}
         />
       </div>
 

@@ -147,6 +147,7 @@ export const fetchCollegeDetails = createAsyncThunk(
         "placements",
         "rankings",
         "seat-matrix",
+        "social-media",
       ];
 
       // Fetch all detail types in parallel
@@ -171,6 +172,7 @@ export const fetchCollegeDetails = createAsyncThunk(
         placements: [],
         rankings: [],
         seatMatrix: [],
+        socialMedia: [],
       };
 
       results.forEach((result) => {
@@ -201,6 +203,9 @@ export const fetchCollegeDetails = createAsyncThunk(
             break;
           case "seat-matrix":
             collegeDetails.seatMatrix = result.data;
+            break;
+          case "social-media":
+            collegeDetails.socialMedia = result.data;
             break;
         }
       });

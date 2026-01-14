@@ -11,7 +11,19 @@ import {
   BookOpen,
   ChevronDown,
   Images,
+  Linkedin,
+  Twitter,
+  Instagram,
+  Facebook,
+  Youtube,
+  Globe,
 } from "lucide-react";
+
+interface SocialMediaLink {
+  _id: string;
+  Platform: string;
+  Url: string;
+}
 
 interface CollegeHeroProps {
   name: string;
@@ -27,6 +39,7 @@ interface CollegeHeroProps {
     icon: string;
     function: () => void;
   }[];
+  socialMedia?: SocialMediaLink[];
 }
 
 const tabIcons: { [key: string]: React.ReactNode } = {
@@ -42,6 +55,51 @@ const tabIcons: { [key: string]: React.ReactNode } = {
   "Seat Matrix": <Users size={20} />,
 };
 
+// Social media platform icons and colors
+const getSocialMediaIcon = (platform: string) => {
+  const platformLower = platform.toLowerCase();
+
+  switch (platformLower) {
+    case "linkedin":
+      return {
+        icon: <Linkedin size={20} />,
+        color: "#0A66C2",
+        hoverColor: "#0A66C2",
+      };
+    case "twitter":
+    case "x":
+      return {
+        icon: <Twitter size={20} />,
+        color: "#1DA1F2",
+        hoverColor: "#1DA1F2",
+      };
+    case "instagram":
+      return {
+        icon: <Instagram size={20} />,
+        color: "#E4405F",
+        hoverColor: "#E4405F",
+      };
+    case "facebook":
+      return {
+        icon: <Facebook size={20} />,
+        color: "#1877F2",
+        hoverColor: "#1877F2",
+      };
+    case "youtube":
+      return {
+        icon: <Youtube size={20} />,
+        color: "#FF0000",
+        hoverColor: "#FF0000",
+      };
+    default:
+      return {
+        icon: <Globe size={20} />,
+        color: "#ffffff",
+        hoverColor: "#ffffff",
+      };
+  }
+};
+
 export default function CollegeHero({
   name,
   location,
@@ -49,6 +107,7 @@ export default function CollegeHero({
   tags,
   tabs,
   onTabChange,
+  socialMedia,
 }: CollegeHeroProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState(tabs?.[0] || "");
@@ -95,7 +154,7 @@ export default function CollegeHero({
 
           {/* Tags */}
           {tags && tags.length > 0 && (
-            <div className="flex flex-wrap justify-center gap-3 mb-6">
+            <div className="flex flex-wrap justify-center gap-3 mb-4">
               {tags.map((tag, index) => (
                 <span
                   key={index}
@@ -104,6 +163,35 @@ export default function CollegeHero({
                   {tag}
                 </span>
               ))}
+            </div>
+          )}
+
+          {/* Social Media Links */}
+          {socialMedia && socialMedia.length > 0 && (
+            <div className="flex flex-wrap justify-center gap-3 mb-6">
+              {socialMedia.map((social) => {
+                const { icon, color } = getSocialMediaIcon(social.Platform);
+                return (
+                  <a
+                    key={social._id}
+                    href={social.Url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 transition-all duration-300 hover:scale-105 hover:bg-white/20"
+                    title={`Follow on ${social.Platform}`}
+                  >
+                    <span
+                      className="transition-colors duration-300"
+                      style={{ color: color }}
+                    >
+                      {icon}
+                    </span>
+                    <span className="text-sm font-medium text-white/90 group-hover:text-white">
+                      {social.Platform}
+                    </span>
+                  </a>
+                );
+              })}
             </div>
           )}
         </div>
