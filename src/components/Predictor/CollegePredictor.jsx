@@ -427,6 +427,7 @@ export default function CollegePredictor() {
             results={results}
             userGender={formData.gender}
             hideCategory={true}
+            counselingType={formData.counselingType}
           />
         )}
       </div>

@@ -12,6 +12,7 @@ export default function PredictionResults({
   isPreparatoryRank = false,
   hideGender = false,
   hideCategory = false,
+  counselingType = "",
 }) {
   const [activeTab, setActiveTab] = useState("JoSAA");
   const [activeProbabilityTab, setActiveProbabilityTab] = useState("High");
@@ -127,6 +128,14 @@ export default function PredictionResults({
         <p className="text-xs sm:text-sm text-[var(--muted-text)] mt-1">
           Based on your rank and preferences
         </p>
+        {(counselingType === "JoSAA" || counselingType === "CSAB") && (
+          <p className="text-xs sm:text-sm text-[var(--primary)] mt-2 font-medium">
+             Ranks used for allotment —{" "}
+            {counselingType === "JoSAA"
+              ? "General: CRL ranks; EWS/OBC/SC/ST: category ranks."
+              : "CRL for all categories."}
+          </p>
+        )}
       </div>
 
       {/* Gender Filter - Only show when user is Female */}
