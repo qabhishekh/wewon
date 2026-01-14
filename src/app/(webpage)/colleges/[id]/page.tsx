@@ -553,6 +553,77 @@ export default function CollegePage() {
               <Facilities facilities={collegeDetails.facilities} />
             )}
         </div>
+
+        {/* College Contact Section */}
+        {(college?.Director_Contact ||
+          college?.Registrar_Contact ||
+          college?.Email) && (
+          <div className="my-8 p-6 bg-[var(--background)] border border-[var(--border)] rounded-xl shadow-sm">
+            <h3 className="text-xl font-bold text-[var(--foreground)] mb-4 flex items-center gap-2">
+              <svg
+                className="w-6 h-6 text-[var(--primary)]"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                />
+              </svg>
+              College Contact
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {college?.Director_Contact && (
+                <div className="p-4 bg-[var(--muted-background)] rounded-lg">
+                  <p className="text-sm text-[var(--muted-text)] mb-1">
+                    Director Contact
+                  </p>
+                  <a
+                    href={`tel:${college.Director_Contact.replace(
+                      /\s|-/g,
+                      ""
+                    )}`}
+                    className="text-base font-semibold text-[var(--foreground)] hover:text-[var(--primary)] transition-colors"
+                  >
+                    📞 {college.Director_Contact}
+                  </a>
+                </div>
+              )}
+              {college?.Registrar_Contact && (
+                <div className="p-4 bg-[var(--muted-background)] rounded-lg">
+                  <p className="text-sm text-[var(--muted-text)] mb-1">
+                    Registrar Contact
+                  </p>
+                  <a
+                    href={`tel:${college.Registrar_Contact.replace(
+                      /\s|-/g,
+                      ""
+                    )}`}
+                    className="text-base font-semibold text-[var(--foreground)] hover:text-[var(--primary)] transition-colors"
+                  >
+                    📞 {college.Registrar_Contact}
+                  </a>
+                </div>
+              )}
+              {college?.Email && (
+                <div className="p-4 bg-[var(--muted-background)] rounded-lg">
+                  <p className="text-sm text-[var(--muted-text)] mb-1">Email</p>
+                  <a
+                    href={`mailto:${college.Email}`}
+                    className="text-base font-semibold text-[var(--foreground)] hover:text-[var(--primary)] transition-colors break-all"
+                  >
+                    ✉️ {college.Email}
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Ads and Recommended */}
         <GoogleAds />
         <Recommended />
