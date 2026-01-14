@@ -11,6 +11,7 @@ export default function PredictionResults({
   isSpotRound = false,
   isPreparatoryRank = false,
   hideGender = false,
+  hideCategory = false,
 }) {
   const [activeTab, setActiveTab] = useState("JoSAA");
   const [activeProbabilityTab, setActiveProbabilityTab] = useState("High");
@@ -128,21 +129,14 @@ export default function PredictionResults({
         </p>
       </div>
 
-      {/* Gender Filter */}
-      <div className="px-3 sm:px-6 py-3 sm:py-4 border-b border-[var(--border)] flex flex-col sm:flex-row gap-2 sm:gap-4 sm:items-center">
-        <span className="text-xs sm:text-sm font-medium text-[var(--muted-text)]">
-          Filter by Gender:
-        </span>
-        <div className="flex gap-1.5 sm:gap-2 flex-wrap">
-          {["All", "Gender-Neutral", "Female-only"]
-            .filter((filter) => {
-              // Hide "Female-only" option when user's gender is Male
-              if (filter === "Female-only" && userGender === "Male") {
-                return false;
-              }
-              return true;
-            })
-            .map((filter) => (
+      {/* Gender Filter - Only show when user is Female */}
+      {userGender !== "Male" && (
+        <div className="px-3 sm:px-6 py-3 sm:py-4 border-b border-[var(--border)] flex flex-col sm:flex-row gap-2 sm:gap-4 sm:items-center">
+          <span className="text-xs sm:text-sm font-medium text-[var(--muted-text)]">
+            Filter by Gender:
+          </span>
+          <div className="flex gap-1.5 sm:gap-2 flex-wrap">
+            {["All", "Female-only", "Gender-Neutral"].map((filter) => (
               <button
                 key={filter}
                 onClick={() => setGenderFilter(filter)}
@@ -155,8 +149,9 @@ export default function PredictionResults({
                 {filter}
               </button>
             ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Main Tabs (JoSAA/CSAB/IIT) */}
       {tabs.length > 0 ? (
@@ -227,9 +222,11 @@ export default function PredictionResults({
                       <th className="px-2 sm:px-4 py-2 sm:py-3 max-w-[280px]">
                         Branch
                       </th>
-                      <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
-                        Category
-                      </th>
+                      {!hideCategory && (
+                        <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
+                          Category
+                        </th>
+                      )}
                       {currentProbabilityData.some(
                         (item) => item.subCategory
                       ) && (
@@ -284,9 +281,11 @@ export default function PredictionResults({
                         <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)] max-w-[280px] break-words">
                           {item.branch}
                         </td>
-                        <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)] whitespace-nowrap">
-                          {item.category}
-                        </td>
+                        {!hideCategory && (
+                          <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)] whitespace-nowrap">
+                            {item.category}
+                          </td>
+                        )}
                         {currentProbabilityData.some(
                           (item) => item.subCategory
                         ) && (

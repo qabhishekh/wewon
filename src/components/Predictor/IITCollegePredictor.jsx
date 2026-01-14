@@ -14,7 +14,7 @@ export default function IITCollegePredictor() {
     category: "OPEN", // Default to OPEN (General)
     gender: "Male",
     counselingType: "JoSAA", // Fixed for IIT predictor
-    roundNumber: 1,
+    roundNumber: "",
     instituteType: "IIT", // Fixed for IIT predictor
     branchGroup: "",
   });
@@ -110,15 +110,16 @@ export default function IITCollegePredictor() {
     setLoading(true);
     setResults(null);
 
-    // Validate that at least one rank is provided
-    if (formData.category === "OPEN" && !formData.crlRank) {
-      toast.error("Please enter CRL Rank for OPEN category");
+    // Validate that category rank is provided when category is not OPEN
+    if (formData.category !== "OPEN" && !formData.categoryRank) {
+      toast.error("Please enter Category Rank for the selected category");
       setLoading(false);
       return;
     }
 
-    if (!formData.crlRank && !formData.categoryRank) {
-      toast.error("Please enter either CRL Rank or Category Rank");
+    // Validate that CRL Rank is provided for OPEN category
+    if (formData.category === "OPEN" && !formData.crlRank) {
+      toast.error("Please enter CRL Rank for OPEN category");
       setLoading(false);
       return;
     }
@@ -235,7 +236,8 @@ export default function IITCollegePredictor() {
                 htmlFor="categoryRank"
                 className="block text-xs sm:text-sm font-medium text-[var(--foreground)] mb-1 sm:mb-1.5"
               >
-                Enter Category Rank (Optional)
+                Enter Category Rank{" "}
+                {formData.category !== "OPEN" ? "(Required)" : "(Optional)"}
               </label>
               <input
                 type="text"
@@ -243,6 +245,7 @@ export default function IITCollegePredictor() {
                 value={formData.categoryRank}
                 onChange={handleChange}
                 placeholder="2000 or 2000P"
+                required={formData.category !== "OPEN"}
                 onWheel={(e) => e.currentTarget.blur()}
                 className="w-full p-2 sm:p-3 text-sm sm:text-base border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
               />
@@ -368,6 +371,7 @@ export default function IITCollegePredictor() {
             results={results}
             userGender={formData.gender}
             isPreparatoryRank={!!formData.categoryRank}
+            hideCategory={true}
           />
         )}
       </div>

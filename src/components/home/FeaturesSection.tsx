@@ -10,7 +10,7 @@ const features = [
     title: "AI College Predictor",
     description: "Advanced AI algorithms analyze your rank and predict your chances at top colleges with 95% accuracy",
     buttonText: "Predict Now",
-    buttonLink: "#",
+    buttonLink: "/predictor",
     // Style for the 1st and 3rd cards
     className: "bg-white shadow-lg", 
   },
@@ -25,10 +25,10 @@ const features = [
   },
   {
     icon: Lightbulb,
-    title: "Expert Mentorship",
+    title: "Counselling Session",
     description: "Get personalized guidance from IIT/NIT alumni, and admission counselling expert",
     buttonText: "Book a Session",
-    buttonLink: "#",
+    buttonLink: "/counseling",
     // Style for the 1st and 3rd cards
     className: "bg-white shadow-lg",
   }

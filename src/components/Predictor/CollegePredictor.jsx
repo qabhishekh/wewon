@@ -426,6 +426,7 @@ export default function CollegePredictor() {
           <PredictionResults
             results={results}
             userGender={formData.gender}
+            hideCategory={true}
           />
         )}
       </div>
