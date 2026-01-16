@@ -206,10 +206,7 @@ export default function CollegeHero({
                 className="w-full flex items-center justify-between px-4 py-3 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20"
               >
                 <div className="flex items-center gap-2">
-                  {tabIcons[selectedTab]}
-                  <span className="text-sm font-medium">
-                    {selectedTab || "Select Section"}
-                  </span>
+                  <span className="text-sm font-medium">Quick Navigation</span>
                 </div>
                 <ChevronDown
                   className={`w-5 h-5 transition-transform ${

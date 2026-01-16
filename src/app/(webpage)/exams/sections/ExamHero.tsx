@@ -82,8 +82,7 @@ export default function ExamHero({
             className="w-full flex items-center justify-between gap-2 px-4 py-3 rounded-lg bg-white text-[#0D3A66] font-semibold shadow-md"
           >
             <div className="flex items-center gap-2">
-              {tabIcons[activeTab]}
-              <span>{activeTab}</span>
+              <span>Quick Navigation</span>
             </div>
             <ChevronDown
               size={20}

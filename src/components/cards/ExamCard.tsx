@@ -43,7 +43,7 @@ const ExamCard = ({
   return (
     <div
       key={exam._id}
-      className="rounded-xl overflow-hidden transition-all hover:shadow-lg"
+      className="rounded-xl overflow-hidden transition-all hover:shadow-lg flex flex-col h-full"
       style={{
         backgroundColor: "#ffffff",
         border: "1px solid rgba(13, 58, 102, 0.1)",
@@ -71,7 +71,7 @@ const ExamCard = ({
       </div>
 
       {/* exam Info */}
-      <div className="p-4">
+      <div className="p-4 flex flex-col flex-grow">
         <h3
           className="text-lg text-center font-bold mb-1 truncate"
           style={{ color: "#0D3A66" }}
@@ -86,23 +86,28 @@ const ExamCard = ({
           {description}
         </p>
 
-        {/* Tags */}
-        {exam.tags && exam.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-4 justify-center">
-            {exam.tags.slice(0, 3).map((tag, index) => (
-              <span
-                key={index}
-                className="px-2 py-1 text-xs rounded-full"
-                style={{
-                  backgroundColor: "rgba(13, 58, 102, 0.1)",
-                  color: "#0D3A66",
-                }}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
+        {/* Tags - always render container for consistent spacing */}
+        <div className="flex flex-wrap gap-2 mb-4 justify-center min-h-[2rem]">
+          {exam.tags && exam.tags.length > 0 && (
+            <>
+              {exam.tags.slice(0, 3).map((tag, index) => (
+                <span
+                  key={index}
+                  className="px-2 py-1 text-xs rounded-full flex items-center"
+                  style={{
+                    backgroundColor: "rgba(13, 58, 102, 0.1)",
+                    color: "#0D3A66",
+                  }}
+                >
+                  {tag}
+                </span>
+              ))}
+            </>
+          )}
+        </div>
+
+        {/* Spacer to push button to bottom */}
+        <div className="flex-grow"></div>
 
         {/* Know More Button */}
         <button

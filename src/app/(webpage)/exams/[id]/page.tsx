@@ -57,37 +57,37 @@ export default function ExamDetailPage() {
   // Set initial active tab to first available tab
   useEffect(() => {
     if (exam?.sections && exam.sections.length > 0) {
-      const firstSection = exam.sections.find((section) => {
-        const title = section.sectionTitle.toLowerCase();
-        const isActualOverview =
-          title.includes("overview") || title.includes("about");
-        return isActualOverview || !title.includes("overview");
+      // Find the first section that matches a known tab
+      const firstMatchedSection = exam.sections.find((section) => {
+        const tabName = getSectionTab(section.sectionTitle);
+        return tabName !== null;
       });
 
-      if (firstSection) {
-        const firstTab = getSectionTab(firstSection.sectionTitle);
-        setActiveTab(firstTab);
+      if (firstMatchedSection) {
+        const firstTab = getSectionTab(firstMatchedSection.sectionTitle);
+        if (firstTab) {
+          setActiveTab(firstTab);
+        }
       }
     }
   }, [exam?.sections]);
 
   // Map section titles to tabs (case-insensitive matching)
-  const getSectionTab = (sectionTitle: string): string => {
-    const title = sectionTitle.toLowerCase();
-    if (title.includes("overview") || title.includes("about"))
-      return "Overview";
-    if (title.includes("pattern") || title.includes("exam pattern"))
-      return "Pattern";
-    if (title.includes("eligibility") || title.includes("criteria"))
-      return "Eligibility";
-    if (title.includes("syllabus") || title.includes("curriculum"))
-      return "Syllabus";
-    if (title.includes("fee") || title.includes("cost")) return "Fees";
-    if (title.includes("application") || title.includes("apply"))
-      return "Application";
-    if (title.includes("result") || title.includes("score")) return "Result";
-    if (title.includes("date") || title.includes("schedule")) return "Dates";
-    return "Overview"; // Default to Overview
+  // Returns null if section doesn't match any known tab
+  const getSectionTab = (sectionTitle: string): string | null => {
+    const title = sectionTitle.toLowerCase().trim();
+
+    // Exact matches first (for single-word titles)
+    if (title === "overview") return "Overview";
+    if (title === "pattern") return "Pattern";
+    if (title === "eligibility") return "Eligibility";
+    if (title === "syllabus") return "Syllabus";
+    if (title === "fees") return "Fees";
+    if (title === "application") return "Application";
+    if (title === "result") return "Result";
+    if (title === "dates") return "Dates";
+
+    return null; // No match - will be treated as extra section
   };
 
   // Handle tab click - scroll to section
@@ -158,21 +158,19 @@ export default function ExamDetailPage() {
   const extraSections =
     exam.sections?.filter((section) => {
       const tabName = getSectionTab(section.sectionTitle);
-      // A section is "extra" if it was mapped to Overview by default but doesn't actually contain overview keywords
-      const title = section.sectionTitle.toLowerCase();
-      const isActualOverview =
-        title.includes("overview") || title.includes("about");
-      return tabName === "Overview" && !isActualOverview;
+      // A section is "extra" if getSectionTab returns null (no match)
+      return tabName === null;
     }) || [];
 
   // Group sections by their tab category (excluding extra sections)
   const groupedSections = exam.sections?.reduce((acc, section) => {
-    // Skip sections that are in extraSections
-    if (extraSections.includes(section)) {
+    const tabName = getSectionTab(section.sectionTitle);
+
+    // Skip sections that don't match any tab (extra sections)
+    if (tabName === null) {
       return acc;
     }
 
-    const tabName = getSectionTab(section.sectionTitle);
     if (!acc[tabName]) {
       acc[tabName] = [];
     }
@@ -244,8 +242,14 @@ export default function ExamDetailPage() {
           grid-template-rows: 1fr;
         }
 
+        /* Make details content scrollable for tables */
         .prose details > *:not(summary) > * {
-          overflow: visible;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .prose details table {
+          margin: 0;
         }
 
         .prose details p {
@@ -316,15 +320,28 @@ export default function ExamDetailPage() {
           padding-left: 0.25rem;
         }
 
-        /* Tables */
+        /* Tables - Responsive Container */
+        .prose {
+          overflow-x: hidden;
+        }
+
         .prose table {
-          width: 100%;
+          display: block;
+          width: max-content;
+          max-width: 100%;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
           border-collapse: collapse;
-          margin: 1.5rem 0;
           background: #ffffff;
           border: 1px solid #e5e7eb;
           border-radius: 8px;
-          overflow: hidden;
+          margin: 1.5rem 0;
+        }
+
+        .prose table tbody {
+          display: table;
+          width: 100%;
+          min-width: 100%;
         }
 
         .prose table th {
@@ -334,6 +351,7 @@ export default function ExamDetailPage() {
           font-weight: 600;
           color: #111827;
           border-bottom: 2px solid #e5e7eb;
+          white-space: nowrap;
         }
 
         .prose table td {
@@ -355,6 +373,18 @@ export default function ExamDetailPage() {
           margin: 0;
         }
 
+        /* Mobile Table Styles */
+        @media (max-width: 768px) {
+          .prose table {
+            font-size: 0.875rem;
+          }
+
+          .prose table th,
+          .prose table td {
+            padding: 0.5rem 0.75rem;
+          }
+        }
+
         /* Paragraphs */
         .prose p {
           margin: 0.75rem 0;
@@ -366,6 +396,31 @@ export default function ExamDetailPage() {
         .prose strong {
           font-weight: 600;
           color: #111827;
+        }
+
+        /* Headings */
+        .prose h3 {
+          font-size: 1.25rem;
+          font-weight: 600;
+          color: #0d3a66;
+          margin: 1.5rem 0 0.75rem 0;
+          line-height: 1.4;
+        }
+
+        .prose h4 {
+          font-size: 1.125rem;
+          font-weight: 600;
+          color: #1f2937;
+          margin: 1.25rem 0 0.5rem 0;
+          line-height: 1.4;
+        }
+
+        .prose h5 {
+          font-size: 1rem;
+          font-weight: 600;
+          color: #374151;
+          margin: 1rem 0 0.5rem 0;
+          line-height: 1.4;
         }
       `}</style>
 

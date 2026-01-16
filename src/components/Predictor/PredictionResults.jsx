@@ -113,11 +113,31 @@ export default function PredictionResults({
     },
   ];
 
+  // Auto-select the first probability tab that has data
+  const availableProbabilityTabs = probabilityTabs.filter(
+    (tab) => groupedData[tab.key]?.length > 0
+  );
+
+  // If current active probability tab has no data but others do, switch to first available
+  if (
+    groupedData[activeProbabilityTab]?.length === 0 &&
+    availableProbabilityTabs.length > 0 &&
+    availableProbabilityTabs[0].key !== activeProbabilityTab
+  ) {
+    setActiveProbabilityTab(availableProbabilityTabs[0].key);
+  }
+
   // Get current probability tab data
   const currentProbabilityData = groupedData[activeProbabilityTab] || [];
   const currentProbabilityTabConfig = probabilityTabs.find(
     (tab) => tab.key === activeProbabilityTab
   );
+
+  // Check if there's any data across all probability levels
+  const hasAnyProbabilityData =
+    groupedData.High.length > 0 ||
+    groupedData.Medium.length > 0 ||
+    groupedData.Low.length > 0;
 
   return (
     <div className="mt-6 sm:mt-10 bg-white border border-[var(--border)] rounded-lg sm:rounded-xl shadow-lg overflow-hidden">
@@ -130,7 +150,7 @@ export default function PredictionResults({
         </p>
         {(counselingType === "JoSAA" || counselingType === "CSAB") && (
           <p className="text-xs sm:text-sm text-[var(--primary)] mt-2 font-medium">
-             Ranks used for allotment —{" "}
+            Ranks used for allotment —{" "}
             {counselingType === "JoSAA"
               ? "General: CRL ranks; EWS/OBC/SC/ST: category ranks."
               : "CRL for all categories."}
@@ -359,7 +379,7 @@ export default function PredictionResults({
                       YOU MAY FIND BETTER ALLOTMENT PREDICTIONS THERE.
                     </p>
                   </div>
-                ) : isPreparatoryRank ? (
+                ) : isPreparatoryRank && !hasAnyProbabilityData ? (
                   <div className="space-y-3">
                     <p className="text-base sm:text-lg font-bold text-[var(--foreground)]">
                       This is a Preparatory Rank under JEE Advanced.
@@ -375,8 +395,8 @@ export default function PredictionResults({
                   </div>
                 ) : (
                   <p className="text-xs sm:text-sm text-[var(--muted-text)] font-semibold">
-                    No {activeProbabilityTab.toLowerCase()} results were found
-                    for your rank. Check the Low Probability section
+                    No {activeProbabilityTab.toLowerCase()} probability results
+                    were found for your rank. Check other probability tabs.
                   </p>
                 )}
               </div>
@@ -401,7 +421,7 @@ export default function PredictionResults({
                 YOU MAY FIND BETTER ALLOTMENT PREDICTIONS THERE.
               </p>
             </div>
-          ) : isPreparatoryRank ? (
+          ) : isPreparatoryRank && !hasAnyProbabilityData ? (
             <div className="space-y-3">
               <p className="text-base sm:text-lg font-bold text-[var(--foreground)]">
                 This is a Preparatory Rank under JEE Advanced.
@@ -416,8 +436,7 @@ export default function PredictionResults({
             </div>
           ) : (
             <p className="text-xs sm:text-sm text-[var(--muted-text)] font-semibold">
-              No high-probability results were found for your rank. Check the
-              Low Probability section
+              No results were found for your rank.
             </p>
           )}
         </div>
