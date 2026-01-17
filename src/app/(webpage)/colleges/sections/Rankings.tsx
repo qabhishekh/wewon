@@ -40,19 +40,84 @@ const getAgencyLogo = (agency: string): string | null => {
   return null;
 };
 
+// Categorize ranking as International or National
+const categorizeRanking = (category: string): "international" | "national" => {
+  const categoryLower = category.toLowerCase();
+  if (
+    categoryLower.includes("international") ||
+    categoryLower.includes("world") ||
+    categoryLower.includes("global")
+  ) {
+    return "international";
+  }
+  return "national";
+};
+
+// Ranking table component for reuse
+const RankingTable: React.FC<{ rankings: RankingType[] }> = ({ rankings }) => (
+  <div className="overflow-x-auto">
+    <table className="min-w-full bg-white border border-gray-200 rounded-lg">
+      <thead className="bg-gray-50">
+        <tr>
+          <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-b">
+            Agency
+          </th>
+          <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-b">
+            Year
+          </th>
+          <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-b">
+            Rank
+          </th>
+        </tr>
+      </thead>
+      <tbody className="divide-y divide-gray-200">
+        {rankings.map((ranking) => {
+          const agencyLogo = getAgencyLogo(ranking.Agency);
+          return (
+            <tr
+              key={ranking._id}
+              className="hover:bg-gray-50 transition-colors"
+            >
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <div className="flex items-center gap-3">
+                  {agencyLogo && (
+                    <Image
+                      src={agencyLogo}
+                      alt={ranking.Agency}
+                      width={32}
+                      height={32}
+                      className="object-contain"
+                    />
+                  )}
+                  <span>{ranking.Agency}</span>
+                </div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {ranking.Year}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-blue-600">
+                #{ranking.Rank_Range}
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+);
+
 export default function Rankings({ rankings }: RankingsProps) {
   if (!rankings || rankings.length === 0) {
     return null;
   }
 
-  // Group rankings by category
-  const rankingsByCategory: { [key: string]: RankingType[] } = {};
-  rankings.forEach((ranking) => {
-    if (!rankingsByCategory[ranking.Category]) {
-      rankingsByCategory[ranking.Category] = [];
-    }
-    rankingsByCategory[ranking.Category].push(ranking);
-  });
+  // Separate rankings into International and National
+  const internationalRankings = rankings.filter(
+    (ranking) => categorizeRanking(ranking.Category) === "international",
+  );
+  const nationalRankings = rankings.filter(
+    (ranking) => categorizeRanking(ranking.Category) === "national",
+  );
 
   return (
     <div className="py-8">
@@ -61,60 +126,28 @@ export default function Rankings({ rankings }: RankingsProps) {
         bottom="College rankings from various agencies"
       />
 
-      <div className="mt-6 overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-200 rounded-lg">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-b">
-                Category
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-b">
-                Agency
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-b">
-                Year
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-b">
-                Rank
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {rankings.map((ranking) => {
-              const agencyLogo = getAgencyLogo(ranking.Agency);
-              return (
-                <tr
-                  key={ranking._id}
-                  className="hover:bg-gray-50 transition-colors"
-                >
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {ranking.Category}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    <div className="flex items-center gap-3">
-                      {agencyLogo && (
-                        <Image
-                          src={agencyLogo}
-                          alt={ranking.Agency}
-                          width={100}
-                          height={100}
-                          className="object-contain"
-                        />
-                      )}
-                      <span>{ranking.Agency}</span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {ranking.Year}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-blue-600">
-                    #{ranking.Rank_Range}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+      <div className="mt-6 space-y-10">
+        {/* International Rankings */}
+        {internationalRankings.length > 0 && (
+          <div>
+            <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+              <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
+              International Rankings
+            </h3>
+            <RankingTable rankings={internationalRankings} />
+          </div>
+        )}
+
+        {/* National Rankings */}
+        {nationalRankings.length > 0 && (
+          <div>
+            <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+              <span className="w-2 h-2 bg-green-600 rounded-full"></span>
+              National Rankings
+            </h3>
+            <RankingTable rankings={nationalRankings} />
+          </div>
+        )}
       </div>
     </div>
   );
