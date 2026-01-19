@@ -197,7 +197,7 @@ export default function HBTUCollegePredictor() {
     try {
       // Parse phase and round from the combined value (e.g., "PHASE 1 Round 2" -> phase: 1, round: 2)
       const phaseRoundMatch = formData.round.match(
-        /PHASE\s+(\d+)\s+Round\s+(\d+)/i
+        /PHASE\s+(\d+)\s+Round\s+(\d+)/i,
       );
       const phase = phaseRoundMatch ? Number(phaseRoundMatch[1]) : 1;
       const round = phaseRoundMatch ? Number(phaseRoundMatch[2]) : 1;
@@ -218,8 +218,8 @@ export default function HBTUCollegePredictor() {
         programName: isBSMSSelected()
           ? [hbtuOptions.bsmsProgram]
           : formData.programName.length > 0
-          ? formData.programName
-          : undefined,
+            ? formData.programName
+            : undefined,
       };
 
       console.log("Sending HBTU payload:", payload);
@@ -227,13 +227,19 @@ export default function HBTUCollegePredictor() {
       console.log("HBTU prediction response:", response.data);
 
       // Transform HBTU response to match PredictionResults expected format
+      // Add the subCategory from form to each result since API doesn't return it
+      const allPredictions = [
+        ...(response.data.highProbability || []),
+        ...(response.data.mediumProbability || []),
+        ...(response.data.lowProbability || []),
+        ...(response.data.predictions || []),
+      ].map((item) => ({
+        ...item,
+        category: item.category || formData.subCategory,
+      }));
+
       const transformedResults = {
-        homestatePredictions: [
-          ...(response.data.highProbability || []),
-          ...(response.data.mediumProbability || []),
-          ...(response.data.lowProbability || []),
-          ...(response.data.predictions || []),
-        ],
+        homestatePredictions: allPredictions,
       };
 
       console.log("Transformed results:", transformedResults);
