@@ -41,10 +41,10 @@ export default function PredictionResults({
   const filteredData = currentData.filter((item) => {
     if (genderFilter === "All") return true;
     if (genderFilter === "Female-only") {
-      return item.gender.toLowerCase().includes("female");
+      return item.gender?.toLowerCase().includes("female");
     }
     if (genderFilter === "Gender-Neutral") {
-      return item.gender.toLowerCase().includes("neutral");
+      return item.gender?.toLowerCase().includes("neutral");
     }
     return true;
   });
@@ -115,7 +115,7 @@ export default function PredictionResults({
 
   // Auto-select the first probability tab that has data
   const availableProbabilityTabs = probabilityTabs.filter(
-    (tab) => groupedData[tab.key]?.length > 0
+    (tab) => groupedData[tab.key]?.length > 0,
   );
 
   // If current active probability tab has no data but others do, switch to first available
@@ -130,7 +130,7 @@ export default function PredictionResults({
   // Get current probability tab data
   const currentProbabilityData = groupedData[activeProbabilityTab] || [];
   const currentProbabilityTabConfig = probabilityTabs.find(
-    (tab) => tab.key === activeProbabilityTab
+    (tab) => tab.key === activeProbabilityTab,
   );
 
   // Check if there's any data across all probability levels
@@ -215,7 +215,7 @@ export default function PredictionResults({
                     activeProbabilityTab === probTab.key
                       ? `border-b-2 ${probTab.border.replace(
                           "border-",
-                          "border-b-"
+                          "border-b-",
                         )} ${probTab.color} bg-white`
                       : "text-[var(--muted-text)] hover:text-[var(--foreground)] hover:bg-gray-200"
                   }`}
@@ -257,7 +257,7 @@ export default function PredictionResults({
                         </th>
                       )}
                       {currentProbabilityData.some(
-                        (item) => item.subCategory
+                        (item) => item.subCategory,
                       ) && (
                         <th className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap">
                           Sub-Category
@@ -316,7 +316,7 @@ export default function PredictionResults({
                           </td>
                         )}
                         {currentProbabilityData.some(
-                          (item) => item.subCategory
+                          (item) => item.subCategory,
                         ) && (
                           <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)] whitespace-nowrap">
                             {item.subCategory || "-"}
@@ -326,7 +326,7 @@ export default function PredictionResults({
                           <td className="px-2 sm:px-4 py-3 sm:py-4 text-[var(--muted-text)]">
                             <span
                               className={`px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium ${
-                                item.gender.toLowerCase().includes("female")
+                                item.gender?.toLowerCase().includes("female")
                                   ? "bg-pink-100 text-pink-700"
                                   : "bg-blue-100 text-blue-700"
                               }`}

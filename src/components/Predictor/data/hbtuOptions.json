@@ -29,13 +29,13 @@
         { "value": "NOT APPLICABLE", "label": "Not Applicable" },
         { "value": "OPEN(TF)", "label": "OPEN (Tuition Fee Waiver)" },
         { "value": "OPEN(AF)", "label": "OPEN (Armed Forces)" },
-        { "value": "OPEN(GIRL)", "label": "OPEN (Girl)" },
+        { "value": "OPEN GIRL", "label": "OPEN (Girl)" },
         { "value": "OPEN(PH)", "label": "OPEN (Physically Handicapped)" },
         { "value": "OPEN(FF)", "label": "OPEN (Freedom Fighter)" }
       ],
       "EWS": [
         { "value": "NOT APPLICABLE", "label": "Not Applicable" },
-        { "value": "EWS(GL)", "label": "EWS (GL)" },
+        { "value": "EWS(GIRL)", "label": "EWS (Girl)" },
         { "value": "EWS(AF)", "label": "EWS (Armed Forces)" },
         { "value": "EWS(PH)", "label": "EWS (Physically Handicapped)" }
       ],
@@ -61,7 +61,7 @@
       "OPEN": [
         { "value": "NOT APPLICABLE", "label": "Not Applicable" },
         { "value": "OPEN(AF)", "label": "OPEN (Armed Forces)" },
-        { "value": "OPEN(GIRL)", "label": "OPEN (Girl)" },
+        { "value": "OPEN GIRL", "label": "OPEN (Girl)" },
         { "value": "OPEN(PH)", "label": "OPEN (Physically Handicapped)" }
       ],
       "EWS": [
