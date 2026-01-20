@@ -15,6 +15,7 @@ import {
   HelpCircle,
   Wifi,
 } from "lucide-react";
+import Image from "next/image";
 
 // Map facility names to their icons
 const facilityIcons: { [key: string]: React.ReactNode } = {
@@ -40,9 +41,15 @@ const getFacilityIcon = (facilityName: string): React.ReactNode => {
 
 interface FacilitiesProps {
   facilities: FacilityType[];
+  topRecruitersImage?: string | null;
+  pastRecruitersImage?: string | null;
 }
 
-export default function Facilities({ facilities }: FacilitiesProps) {
+export default function Facilities({
+  facilities,
+  topRecruitersImage,
+  pastRecruitersImage,
+}: FacilitiesProps) {
   const [expandedTypes, setExpandedTypes] = useState<Set<string>>(new Set());
 
   if (!facilities || facilities.length === 0) {
@@ -63,6 +70,12 @@ export default function Facilities({ facilities }: FacilitiesProps) {
     Past_Recruiters: "Past Recruiters",
     Recruiter: "Recruiters",
     Facility: "Facilities",
+  };
+
+  // Map type to image
+  const typeImages: { [key: string]: string | null | undefined } = {
+    Top_Recruiters: topRecruitersImage,
+    Past_Recruiters: pastRecruitersImage,
   };
 
   // Group facilities by type
@@ -99,6 +112,45 @@ export default function Facilities({ facilities }: FacilitiesProps) {
         bottom="Campus facilities and amenities"
       />
 
+      {/* Recruiter Images - Above Accordion */}
+      <div className="flex flex-col gap-4 mt-6">
+        {topRecruitersImage && (
+          <div className="w-full bg-white rounded-lg border border-gray-200 p-4">
+            <h3 className="text-base font-semibold text-gray-800 mb-3">
+              Top Recruiters
+            </h3>
+            <div className="relative w-full h-auto">
+              <Image
+                src={topRecruitersImage}
+                alt="Top Recruiters"
+                width={1200}
+                height={400}
+                className="w-full h-auto rounded-lg"
+                style={{ objectFit: "contain" }}
+              />
+            </div>
+          </div>
+        )}
+        {pastRecruitersImage && (
+          <div className="w-full bg-white rounded-lg border border-gray-200 p-4">
+            <h3 className="text-base font-semibold text-gray-800 mb-3">
+              Past Recruiters
+            </h3>
+            <div className="relative w-full h-auto">
+              <Image
+                src={pastRecruitersImage}
+                alt="Past Recruiters"
+                width={1200}
+                height={400}
+                className="w-full h-auto rounded-lg"
+                style={{ objectFit: "contain" }}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Accordion Section */}
       <div className="flex flex-col gap-3 mt-6">
         {sortedTypes.map((type) => {
           const items = facilitiesByType[type];
@@ -106,68 +158,68 @@ export default function Facilities({ facilities }: FacilitiesProps) {
           const displayLabel = typeLabels[type] || type;
 
           return (
-            <div
-              key={type}
-              className="bg-white rounded-lg border border-gray-200 overflow-hidden transition-all duration-200 hover:shadow-md"
-            >
-              {/* Header - Always Visible */}
-              <button
-                onClick={() => toggleType(type)}
-                className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
-              >
-                <div className="flex items-center gap-3">
-                  <h3 className="text-base font-semibold text-gray-800">
-                    {displayLabel}
-                  </h3>
-                  <span className="text-xs font-medium text-white bg-blue-600 px-2.5 py-1 rounded-full">
-                    {items.length}
-                  </span>
-                </div>
+            <div key={type}>
+              {/* Dropdown Card */}
+              <div className="bg-white rounded-lg border border-gray-200 overflow-hidden transition-all duration-200 hover:shadow-md">
+                {/* Header - Always Visible */}
+                <button
+                  onClick={() => toggleType(type)}
+                  className="w-full flex items-center justify-between p-4 hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <h3 className="text-base font-semibold text-gray-800">
+                      {displayLabel}
+                    </h3>
+                    <span className="text-xs font-medium text-white bg-blue-600 px-2.5 py-1 rounded-full">
+                      {items.length}
+                    </span>
+                  </div>
 
-                <div className="flex items-center gap-2">
-                  {isExpanded ? (
-                    <ChevronUp className="w-5 h-5 text-gray-600" />
-                  ) : (
-                    <ChevronDown className="w-5 h-5 text-gray-600" />
-                  )}
-                </div>
-              </button>
+                  <div className="flex items-center gap-2">
+                    {isExpanded ? (
+                      <ChevronUp className="w-5 h-5 text-gray-600" />
+                    ) : (
+                      <ChevronDown className="w-5 h-5 text-gray-600" />
+                    )}
+                  </div>
+                </button>
 
-              {/* Expandable Content */}
-              {isExpanded && (
-                <div className="px-4 pb-4 pt-2 border-t border-gray-100 bg-gray-50">
-                  {/* Logo-style grid for Recruiters */}
-                  {type === "Top_Recruiters" || type === "Past_Recruiters" ? (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-10 gap-3">
-                      {items.map((facility) => (
-                        <div
-                          key={facility._id}
-                          className="flex items-center justify-center p-3 bg-white rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors min-h-[60px]"
-                        >
-                          <p className="text-xs md:text-sm font-semibold text-gray-700 text-center">
-                            {facility.Value}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    /* Regular compact layout for Facilities */
-                    <div className="flex flex-wrap gap-2">
-                      {items.map((facility) => (
-                        <div
-                          key={facility._id}
-                          className="inline-flex items-center gap-2 px-3 py-2 bg-white rounded-lg hover:bg-blue-50 transition-colors border border-gray-200 shadow-sm"
-                        >
-                          {getFacilityIcon(facility.Value)}
-                          <p className="text-sm text-gray-700 font-medium">
-                            {facility.Value}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
+                {/* Expandable Content */}
+                {isExpanded && (
+                  <div className="px-4 pb-4 pt-2 border-t border-gray-100 bg-gray-50">
+                    {/* Logo-style grid for Recruiters */}
+                    {type === "Top_Recruiters" || type === "Past_Recruiters" ? (
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-10 gap-3">
+                        {items.map((facility) => (
+                          <div
+                            key={facility._id}
+                            className="flex items-center justify-center p-3 bg-white rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors min-h-[60px]"
+                          >
+                            <p className="text-xs md:text-sm font-semibold text-gray-700 text-center">
+                              {facility.Value}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      /* Regular compact layout for Facilities */
+                      <div className="flex flex-wrap gap-2">
+                        {items.map((facility) => (
+                          <div
+                            key={facility._id}
+                            className="inline-flex items-center gap-2 px-3 py-2 bg-white rounded-lg hover:bg-blue-50 transition-colors border border-gray-200 shadow-sm"
+                          >
+                            {getFacilityIcon(facility.Value)}
+                            <p className="text-sm text-gray-700 font-medium">
+                              {facility.Value}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           );
         })}

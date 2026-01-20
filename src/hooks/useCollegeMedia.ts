@@ -5,6 +5,8 @@ import {
   getLogoFromMedia,
   getGalleryFromMedia,
   getBannerFromMedia,
+  getTopRecruitersImageFromMedia,
+  getPastRecruitersImageFromMedia,
 } from "@/network/collegeMedia";
 
 interface UseCollegeMediaReturn {
@@ -12,13 +14,15 @@ interface UseCollegeMediaReturn {
   logo: string | null;
   banner: string | null;
   gallery: CollegeMedia[];
+  topRecruitersImage: string | null;
+  pastRecruitersImage: string | null;
   loading: boolean;
   error: string | null;
   refetch: () => void;
 }
 
 export const useCollegeMedia = (
-  collegeId: string | null
+  collegeId: string | null,
 ): UseCollegeMediaReturn => {
   const [media, setMedia] = useState<CollegeMedia[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -59,6 +63,8 @@ export const useCollegeMedia = (
     logo: getLogoFromMedia(media),
     banner: getBannerFromMedia(media),
     gallery: getGalleryFromMedia(media),
+    topRecruitersImage: getTopRecruitersImageFromMedia(media),
+    pastRecruitersImage: getPastRecruitersImageFromMedia(media),
     loading,
     error,
     refetch: fetchMedia,

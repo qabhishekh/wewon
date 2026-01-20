@@ -49,6 +49,8 @@ export default function CollegePage() {
   const {
     logo,
     gallery,
+    topRecruitersImage,
+    pastRecruitersImage,
     loading: mediaLoading,
     error: mediaError,
   } = useCollegeMedia(collegeId);
@@ -551,7 +553,11 @@ export default function CollegePage() {
         >
           {collegeDetails?.facilities &&
             collegeDetails.facilities.length > 0 && (
-              <Facilities facilities={collegeDetails.facilities} />
+              <Facilities
+                facilities={collegeDetails.facilities}
+                topRecruitersImage={topRecruitersImage}
+                pastRecruitersImage={pastRecruitersImage}
+              />
             )}
         </div>
 
@@ -586,7 +592,7 @@ export default function CollegePage() {
                   <a
                     href={`tel:${college.Director_Contact.replace(
                       /\s|-/g,
-                      ""
+                      "",
                     )}`}
                     className="text-base font-semibold text-[var(--foreground)] hover:text-[var(--primary)] transition-colors"
                   >
@@ -602,7 +608,7 @@ export default function CollegePage() {
                   <a
                     href={`tel:${college.Registrar_Contact.replace(
                       /\s|-/g,
-                      ""
+                      "",
                     )}`}
                     className="text-base font-semibold text-[var(--foreground)] hover:text-[var(--primary)] transition-colors"
                   >
