@@ -505,12 +505,20 @@ export default function CollegePage() {
             sectionRefs.current["Placements"] = el;
           }}
         >
-          {yearsData.length > 0 && (
+          <SubHeading align="left" top="Placement Statistics" />
+          {yearsData.length > 0 ? (
             <PlacementStatistics
               yearsData={yearsData}
               eligibleColor="var(--primary)"
               placedColor="#FF7A3D"
+              hideHeading={true}
             />
+          ) : (
+            <div className="p-6 bg-gray-50 rounded-xl border border-gray-200 text-center">
+              <p className="text-gray-500">
+                Currently no information available
+              </p>
+            </div>
           )}
         </div>
 
@@ -520,8 +528,15 @@ export default function CollegePage() {
             sectionRefs.current["Rankings"] = el;
           }}
         >
-          {collegeDetails?.rankings && collegeDetails.rankings.length > 0 && (
-            <Rankings rankings={collegeDetails.rankings} />
+          <SubHeading align="left" top="Rankings" />
+          {collegeDetails?.rankings && collegeDetails.rankings.length > 0 ? (
+            <Rankings rankings={collegeDetails.rankings} hideHeading={true} />
+          ) : (
+            <div className="p-6 bg-gray-50 rounded-xl border border-gray-200 text-center">
+              <p className="text-gray-500">
+                Currently no information available
+              </p>
+            </div>
           )}
         </div>
 
@@ -538,7 +553,8 @@ export default function CollegePage() {
         </div>
 
         {/* Cutoff Ranks */}
-        <CutOffsFilter />
+        <SubHeading align="left" top="Cutoff Ranks" />
+        <CutOffsFilter hideHeading={true} />
 
         {/* Website Link */}
         <WebsiteLink

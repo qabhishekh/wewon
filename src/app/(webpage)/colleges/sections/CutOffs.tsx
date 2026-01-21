@@ -13,6 +13,7 @@ interface CutOffsFilterProps {
   seatPools?: FilterOption[];
   onFilter?: (filters: { category: string; seatPool: string }) => void;
   title?: string;
+  hideHeading?: boolean;
 }
 
 export default function CutOffsFilter({
@@ -31,6 +32,7 @@ export default function CutOffsFilter({
   ],
   onFilter,
   title = "CutOffs",
+  hideHeading = false,
 }: CutOffsFilterProps) {
   const [selectedCategory, setSelectedCategory] = useState(categories[0].value);
   const [selectedSeatPool, setSelectedSeatPool] = useState(seatPools[0].value);
@@ -95,11 +97,8 @@ export default function CutOffsFilter({
   };
 
   return (
-    <div
-      className="w-full mb-6"
-      style={{ fontFamily: "Poppins, sans-serif" }}
-    >
-      <SubHeading top="Cutoffs" align="left" />
+    <div className="w-full mb-6" style={{ fontFamily: "Poppins, sans-serif" }}>
+      {!hideHeading && <SubHeading top="Cutoffs" align="left" />}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-10">
         {/* Category Dropdown */}
         <div className="relative">

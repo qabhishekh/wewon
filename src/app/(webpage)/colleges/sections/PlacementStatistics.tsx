@@ -46,12 +46,14 @@ interface PlacementStatisticsProps {
   yearsData: YearData[];
   eligibleColor?: string;
   placedColor?: string;
+  hideHeading?: boolean;
 }
 
 export default function PlacementStatistics({
   yearsData,
   eligibleColor,
   placedColor,
+  hideHeading = false,
 }: PlacementStatisticsProps) {
   const [activeYearIndex, setActiveYearIndex] = useState(0);
 
@@ -102,13 +104,10 @@ export default function PlacementStatistics({
   };
 
   return (
-    <div
-      className="w-full"
-      style={{ fontFamily: "Poppins, sans-serif" }}
-    >
+    <div className="w-full" style={{ fontFamily: "Poppins, sans-serif" }}>
       <div className="w-full mx-auto">
         {/* Title */}
-        <SubHeading top="Placements" align="left" />
+        {!hideHeading && <SubHeading top="Placements" align="left" />}
         <div className="bg-white rounded-2xl border border-[var(--border)] p-2 mb-6 overflow-x-auto mt-10">
           <div className="flex gap-2 min-w-max">
             {yearsData.map((yearData, index) => (
@@ -247,7 +246,7 @@ export default function PlacementStatistics({
                   (activeYear.data.reduce((sum, item) => sum + item.placed, 0) /
                     activeYear.data.reduce(
                       (sum, item) => sum + item.eligible,
-                      0
+                      0,
                     )) *
                   100
                 ).toFixed(1)}

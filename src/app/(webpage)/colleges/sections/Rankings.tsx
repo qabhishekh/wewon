@@ -5,6 +5,7 @@ import { Ranking as RankingType } from "@/store/types";
 
 interface RankingsProps {
   rankings: RankingType[];
+  hideHeading?: boolean;
 }
 
 // Agency logo mapping based on keywords
@@ -106,7 +107,10 @@ const RankingTable: React.FC<{ rankings: RankingType[] }> = ({ rankings }) => (
   </div>
 );
 
-export default function Rankings({ rankings }: RankingsProps) {
+export default function Rankings({
+  rankings,
+  hideHeading = false,
+}: RankingsProps) {
   if (!rankings || rankings.length === 0) {
     return null;
   }
@@ -121,10 +125,12 @@ export default function Rankings({ rankings }: RankingsProps) {
 
   return (
     <div className="py-8">
-      <SubHeading
-        top="Rankings"
-        bottom="College rankings from various agencies"
-      />
+      {!hideHeading && (
+        <SubHeading
+          top="Rankings"
+          bottom="College rankings from various agencies"
+        />
+      )}
 
       <div className="mt-6 space-y-10">
         {/* International Rankings */}
