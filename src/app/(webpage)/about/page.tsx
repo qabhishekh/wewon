@@ -49,7 +49,7 @@ const About = () => {
     },
     {
       icon: Users,
-      title: "10K+ personalized mentorships",
+      title: "1 Lakh+ personalized mentorships",
     },
     {
       icon: Award,
@@ -62,10 +62,6 @@ const About = () => {
     {
       icon: Wand2,
       title: "Promote Innovation",
-    },
-    {
-      icon: BookOpen,
-      title: "5K+ verified college profiles",
     },
   ];
 
@@ -158,20 +154,26 @@ const About = () => {
         leftHead={{
           title: "Who We Are",
           description: [
-            "We Won Academy is a one-stop education and career guidance platform designed to empower students with accurate information, smart tools, and personalized mentorship.",
-            "We help students make confident decisions about their college admissions, entrance exams, and career goals — all in one place.",
+            "Colleges Khojo is a dedicated college discovery and admission guidance platform, developed as an associate initiative of We Won Academy.",
+            "Our goal is to help students explore the right colleges, courses, and entrance exams based on their interests, performance, and career goals.",
+            "Through our platform, students can search colleges, check entrance exams, analyze ranks, and understand admission possibilities—all in one place. We simplify the complex admission process and provide accurate, student-focused guidance to ensure confident decision-making.",
           ],
         }}
         rightHead={{
           title: "Our Vision",
           description: [
-            "To become India's most trusted student guidance ecosystem that empowers every learner to make informed, confident, and successful career decisions.",
+            "Our vision is to help every student secure the best possible college based on their rank, exam performance, and career aspirations.",
+            "We aim to create a trusted ecosystem where students can easily compare colleges, evaluate options, and receive proper guidance for admissions across India.",
+            "At Colleges Khojo, we believe that right guidance at the right time can change a student's future.",
           ],
         }}
         bottomHead={{
           title: "Our Story",
           description: [
-            "We Won Academy was founded with a simple belief — every student deserves the right information at the right time.",
+            "We Won Academy was founded by Aman Mishra (Aman Bhaiya), an alumnus of IISER Bhopal, with a strong belief that students deserve clear, honest, and practical career guidance.",
+            "The idea of Colleges Khojo started during his time at IISER Bhopal, when he observed how students struggled to find the right colleges despite having good ranks and potential.",
+            "Since then, the mission has been simple — guide students properly, help them understand their options, and support them in securing admissions to suitable colleges.",
+            "Today, Colleges Khojo continues this mission by combining technology, experience, and mentorship to support students at every step of their admission journey.",
           ],
         }}
         showEmployees={true}

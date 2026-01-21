@@ -124,7 +124,7 @@ export default function CollegeHero({
       <div className="w-full mx-auto px-4 py-8">
         <div className="flex flex-col items-center text-center mb-6">
           {/* Logo */}
-          <div className="w-32 h-32 mb-4 bg-white rounded-full overflow-hidden flex items-center justify-center border-4 border-white shadow-lg">
+          <div className="w-32 h-32 mb-4 bg-white rounded-full overflow-hidden flex items-center justify-center shadow-lg ring-2 ring-white ring-offset-6 ring-offset-[#0f3a67]">
             <img
               src={logo}
               alt={name}
@@ -134,7 +134,7 @@ export default function CollegeHero({
                 const parent = e.currentTarget.parentElement;
                 if (parent) {
                   parent.innerHTML = `<div class="text-4xl font-bold text-[#0D3A66]">${name.charAt(
-                    0
+                    0,
                   )}</div>`;
                 }
               }}

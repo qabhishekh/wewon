@@ -30,7 +30,7 @@ interface CollegeCardProps {
 
 const CollegeCard = ({ college, handleKnowMore }: CollegeCardProps) => {
   const [logoUrl, setLogoUrl] = useState<string | null>(
-    college?.logoUrl || null
+    college?.logoUrl || null,
   );
   const [loadingLogo, setLoadingLogo] = useState(!college?.logoUrl);
   const [imageError, setImageError] = useState(false);
@@ -90,7 +90,7 @@ const CollegeCard = ({ college, handleKnowMore }: CollegeCardProps) => {
           <img
             src={displayImage}
             alt={college?.name}
-            className="w-full h-full object-contain"
+            className="w-full h-full object-cover"
             onError={() => setImageError(true)}
             loading="lazy"
           />
@@ -98,7 +98,7 @@ const CollegeCard = ({ college, handleKnowMore }: CollegeCardProps) => {
       </div>
 
       {/* College Info */}
-      <div className="p-4">
+      <div className="p-4 flex flex-col h-[200px]">
         <h3
           className="text-lg font-bold mb-1 truncate"
           style={{ color: "#0D3A66" }}
@@ -107,39 +107,31 @@ const CollegeCard = ({ college, handleKnowMore }: CollegeCardProps) => {
           {college?.name}
         </h3>
         <p
-          className="text-sm mb-4 truncate"
+          className="text-sm mb-3 truncate"
           style={{ color: "rgba(13, 58, 102, 0.6)" }}
         >
           {college?.location}
         </p>
-
         {/* Tags */}
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="flex flex-wrap gap-2 mb-3 flex-grow">
           {college?.established && (
             <div
-              className="flex items-center gap-1 text-xs"
+              className="flex items-center gap-1 text-xs flex-shrink-0"
               style={{ color: "rgba(13, 58, 102, 0.7)" }}
             >
-              <Calendar size={14} />
+              <Calendar size={14} className="flex-shrink-0" />
               <span>{college.established}</span>
             </div>
           )}
           {college?.nirf && college.nirf !== "N/A" && (
             <div
-              className="flex items-center gap-1 text-xs"
+              className="flex items-center gap-1 text-xs max-w-full"
               style={{ color: "rgba(13, 58, 102, 0.7)" }}
             >
-              <MapPin size={14} />
-              <span>NIRF: {college.nirf}</span>
-            </div>
-          )}
-          {college?.naac && college.naac !== "N/A" && (
-            <div
-              className="flex items-center gap-1 text-xs"
-              style={{ color: "rgba(13, 58, 102, 0.7)" }}
-            >
-              <GraduationCap size={14} />
-              <span>NAAC: {college.naac}</span>
+              <Building2 size={14} className="flex-shrink-0" />
+              <span className="truncate" title={`TYPE: ${college.nirf}`}>
+                TYPE: {college.nirf}
+              </span>
             </div>
           )}
         </div>
@@ -147,7 +139,7 @@ const CollegeCard = ({ college, handleKnowMore }: CollegeCardProps) => {
         {/* Know More Button */}
         <button
           onClick={() => handleKnowMore && handleKnowMore(college?.id)}
-          className="w-full py-3 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-all hover:opacity-90 cursor-pointer"
+          className="w-full py-3 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-all hover:opacity-90 cursor-pointer mt-auto flex-shrink-0"
           style={{
             backgroundColor: "var(--light-blue)",
             color: "#0D3A66",

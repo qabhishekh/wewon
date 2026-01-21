@@ -13,8 +13,8 @@ export default function ContactUs({
   setFormData,
   onSubmit,
 }: ContactUsProps) {
-  const email = "support@example.com";
-  const phone = "+91 98765 43210";
+  const email = "collegeskhojoyt@gmail.com";
+  const phone = "+91 9532845978";
   const address = "123 Student Lane, Jaipur, Rajasthan, India";
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -71,10 +71,10 @@ export default function ContactUs({
               <span className="text-base md:text-lg underline">{phone}</span>
             </a>
 
-            <div className="flex items-start gap-3 md:gap-4">
+            {/* <div className="flex items-start gap-3 md:gap-4">
               <MapPin className="w-5 h-5 md:w-6 md:h-6 flex-shrink-0 mt-1" />
               <span className="text-base md:text-lg leading-relaxed">{address}</span>
-            </div>
+            </div> */}
           </div>
         </div>
 

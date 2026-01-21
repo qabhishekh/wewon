@@ -37,7 +37,7 @@ const Page = () => {
         onSubmit={handleSubmit}
       />
       <SubHeading top="Our Location" />
-      <GoogleMap />
+      {/* <GoogleMap /> */}
       <div className="pb-18 md:pb-24">
         <GoogleAds />
       </div>
