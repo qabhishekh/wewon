@@ -515,7 +515,7 @@ export default function CollegePage() {
             />
           ) : (
             <div className="p-6 bg-gray-50 rounded-xl border border-gray-200 text-center">
-              <p className="text-gray-500">
+              <p className="text-gray-500 font-bold">
                 Currently no information available
               </p>
             </div>
@@ -533,7 +533,7 @@ export default function CollegePage() {
             <Rankings rankings={collegeDetails.rankings} hideHeading={true} />
           ) : (
             <div className="p-6 bg-gray-50 rounded-xl border border-gray-200 text-center">
-              <p className="text-gray-500">
+              <p className="text-gray-500 font-bold">
                 Currently no information available
               </p>
             </div>
@@ -554,7 +554,11 @@ export default function CollegePage() {
 
         {/* Cutoff Ranks */}
         <SubHeading align="left" top="Cutoff Ranks" />
-        <CutOffsFilter hideHeading={true} />
+        <CutOffsFilter
+          hideHeading={true}
+          collegeName={college?.Name || ""}
+          instituteId={college?.instituteId || ""}
+        />
 
         {/* Website Link */}
         <WebsiteLink

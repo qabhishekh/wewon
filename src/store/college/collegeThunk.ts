@@ -13,7 +13,7 @@ export const fetchColleges = createAsyncThunk(
       instituteTypes?: string[];
       cities?: string[];
     } = {},
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const {
@@ -50,7 +50,7 @@ export const fetchColleges = createAsyncThunk(
       }
 
       const response = await apiClient.get(
-        `/api/colleges?${queryParams.toString()}`
+        `/api/colleges?${queryParams.toString()}`,
       );
 
       return {
@@ -61,10 +61,10 @@ export const fetchColleges = createAsyncThunk(
       };
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch colleges"
+        error.response?.data?.message || "Failed to fetch colleges",
       );
     }
-  }
+  },
 );
 
 // Fetch Recommended Colleges
@@ -79,16 +79,16 @@ export const fetchRecommendedColleges = createAsyncThunk(
       });
 
       const response = await apiClient.get(
-        `/api/colleges?${queryParams.toString()}`
+        `/api/colleges?${queryParams.toString()}`,
       );
 
       return response.data.data as College[];
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch recommended colleges"
+        error.response?.data?.message || "Failed to fetch recommended colleges",
       );
     }
-  }
+  },
 );
 
 // Fetch single college by ID
@@ -96,25 +96,19 @@ export const fetchCollegeById = createAsyncThunk(
   "college/fetchCollegeById",
   async (id: string, { rejectWithValue }) => {
     try {
-      // First, fetch from the colleges list to get basic info
-      const response = await apiClient.get(`/api/colleges?page=1&limit=100`);
+      const response = await apiClient.get(`/api/colleges/${id}`);
 
-      // Try to find by _id first, then by instituteId
-      const college = response.data.data.find(
-        (c: College) => c._id === id || c.instituteId === id
-      );
-
-      if (!college) {
-        return rejectWithValue("College not found");
+      if (!response.data.success) {
+        return rejectWithValue(response.data.message || "College not found");
       }
 
-      return college as College;
+      return response.data.data as College;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch college"
+        error.response?.data?.message || "Failed to fetch college",
       );
     }
-  }
+  },
 );
 
 // Fetch all college details (9 endpoints in parallel)
@@ -124,11 +118,11 @@ export const fetchCollegeDetails = createAsyncThunk(
     try {
       // First get the college to find its instituteId
       const collegesResponse = await apiClient.get(
-        `/api/colleges?page=1&limit=100`
+        `/api/colleges?page=1&limit=100`,
       );
 
       const college = collegesResponse.data.data.find(
-        (c: College) => c._id === id || c.instituteId === id
+        (c: College) => c._id === id || c.instituteId === id,
       );
 
       if (!college) {
@@ -156,7 +150,7 @@ export const fetchCollegeDetails = createAsyncThunk(
           apiClient
             .get(`/api/colleges/${instituteId}/${type}`)
             .then((res) => ({ type, data: res.data.data }))
-            .catch(() => ({ type, data: [] })) // Return empty array on error
+            .catch(() => ({ type, data: [] })), // Return empty array on error
       );
 
       const results = await Promise.all(promises);
@@ -213,10 +207,10 @@ export const fetchCollegeDetails = createAsyncThunk(
       return collegeDetails;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch college details"
+        error.response?.data?.message || "Failed to fetch college details",
       );
     }
-  }
+  },
 );
 
 // Keep existing auth thunks - they should be imported from auth folder if needed
