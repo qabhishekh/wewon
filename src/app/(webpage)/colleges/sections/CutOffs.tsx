@@ -301,6 +301,7 @@ export default function CutOffsFilter({
       params.set("instituteId", instituteId);
       params.set("year", selectedYear.toString());
       params.set("Seat_Type", selectedCategory);
+      params.set("limit", "1000");
 
       if (hasGender() && selectedGender && selectedGender !== "BOTH") {
         params.set("Gender", selectedGender);
@@ -333,10 +334,15 @@ export default function CutOffsFilter({
     }
   };
 
-  // Filter results by round
+  // Filter results by round and sort by Quota
   const getFilteredResults = () => {
-    if (selectedRound === "all") return cutoffResults;
-    return cutoffResults.filter((c) => c.Round === selectedRound);
+    let results =
+      selectedRound === "all"
+        ? cutoffResults
+        : cutoffResults.filter((c) => c.Round === selectedRound);
+
+    // Sort by Quota (AI/HS/OS order)
+    return results.sort((a, b) => (a.Quota || "").localeCompare(b.Quota || ""));
   };
 
   // Transform results for DynamicTable
