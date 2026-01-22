@@ -696,6 +696,9 @@ export default function CutOffsFilter({
               )}
 
               {/* Results Table */}
+              <div className="mb-2 text-lg font-semibold text-[var(--primary)]">
+                4-Year B.E./B.Tech. Course
+              </div>
               <DynamicTable columns={tableData.columns} data={tableData.data} />
             </>
           ) : (
