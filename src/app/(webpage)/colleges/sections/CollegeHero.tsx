@@ -17,6 +17,7 @@ import {
   Facebook,
   Youtube,
   Globe,
+  Scissors,
 } from "lucide-react";
 
 interface SocialMediaLink {
@@ -46,6 +47,7 @@ const tabIcons: { [key: string]: React.ReactNode } = {
   "Admission Rules": <BookOpen size={20} />,
   Connectivity: <MapPin size={20} />,
   Courses: <GraduationCap size={20} />,
+  Cutoffs: <Scissors size={20} />,
   Facilities: <Building2 size={20} />,
   Fees: <IndianRupee size={20} />,
   "Fee Waivers": <Award size={20} />,

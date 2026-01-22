@@ -60,6 +60,7 @@ export default function CollegePage() {
     "Admission Rules": null,
     Connectivity: null,
     Courses: null,
+    Cutoffs: null,
     Facilities: null,
     Fees: null,
     "Fee Waivers": null,
@@ -298,6 +299,7 @@ export default function CollegePage() {
             "Admission Rules",
             "Connectivity",
             "Courses",
+            "Cutoffs",
             "Facilities",
             "Fees",
             "Fee Waivers",
@@ -553,12 +555,18 @@ export default function CollegePage() {
         </div>
 
         {/* Cutoff Ranks */}
-        <SubHeading align="left" top="Cutoff Ranks" />
-        <CutOffsFilter
-          hideHeading={true}
-          collegeName={college?.Name || ""}
-          instituteId={college?.instituteId || ""}
-        />
+        <div
+          ref={(el) => {
+            sectionRefs.current["Cutoffs"] = el;
+          }}
+        >
+          <SubHeading align="left" top="Cutoff Ranks" />
+          <CutOffsFilter
+            hideHeading={true}
+            collegeName={college?.Name || ""}
+            instituteId={college?.instituteId || ""}
+          />
+        </div>
 
         {/* Website Link */}
         <WebsiteLink
