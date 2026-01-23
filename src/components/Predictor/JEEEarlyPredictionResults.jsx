@@ -124,13 +124,13 @@ export default function JEEEarlyPredictionResults({
   return (
     <div className="mt-6 sm:mt-10 bg-white border border-[var(--border)] rounded-lg sm:rounded-xl shadow-lg overflow-hidden">
       {/* Calculated Rank Banner */}
-      <div className="p-4 sm:p-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+      <div className="p-4 sm:p-6 bg-[var(--primary)] text-white">
         <div className="text-center">
           <p className="text-sm sm:text-base font-medium opacity-90 mb-1">
             Based on your {percentile}% Percentile
           </p>
           <h2 className="text-2xl sm:text-4xl font-bold">
-            Your Estimated AIR:{" "}
+            Your Estimated AIR:
             {formatRank(calculatedRank || results.calculatedRank)}
           </h2>
           <p className="text-xs sm:text-sm opacity-80 mt-2">
