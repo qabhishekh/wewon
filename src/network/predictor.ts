@@ -61,3 +61,15 @@ export const predictJEEMainRank = (data: {
 }) => {
   return apiClient.post("/api/jee-main/rank-predict", data);
 };
+
+// JEE Early Predictor API
+export const predictJEEEarly = (data: {
+  percentile: number;
+  gender: string;
+  category: string;
+  homeState: string;
+  instituteType?: string;
+  branchGroup?: string[];
+}) => {
+  return apiClient.post("/api/jee-early-predictor/predict", data);
+};

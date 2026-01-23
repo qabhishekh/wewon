@@ -124,6 +124,39 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
     ],
   },
   {
+    title: "JEE Early Predictor",
+    slug: "jee-early-predictor",
+    description:
+      "Predict colleges before official ranks! Enter your JEE Mains percentile to get estimated rank and college predictions for NITs, IIITs, and GFTIs.",
+    price: 0,
+    discountPrice: 0,
+    validityInDays: 365,
+    features: {
+      hasMentorship: false,
+      choiceFilling: {
+        isEnabled: false,
+        usageLimit: 0,
+      },
+      collegePredictor: {
+        isEnabled: true,
+        usageLimit: -1, // Unlimited
+      },
+      hasCourseContent: false,
+    },
+    totalMaterialCount: 0,
+    isActive: true,
+    // Frontend-specific fields
+    icon: "📊",
+    category: PredictorCategory.JEE,
+    purchased: true,
+    displayFeatures: [
+      "Percentile to Rank Conversion",
+      "NIT, IIIT & GFTI Predictions",
+      "Home State Quota Analysis",
+      "Early College Planning",
+    ],
+  },
+  {
     title: "UPTAC College Predictor",
     slug: "uptac-predictor",
     description:
@@ -313,21 +346,21 @@ export const getActivePredictors = (): PredictorProduct[] => {
 };
 
 export const getPredictorsByCategory = (
-  category: PredictorCategory
+  category: PredictorCategory,
 ): PredictorProduct[] => {
   return PREDICTOR_PRODUCTS.filter(
-    (predictor) => predictor.category === category && predictor.isActive
+    (predictor) => predictor.category === category && predictor.isActive,
   );
 };
 
 export const getPredictorBySlug = (
-  slug: string
+  slug: string,
 ): PredictorProduct | undefined => {
   return PREDICTOR_PRODUCTS.find((predictor) => predictor.slug === slug);
 };
 
 export const getPredictorByRoute = (
-  route: string
+  route: string,
 ): PredictorProduct | undefined => {
   // Route is derived from slug: /predictor/{slug}
   const slug = route.replace("/", "");
