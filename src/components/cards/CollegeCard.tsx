@@ -15,7 +15,8 @@ const FALLBACK_IMAGE =
 
 interface CollegeCardProps {
   college: {
-    id: string;
+    id: string; // MongoDB _id for media fetching
+    slug: string; // URL-friendly slug for navigation
     name: string;
     location?: string;
     city?: string;
@@ -25,7 +26,7 @@ interface CollegeCardProps {
     image?: string;
     logoUrl?: string;
   };
-  handleKnowMore?: (id: string) => void;
+  handleKnowMore?: (slug: string) => void;
 }
 
 const CollegeCard = ({ college, handleKnowMore }: CollegeCardProps) => {
@@ -138,7 +139,7 @@ const CollegeCard = ({ college, handleKnowMore }: CollegeCardProps) => {
 
         {/* Know More Button */}
         <button
-          onClick={() => handleKnowMore && handleKnowMore(college?.id)}
+          onClick={() => handleKnowMore && handleKnowMore(college?.slug)}
           className="w-full py-3 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-all hover:opacity-90 cursor-pointer mt-auto flex-shrink-0"
           style={{
             backgroundColor: "var(--light-blue)",

@@ -24,7 +24,7 @@ export default function CutOffsFilter({
   instituteId = "",
 }: CutOffsFilterProps) {
   const router = useRouter();
-  const { id } = useParams();
+  const { slug } = useParams();
 
   // State for year tabs
   const [availableYears, setAvailableYears] = useState<number[]>([]);
@@ -64,7 +64,7 @@ export default function CutOffsFilter({
 
   // Handle year tab click - navigate to cutoff filter page
   const handleYearSelect = (year: number) => {
-    router.push(`/colleges/${id}/cutoffs?year=${year}`);
+    router.push(`/colleges/${slug}/cutoffs?year=${year}`);
   };
 
   return (

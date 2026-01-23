@@ -111,26 +111,31 @@ export const fetchCollegeById = createAsyncThunk(
   },
 );
 
-// Fetch all college details (9 endpoints in parallel)
-export const fetchCollegeDetails = createAsyncThunk(
-  "college/fetchCollegeDetails",
-  async (id: string, { rejectWithValue }) => {
+// Fetch single college by Slug
+export const fetchCollegeBySlug = createAsyncThunk(
+  "college/fetchCollegeBySlug",
+  async (slug: string, { rejectWithValue }) => {
     try {
-      // First get the college to find its instituteId
-      const collegesResponse = await apiClient.get(
-        `/api/colleges?page=1&limit=100`,
-      );
+      const response = await apiClient.get(`/api/colleges/slug/${slug}`);
 
-      const college = collegesResponse.data.data.find(
-        (c: College) => c._id === id || c.instituteId === id,
-      );
-
-      if (!college) {
-        return rejectWithValue("College not found");
+      if (!response.data.success) {
+        return rejectWithValue(response.data.message || "College not found");
       }
 
-      const instituteId = college.instituteId;
+      return response.data.data as College;
+    } catch (error: any) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to fetch college",
+      );
+    }
+  },
+);
 
+// Fetch all college details (10 endpoints in parallel)
+export const fetchCollegeDetails = createAsyncThunk(
+  "college/fetchCollegeDetails",
+  async (instituteId: string, { rejectWithValue }) => {
+    try {
       const detailTypes = [
         "admission-rules",
         "connectivity",

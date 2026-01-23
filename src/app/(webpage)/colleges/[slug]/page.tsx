@@ -20,7 +20,7 @@ import Address from "../sections/Address";
 import WebsiteLink from "../sections/WebsiteLink";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
-  fetchCollegeById,
+  fetchCollegeBySlug,
   fetchCollegeDetails,
 } from "@/store/college/collegeThunk";
 import {
@@ -35,7 +35,7 @@ import useCollegeMedia from "@/hooks/useCollegeMedia";
 import SubHeading from "@/components/sections/SubHeading";
 
 export default function CollegePage() {
-  const { id } = useParams();
+  const { slug } = useParams();
   const dispatch = useAppDispatch();
 
   // Redux state
@@ -44,8 +44,8 @@ export default function CollegePage() {
   const loading = useAppSelector(selectCollegeDetailsLoading);
   const error = useAppSelector(selectCollegeDetailsError);
 
-  // Fetch college media (logo, gallery, banner)
-  const collegeId = typeof id === "string" ? id : null;
+  // Fetch college media (logo, gallery, banner) - use _id after college is fetched
+  const collegeId = college?._id || null;
   const {
     logo,
     gallery,
@@ -82,17 +82,23 @@ export default function CollegePage() {
     }
   };
 
-  // Fetch college data on mount
+  // Fetch college data on mount by slug
   useEffect(() => {
-    if (id && typeof id === "string") {
-      dispatch(fetchCollegeById(id));
-      dispatch(fetchCollegeDetails(id));
+    if (slug && typeof slug === "string") {
+      dispatch(fetchCollegeBySlug(slug));
     }
 
     return () => {
       dispatch(clearCollegeDetails());
     };
-  }, [id, dispatch]);
+  }, [slug, dispatch]);
+
+  // Fetch college details once college is loaded (using instituteId)
+  useEffect(() => {
+    if (college?.instituteId) {
+      dispatch(fetchCollegeDetails(college.instituteId));
+    }
+  }, [college?.instituteId, dispatch]);
 
   // Transform courses data to tabs format
   const transformCoursesToTabs = () => {
@@ -256,9 +262,8 @@ export default function CollegePage() {
           <p className="text-lg text-red-600 mb-4">{error}</p>
           <button
             onClick={() => {
-              if (id && typeof id === "string") {
-                dispatch(fetchCollegeById(id));
-                dispatch(fetchCollegeDetails(id));
+              if (slug && typeof slug === "string") {
+                dispatch(fetchCollegeBySlug(slug));
               }
             }}
             className="px-6 py-3 bg-primary text-white rounded-lg hover:opacity-90"

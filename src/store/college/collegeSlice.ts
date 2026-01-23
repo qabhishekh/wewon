@@ -4,6 +4,7 @@ import { CollegeState } from "../types";
 import {
   fetchColleges,
   fetchCollegeById,
+  fetchCollegeBySlug,
   fetchCollegeDetails,
   fetchRecommendedColleges,
 } from "./collegeThunk";
@@ -80,6 +81,21 @@ const collegeSlice = createSlice({
         state.selectedCollege = action.payload;
       })
       .addCase(fetchCollegeById.rejected, (state, action) => {
+        state.collegeDetailsLoading = false;
+        state.collegeDetailsError =
+          (action.payload as string) || "Failed to fetch college";
+      });
+
+    // Fetch College By Slug
+    builder
+      .addCase(fetchCollegeBySlug.pending, (state) => {
+        state.collegeDetailsLoading = true;
+        state.collegeDetailsError = null;
+      })
+      .addCase(fetchCollegeBySlug.fulfilled, (state, action) => {
+        state.selectedCollege = action.payload;
+      })
+      .addCase(fetchCollegeBySlug.rejected, (state, action) => {
         state.collegeDetailsLoading = false;
         state.collegeDetailsError =
           (action.payload as string) || "Failed to fetch college";

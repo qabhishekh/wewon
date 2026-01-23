@@ -4,6 +4,7 @@ import Heading from "./heading";
 import CollegeCard from "../cards/CollegeCard";
 interface College {
   id: string;
+  slug: string;
   name: string;
   location: string;
   city: string;
@@ -16,6 +17,7 @@ export default function TopColleges() {
   const colleges: College[] = [
     {
       id: "1",
+      slug: "iit-bhubaneswar",
       name: "IIT, BHUBANESWAR",
       location: "Bhubaneswar, Odisha",
       city: "Bhubaneswar",
@@ -27,6 +29,7 @@ export default function TopColleges() {
     },
     {
       id: "2",
+      slug: "iit-bhubaneswar-2",
       name: "IIT, BHUBANESWAR",
       location: "Bhubaneswar, Odisha",
       city: "Bhubaneswar",
@@ -38,6 +41,7 @@ export default function TopColleges() {
     },
     {
       id: "3",
+      slug: "iit-bhubaneswar-3",
       name: "IIT, BHUBANESWAR",
       location: "Bhubaneswar, Odisha",
       city: "Bhubaneswar",
@@ -49,6 +53,7 @@ export default function TopColleges() {
     },
     {
       id: "4",
+      slug: "iit-bhubaneswar-4",
       name: "IIT, BHUBANESWAR",
       location: "Bhubaneswar, Odisha",
       city: "Bhubaneswar",
@@ -57,7 +62,7 @@ export default function TopColleges() {
       naac: "NAAC A++",
       image:
         "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
-    }
+    },
   ];
   return (
     <Sections>

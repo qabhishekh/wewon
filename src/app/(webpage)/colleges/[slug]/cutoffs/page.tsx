@@ -6,7 +6,7 @@ import DynamicTable from "@/components/sections/DynamicTable";
 import SubHeading from "@/components/sections/SubHeading";
 import apiClient from "@/hooks/Axios";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { fetchCollegeById } from "@/store/college/collegeThunk";
+import { fetchCollegeBySlug } from "@/store/college/collegeThunk";
 import { selectSelectedCollege } from "@/store/college/collegeSlice";
 
 // Import options from predictor data files
@@ -46,7 +46,7 @@ interface FilterOption {
 }
 
 export default function CutoffFilterPage() {
-  const { id } = useParams();
+  const { slug } = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
@@ -77,10 +77,10 @@ export default function CutoffFilterPage() {
 
   // Fetch college data on mount
   useEffect(() => {
-    if (id && typeof id === "string") {
-      dispatch(fetchCollegeById(id));
+    if (slug && typeof slug === "string") {
+      dispatch(fetchCollegeBySlug(slug));
     }
-  }, [id, dispatch]);
+  }, [slug, dispatch]);
 
   // Detect college type based on name
   const detectCollegeType = useCallback((): CollegeType => {

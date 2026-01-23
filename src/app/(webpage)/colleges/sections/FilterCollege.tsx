@@ -39,7 +39,7 @@ export default function FilterColleges() {
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   // Applied filters (used for API calls)
   const [appliedInstituteTypes, setAppliedInstituteTypes] = useState<string[]>(
-    []
+    [],
   );
   const [appliedCities, setAppliedCities] = useState<string[]>([]);
   const itemsPerPage = 10;
@@ -72,7 +72,7 @@ export default function FilterColleges() {
         searchQuery: debouncedSearch,
         instituteTypes: appliedInstituteTypes,
         cities: appliedCities,
-      })
+      }),
     );
   }, [
     dispatch,
@@ -90,12 +90,12 @@ export default function FilterColleges() {
         searchQuery: debouncedSearch,
         instituteTypes: appliedInstituteTypes,
         cities: appliedCities,
-      })
+      }),
     );
   };
 
-  const handleKnowMore = (collegeId: string) => {
-    router.push(`/colleges/${collegeId}`);
+  const handleKnowMore = (collegeSlug: string) => {
+    router.push(`/colleges/${collegeSlug}`);
   };
 
   const handleApplyFilter = () => {
@@ -110,7 +110,7 @@ export default function FilterColleges() {
     setSelectedInstituteTypes((prev) =>
       prev.includes(value)
         ? prev.filter((type) => type !== value)
-        : [...prev, value]
+        : [...prev, value],
     );
   };
 
@@ -119,7 +119,7 @@ export default function FilterColleges() {
     setSelectedCities((prev) =>
       prev.includes(value)
         ? prev.filter((city) => city !== value)
-        : [...prev, value]
+        : [...prev, value],
     );
   };
 
@@ -140,7 +140,8 @@ export default function FilterColleges() {
 
   // Map API college data to CollegeCard format
   const mappedColleges = colleges.map((college) => ({
-    id: college._id,
+    id: college._id, // MongoDB _id for media fetching
+    slug: college.slug, // slug for navigation (may be undefined)
     name: college.Abbreviation || college.Name,
     location: `${college.City}, ${college.State}`,
     city: college.City,
@@ -665,7 +666,7 @@ export default function FilterColleges() {
                     page: currentPage,
                     limit: itemsPerPage,
                     searchQuery: debouncedSearch,
-                  })
+                  }),
                 )
               }
               className="mt-4 px-6 py-2 rounded-lg transition-all hover:opacity-90"

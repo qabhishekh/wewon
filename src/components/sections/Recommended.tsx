@@ -24,13 +24,14 @@ const Recommended = () => {
     dispatch(fetchRecommendedColleges(4));
   }, [dispatch]);
 
-  const handleKnowMore = (collegeId: string) => {
-    router.push(`/colleges/${collegeId}`);
+  const handleKnowMore = (collegeSlug: string) => {
+    router.push(`/colleges/${collegeSlug}`);
   };
 
   // Map API data to match CollegeCard props
   const mappedColleges = recommendedColleges.map((college) => ({
-    id: college._id,
+    id: college._id, // MongoDB _id for media fetching
+    slug: college.slug, // slug for navigation (may be undefined)
     name: college.Name,
     location: `${college.City}, ${college.State}`,
     city: college.City,

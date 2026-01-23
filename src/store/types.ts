@@ -91,6 +91,7 @@ export interface UserId {
 export interface College {
   _id: string;
   instituteId: string;
+  slug: string;
   Name: string;
   Abbreviation: string;
   Type: string;
