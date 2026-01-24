@@ -5,6 +5,8 @@ import CollegeHero from "../sections/CollegeHero";
 import CoursesFees from "../sections/CoursesFees";
 import GoogleAds from "@/components/sections/GoogleAds";
 import Recommended from "@/components/sections/Recommended";
+import NearbyColleges from "@/components/sections/NearbyColleges";
+import SimilarColleges from "@/components/sections/SimilarColleges";
 import PlacementStatistics from "../sections/PlacementStatistics";
 import CutOffsFilter from "../sections/CutOffs";
 import Rankings from "../sections/Rankings";
@@ -667,6 +669,12 @@ export default function CollegePage() {
         {/* Ads and Recommended */}
         <GoogleAds />
         <Recommended />
+        {college?._id && (
+          <>
+            <NearbyColleges collegeId={college._id} />
+            <SimilarColleges collegeId={college._id} />
+          </>
+        )}
       </div>
     </div>
   );

@@ -7,6 +7,8 @@ import {
   fetchCollegeBySlug,
   fetchCollegeDetails,
   fetchRecommendedColleges,
+  fetchNearbyColleges,
+  fetchSimilarColleges,
 } from "./collegeThunk";
 
 // ---------------------------
@@ -29,6 +31,14 @@ const initialState: CollegeState = {
   recommendedColleges: [],
   recommendedLoading: false,
   recommendedError: null,
+  // Nearby colleges
+  nearbyColleges: [],
+  nearbyLoading: false,
+  nearbyError: null,
+  // Similar colleges
+  similarColleges: [],
+  similarLoading: false,
+  similarError: null,
 };
 
 // ---------------------------
@@ -49,6 +59,8 @@ const collegeSlice = createSlice({
       state.selectedCollege = null;
       state.collegeDetails = null;
       state.collegeDetailsError = null;
+      state.nearbyColleges = [];
+      state.similarColleges = [];
     },
   },
   extraReducers: (builder) => {
@@ -132,6 +144,38 @@ const collegeSlice = createSlice({
         state.recommendedError =
           (action.payload as string) || "Failed to fetch recommended colleges";
       });
+
+    // Fetch Nearby Colleges
+    builder
+      .addCase(fetchNearbyColleges.pending, (state) => {
+        state.nearbyLoading = true;
+        state.nearbyError = null;
+      })
+      .addCase(fetchNearbyColleges.fulfilled, (state, action) => {
+        state.nearbyLoading = false;
+        state.nearbyColleges = action.payload;
+      })
+      .addCase(fetchNearbyColleges.rejected, (state, action) => {
+        state.nearbyLoading = false;
+        state.nearbyError =
+          (action.payload as string) || "Failed to fetch nearby colleges";
+      });
+
+    // Fetch Similar Colleges
+    builder
+      .addCase(fetchSimilarColleges.pending, (state) => {
+        state.similarLoading = true;
+        state.similarError = null;
+      })
+      .addCase(fetchSimilarColleges.fulfilled, (state, action) => {
+        state.similarLoading = false;
+        state.similarColleges = action.payload;
+      })
+      .addCase(fetchSimilarColleges.rejected, (state, action) => {
+        state.similarLoading = false;
+        state.similarError =
+          (action.payload as string) || "Failed to fetch similar colleges";
+      });
   },
 });
 
@@ -170,3 +214,19 @@ export const selectRecommendedLoading = (state: RootState) =>
   state.college.recommendedLoading;
 export const selectRecommendedError = (state: RootState) =>
   state.college.recommendedError;
+
+// Nearby colleges selectors
+export const selectNearbyColleges = (state: RootState) =>
+  state.college.nearbyColleges;
+export const selectNearbyLoading = (state: RootState) =>
+  state.college.nearbyLoading;
+export const selectNearbyError = (state: RootState) =>
+  state.college.nearbyError;
+
+// Similar colleges selectors
+export const selectSimilarColleges = (state: RootState) =>
+  state.college.similarColleges;
+export const selectSimilarLoading = (state: RootState) =>
+  state.college.similarLoading;
+export const selectSimilarError = (state: RootState) =>
+  state.college.similarError;

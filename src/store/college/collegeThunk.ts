@@ -91,6 +91,48 @@ export const fetchRecommendedColleges = createAsyncThunk(
   },
 );
 
+// Fetch Nearby Colleges
+export const fetchNearbyColleges = createAsyncThunk(
+  "college/fetchNearbyColleges",
+  async (collegeId: string, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.get(`/api/colleges/nearby/${collegeId}`);
+      if (!response.data.success) {
+        return rejectWithValue(
+          response.data.message || "Failed to fetch nearby colleges",
+        );
+      }
+      return response.data.data as College[];
+    } catch (error: any) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to fetch nearby colleges",
+      );
+    }
+  },
+);
+
+// Fetch Similar Colleges
+export const fetchSimilarColleges = createAsyncThunk(
+  "college/fetchSimilarColleges",
+  async (collegeId: string, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.get(
+        `/api/colleges/similar/${collegeId}`,
+      );
+      if (!response.data.success) {
+        return rejectWithValue(
+          response.data.message || "Failed to fetch similar colleges",
+        );
+      }
+      return response.data.data as College[];
+    } catch (error: any) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to fetch similar colleges",
+      );
+    }
+  },
+);
+
 // Fetch single college by ID
 export const fetchCollegeById = createAsyncThunk(
   "college/fetchCollegeById",

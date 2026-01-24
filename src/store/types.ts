@@ -124,6 +124,14 @@ export interface CollegeState {
   recommendedColleges: College[];
   recommendedLoading: boolean;
   recommendedError: string | null;
+  // Nearby colleges
+  nearbyColleges: College[];
+  nearbyLoading: boolean;
+  nearbyError: string | null;
+  // Similar colleges
+  similarColleges: College[];
+  similarLoading: boolean;
+  similarError: string | null;
 }
 
 // College Detail Types
