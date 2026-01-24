@@ -146,7 +146,7 @@ export default function FilterColleges() {
     location: `${college.City}, ${college.State}`,
     city: college.City,
     established: `Estd. ${college.Est_Year}`,
-    nirf: "N/A", // Not available in API
+    nirf: college.Type,
     naac: "N/A", // Not available in API
     image:
       "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",

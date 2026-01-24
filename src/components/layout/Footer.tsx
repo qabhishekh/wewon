@@ -7,9 +7,11 @@ const topRowLinks = [
   {
     title: "Company",
     links: [
-      { label: "About Us", href: "/about" },
-      { label: "Careers", href: "/careers" },
+      { label: "Home", href: "/" },
       { label: "Blog", href: "/blog" },
+      { label: "Careers", href: "/careers" },
+      { label: "About Us", href: "/about" },
+      { label: "Counselling", href: "/counselling" },
       { label: "Contact Us", href: "/contact" },
     ],
   },
@@ -141,6 +143,7 @@ const Footer = () => {
                 },
                 { label: "Terms of Service", href: "/terms" },
                 { label: "Privacy Policy", href: "/privacy" },
+                { label: "Refund Policy", href: "/refund" },
               ],
             },
             ...bottomRowLinks,
