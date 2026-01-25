@@ -8,14 +8,29 @@ export default function JEEEarlyPredictionResults({
   calculatedRank,
   percentile,
 }) {
+  const [activeTab, setActiveTab] = useState("All India");
   const [activeProbabilityTab, setActiveProbabilityTab] = useState("High");
   const [genderFilter, setGenderFilter] = useState("All");
 
-  if (!results || !results.predictions) return null;
+  if (!results) return null;
 
-  const predictions = results.predictions || [];
+  const tabs = [
+    { id: "All India", label: "All India", data: results.predictions },
+    {
+      id: "Home State",
+      label: "Home State",
+      data: results.homestatePredictions,
+    },
+  ].filter((tab) => tab.data && tab.data.length > 0);
 
-  const filteredData = predictions.filter((item) => {
+  // If the current active tab has no data, switch to the first available tab
+  if (tabs.length > 0 && !tabs.find((tab) => tab.id === activeTab)) {
+    setActiveTab(tabs[0].id);
+  }
+
+  const currentData = tabs.find((tab) => tab.id === activeTab)?.data || [];
+
+  const filteredData = currentData.filter((item) => {
     if (genderFilter === "All") return true;
     if (genderFilter === "Female-only") {
       return item.gender?.toLowerCase().includes("female");
@@ -144,10 +159,29 @@ export default function JEEEarlyPredictionResults({
           College Predictions
         </h3>
         <p className="text-xs sm:text-sm text-[var(--muted-text)] mt-1">
-          Based on your estimated rank and preferences (
-          {results.count || predictions.length} results)
+          Based on your estimated rank and preferences ({currentData.length}{" "}
+          results)
         </p>
       </div>
+
+      {/* Main Tabs (All India / Home State) */}
+      {tabs.length > 0 && (
+        <div className="flex border-b border-[var(--border)] overflow-x-auto bg-gray-50">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-semibold transition-colors whitespace-nowrap ${
+                activeTab === tab.id
+                  ? "border-b-2 border-[var(--primary)] text-[var(--primary)] bg-white"
+                  : "text-[var(--muted-text)] hover:text-[var(--foreground)] hover:bg-gray-100"
+              }`}
+            >
+              {tab.label} ({tab.data.length})
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Gender Filter - Only show when user is Female */}
       {userGender !== "Male" && (

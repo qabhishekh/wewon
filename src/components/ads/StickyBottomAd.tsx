@@ -16,7 +16,7 @@ const StickyBottomAd = () => {
     if (!isHidden && ads && ads.length > 0) {
       setIsVisible(true);
     }
-  }, [ads]);
+  }, []);
 
   if (!isVisible || !ads || ads.length === 0) return null;
 
@@ -26,9 +26,8 @@ const StickyBottomAd = () => {
   try {
     content = JSON.parse(ad.description);
   } catch (e) {
-    // Fallback or ignore if not JSON
-    console.error("Failed to parse bottom ad description", e);
-    return null;
+    // Fallback if not JSON - treat as raw text/HTML
+    content = { text: ad.description };
   }
 
   const handleClose = () => {
@@ -39,13 +38,16 @@ const StickyBottomAd = () => {
   return (
     <div className="fixed bottom-0 left-0 w-full z-50 bg-white border-t border-gray-200 shadow-lg p-3 flex items-center justify-between md:justify-center gap-4">
       <div className="flex-1 md:flex-none flex items-center gap-4 text-sm md:text-base font-medium">
-        <span>{content.text}</span>
-        {content.link && (
+        <div
+          dangerouslySetInnerHTML={{ __html: content?.text || "" }}
+          className="prose-sm"
+        />
+        {content?.link && (
           <Link
-            href={content.link}
+            href={content?.link}
             className="bg-blue-600 text-white px-4 py-1.5 rounded-full hover:bg-blue-700 transition-colors text-xs md:text-sm whitespace-nowrap"
           >
-            {content.btnText || "Action"}
+            {content?.btnText || "Action"}
           </Link>
         )}
       </div>
