@@ -35,6 +35,10 @@ import {
 import CollegeGallery from "@/components/sections/CollegeGallery";
 import useCollegeMedia from "@/hooks/useCollegeMedia";
 import SubHeading from "@/components/sections/SubHeading";
+import StickyBottomAd from "@/components/ads/StickyBottomAd";
+import AdRenderer from "@/components/ads/AdRenderer";
+import PopupAd from "@/components/ads/PopupAd";
+import { fetchAds } from "@/store/ads/adsSlice";
 
 export default function CollegePage() {
   const { slug } = useParams();
@@ -94,6 +98,11 @@ export default function CollegePage() {
       dispatch(clearCollegeDetails());
     };
   }, [slug, dispatch]);
+
+  // Fetch Ads
+  useEffect(() => {
+    dispatch(fetchAds());
+  }, [dispatch]);
 
   // Fetch college details once college is loaded (using instituteId)
   useEffect(() => {
@@ -407,264 +416,293 @@ export default function CollegePage() {
             </svg>
           </div>
         </a>
-
-        {/* Overview Section */}
-        <Overview
-          collegeInfo={{
-            name: college?.Name,
-            abbreviation: college?.Abbreviation,
-            type: college?.Type,
-            estYear: college?.Est_Year,
-            city: college?.City,
-            state: college?.State,
-            address: college?.Address,
-          }}
-        />
-
-        {/* Also Known As */}
-        <AlsoKnownAs alternateNames={[]} />
-
-        {/* Admission Rules Section */}
-        <div
-          ref={(el) => {
-            sectionRefs.current["Admission Rules"] = el;
-          }}
-        >
-          {collegeDetails?.admissionRules &&
-            collegeDetails.admissionRules.length > 0 && (
-              <AdmissionRules admissionRules={collegeDetails.admissionRules} />
-            )}
+        <div className="max-w-[1400px] mx-auto px-4 pt-2">
+          <AdRenderer location="homepage_banner" />
         </div>
 
-        {/* Connectivity Section */}
-        <div
-          ref={(el) => {
-            sectionRefs.current["Connectivity"] = el;
-          }}
-        >
-          <SubHeading align="left" top="How to Reach" />
-          <Address
-            address={college?.Address || ""}
-            city={college?.City}
-            state={college?.State}
-            pincode=""
-            phone=""
-            email=""
-          />
-          <div className="text-xl text-[var(--primary)] font-bold mt-4">
-            Transportation and connectivity options
-          </div>
-          {collegeDetails?.connectivity &&
-            collegeDetails.connectivity.length > 0 && (
-              <Connectivity connectivity={collegeDetails.connectivity} />
-            )}
-        </div>
-
-        {/* Address */}
-
-        {/* Courses Section */}
-        <div
-          ref={(el) => {
-            sectionRefs.current["Courses"] = el;
-          }}
-        >
-          {tabsData.length > 0 && <CoursesFees tabsData={tabsData} />}
-        </div>
-
-        {/* Fees Section */}
-        <div
-          ref={(el) => {
-            sectionRefs.current["Fees"] = el;
-          }}
-        >
-          {collegeDetails?.fees && collegeDetails.fees.length > 0 && (
-            <FeesStructure fees={collegeDetails.fees} />
-          )}
-        </div>
-
-        {/* Fee Waivers Section */}
-        <div
-          ref={(el) => {
-            sectionRefs.current["Fee Waivers"] = el;
-          }}
-        >
-          {collegeDetails?.feeWaivers &&
-            collegeDetails.feeWaivers.length > 0 && (
-              <FeeWaivers feeWaivers={collegeDetails.feeWaivers} />
-            )}
-        </div>
-
-        {/* Gallery Section */}
-        <div
-          ref={(el) => {
-            sectionRefs.current["Gallery"] = el;
-          }}
-        >
-          <CollegeGallery
-            gallery={gallery}
-            loading={mediaLoading}
-            error={mediaError}
-            collegeName={college?.Name}
-          />
-        </div>
-
-        {/* Placements Section */}
-        <div
-          ref={(el) => {
-            sectionRefs.current["Placements"] = el;
-          }}
-        >
-          <SubHeading align="left" top="Placement Statistics" />
-          {yearsData.length > 0 ? (
-            <PlacementStatistics
-              yearsData={yearsData}
-              eligibleColor="var(--primary)"
-              placedColor="#FF7A3D"
-              hideHeading={true}
+        <div className="flex flex-col lg:flex-row gap-8 relative z-20">
+          {/* Main Content Area */}
+          <div className="flex-1 min-w-0">
+            {/* Overview Section */}
+            <Overview
+              collegeInfo={{
+                name: college?.Name,
+                abbreviation: college?.Abbreviation,
+                type: college?.Type,
+                estYear: college?.Est_Year,
+                city: college?.City,
+                state: college?.State,
+                address: college?.Address,
+              }}
             />
-          ) : (
-            <div className="p-6 bg-gray-50 rounded-xl border border-gray-200 text-center">
-              <p className="text-gray-500 font-bold">
-                Currently no information available
-              </p>
+            <AdRenderer location="above_overview" />
+
+            {/* Also Known As */}
+            <AlsoKnownAs alternateNames={[]} />
+
+            <AdRenderer location="above_admission_rules" />
+
+            {/* Admission Rules Section */}
+            <div
+              ref={(el) => {
+                sectionRefs.current["Admission Rules"] = el;
+              }}
+            >
+              {collegeDetails?.admissionRules &&
+                collegeDetails.admissionRules.length > 0 && (
+                  <AdmissionRules
+                    admissionRules={collegeDetails.admissionRules}
+                  />
+                )}
             </div>
-          )}
-        </div>
 
-        {/* Rankings Section */}
-        <div
-          ref={(el) => {
-            sectionRefs.current["Rankings"] = el;
-          }}
-        >
-          <SubHeading align="left" top="Rankings" />
-          {collegeDetails?.rankings && collegeDetails.rankings.length > 0 ? (
-            <Rankings rankings={collegeDetails.rankings} hideHeading={true} />
-          ) : (
-            <div className="p-6 bg-gray-50 rounded-xl border border-gray-200 text-center">
-              <p className="text-gray-500 font-bold">
-                Currently no information available
-              </p>
-            </div>
-          )}
-        </div>
-
-        {/* Seat Matrix Section */}
-        <div
-          ref={(el) => {
-            sectionRefs.current["Seat Matrix"] = el;
-          }}
-        >
-          {collegeDetails?.seatMatrix &&
-            collegeDetails.seatMatrix.length > 0 && (
-              <SeatMatrix seatMatrix={collegeDetails.seatMatrix} />
-            )}
-        </div>
-
-        {/* Cutoff Ranks */}
-        <div
-          ref={(el) => {
-            sectionRefs.current["Cutoffs"] = el;
-          }}
-        >
-          <SubHeading align="left" top="Cutoff Ranks" />
-          <CutOffsFilter
-            hideHeading={true}
-            collegeName={college?.Name || ""}
-            instituteId={college?.instituteId || ""}
-          />
-        </div>
-
-        {/* Website Link */}
-        <WebsiteLink
-          websiteUrl={college?.Website || ""}
-          collegeName={college?.Name || ""}
-        />
-        {/* Facilities Section */}
-        <div
-          ref={(el) => {
-            sectionRefs.current["Facilities"] = el;
-          }}
-        >
-          {collegeDetails?.facilities &&
-            collegeDetails.facilities.length > 0 && (
-              <Facilities
-                facilities={collegeDetails.facilities}
-                topRecruitersImage={topRecruitersImage}
-                pastRecruitersImage={pastRecruitersImage}
+            {/* Connectivity Section */}
+            <div
+              ref={(el) => {
+                sectionRefs.current["Connectivity"] = el;
+              }}
+            >
+              <SubHeading align="left" top="How to Reach" />
+              <Address
+                address={college?.Address || ""}
+                city={college?.City}
+                state={college?.State}
+                pincode=""
+                phone=""
+                email=""
               />
-            )}
-        </div>
+              <div className="text-xl text-[var(--primary)] font-bold mt-4">
+                Transportation and connectivity options
+              </div>
+              {collegeDetails?.connectivity &&
+                collegeDetails.connectivity.length > 0 && (
+                  <Connectivity connectivity={collegeDetails.connectivity} />
+                )}
+            </div>
 
-        {/* College Contact Section */}
-        {(college?.Director_Contact ||
-          college?.Registrar_Contact ||
-          college?.Email) && (
-          <div className="my-8 p-6 bg-[var(--background)] border border-[var(--border)] rounded-xl shadow-sm">
-            <h3 className="text-xl font-bold text-[var(--foreground)] mb-4 flex items-center gap-2">
-              <svg
-                className="w-6 h-6 text-[var(--primary)]"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+            {/* Courses Section */}
+            <div
+              ref={(el) => {
+                sectionRefs.current["Courses"] = el;
+              }}
+            >
+              <AdRenderer location="above_course_and_fees_banner" />
+              {tabsData.length > 0 && <CoursesFees tabsData={tabsData} />}
+            </div>
+
+            {/* Fees Section */}
+            <div
+              ref={(el) => {
+                sectionRefs.current["Fees"] = el;
+              }}
+            >
+              {collegeDetails?.fees && collegeDetails.fees.length > 0 && (
+                <FeesStructure fees={collegeDetails.fees} />
+              )}
+            </div>
+
+            {/* Fee Waivers Section */}
+            <div
+              ref={(el) => {
+                sectionRefs.current["Fee Waivers"] = el;
+              }}
+            >
+              {collegeDetails?.feeWaivers &&
+                collegeDetails.feeWaivers.length > 0 && (
+                  <FeeWaivers feeWaivers={collegeDetails.feeWaivers} />
+                )}
+            </div>
+
+            {/* Gallery Section */}
+            <div
+              ref={(el) => {
+                sectionRefs.current["Gallery"] = el;
+              }}
+            >
+              <AdRenderer location="google_ad_gallery" />
+              <CollegeGallery
+                gallery={gallery}
+                loading={mediaLoading}
+                error={mediaError}
+                collegeName={college?.Name}
+              />
+            </div>
+
+            {/* Placements Section */}
+            <div
+              ref={(el) => {
+                sectionRefs.current["Placements"] = el;
+              }}
+            >
+              <AdRenderer location="placement_section" />
+              <SubHeading align="left" top="Placement Statistics" />
+              {yearsData.length > 0 ? (
+                <PlacementStatistics
+                  yearsData={yearsData}
+                  eligibleColor="var(--primary)"
+                  placedColor="#FF7A3D"
+                  hideHeading={true}
                 />
-              </svg>
-              College Contact
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {college?.Director_Contact && (
-                <div className="p-4 bg-[var(--muted-background)] rounded-lg">
-                  <p className="text-sm text-[var(--muted-text)] mb-1">
-                    Director Contact
+              ) : (
+                <div className="p-6 bg-gray-50 rounded-xl border border-gray-200 text-center">
+                  <p className="text-gray-500 font-bold">
+                    Currently no information available
                   </p>
-                  <a
-                    href={`tel:${college.Director_Contact.replace(
-                      /\s|-/g,
-                      "",
-                    )}`}
-                    className="text-base font-semibold text-[var(--foreground)] hover:text-[var(--primary)] transition-colors"
-                  >
-                    📞 {college.Director_Contact}
-                  </a>
-                </div>
-              )}
-              {college?.Registrar_Contact && (
-                <div className="p-4 bg-[var(--muted-background)] rounded-lg">
-                  <p className="text-sm text-[var(--muted-text)] mb-1">
-                    Registrar Contact
-                  </p>
-                  <a
-                    href={`tel:${college.Registrar_Contact.replace(
-                      /\s|-/g,
-                      "",
-                    )}`}
-                    className="text-base font-semibold text-[var(--foreground)] hover:text-[var(--primary)] transition-colors"
-                  >
-                    📞 {college.Registrar_Contact}
-                  </a>
-                </div>
-              )}
-              {college?.Email && (
-                <div className="p-4 bg-[var(--muted-background)] rounded-lg">
-                  <p className="text-sm text-[var(--muted-text)] mb-1">Email</p>
-                  <a
-                    href={`mailto:${college.Email}`}
-                    className="text-base font-semibold text-[var(--foreground)] hover:text-[var(--primary)] transition-colors break-all"
-                  >
-                    ✉️ {college.Email}
-                  </a>
                 </div>
               )}
             </div>
+
+            {/* Rankings Section */}
+            <div
+              ref={(el) => {
+                sectionRefs.current["Rankings"] = el;
+              }}
+            >
+              <SubHeading align="left" top="Rankings" />
+              {collegeDetails?.rankings &&
+              collegeDetails.rankings.length > 0 ? (
+                <Rankings
+                  rankings={collegeDetails.rankings}
+                  hideHeading={true}
+                />
+              ) : (
+                <div className="p-6 bg-gray-50 rounded-xl border border-gray-200 text-center">
+                  <p className="text-gray-500 font-bold">
+                    Currently no information available
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Seat Matrix Section */}
+            <div
+              ref={(el) => {
+                sectionRefs.current["Seat Matrix"] = el;
+              }}
+            >
+              {collegeDetails?.seatMatrix &&
+                collegeDetails.seatMatrix.length > 0 && (
+                  <SeatMatrix seatMatrix={collegeDetails.seatMatrix} />
+                )}
+            </div>
+
+            {/* Cutoff Ranks */}
+            <div
+              ref={(el) => {
+                sectionRefs.current["Cutoffs"] = el;
+              }}
+            >
+              <AdRenderer location="prediction_banner" />
+              <SubHeading align="left" top="Cutoff Ranks" />
+              <CutOffsFilter
+                hideHeading={true}
+                collegeName={college?.Name || ""}
+                instituteId={college?.instituteId || ""}
+              />
+            </div>
+
+            {/* Website Link */}
+            <WebsiteLink
+              websiteUrl={college?.Website || ""}
+              collegeName={college?.Name || ""}
+            />
+            {/* Facilities Section */}
+            <div
+              ref={(el) => {
+                sectionRefs.current["Facilities"] = el;
+              }}
+            >
+              {collegeDetails?.facilities &&
+                collegeDetails.facilities.length > 0 && (
+                  <Facilities
+                    facilities={collegeDetails.facilities}
+                    topRecruitersImage={topRecruitersImage}
+                    pastRecruitersImage={pastRecruitersImage}
+                  />
+                )}
+            </div>
+
+            {/* College Contact Section */}
+            {(college?.Director_Contact ||
+              college?.Registrar_Contact ||
+              college?.Email) && (
+              <div className="my-8 p-6 bg-[var(--background)] border border-[var(--border)] rounded-xl shadow-sm">
+                <h3 className="text-xl font-bold text-[var(--foreground)] mb-4 flex items-center gap-2">
+                  <svg
+                    className="w-6 h-6 text-[var(--primary)]"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                    />
+                  </svg>
+                  College Contact
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {college?.Director_Contact && (
+                    <div className="p-4 bg-[var(--muted-background)] rounded-lg">
+                      <p className="text-sm text-[var(--muted-text)] mb-1">
+                        Director Contact
+                      </p>
+                      <a
+                        href={`tel:${college.Director_Contact.replace(
+                          /\s|-/g,
+                          "",
+                        )}`}
+                        className="text-base font-semibold text-[var(--foreground)] hover:text-[var(--primary)] transition-colors"
+                      >
+                        📞 {college.Director_Contact}
+                      </a>
+                    </div>
+                  )}
+                  {college?.Registrar_Contact && (
+                    <div className="p-4 bg-[var(--muted-background)] rounded-lg">
+                      <p className="text-sm text-[var(--muted-text)] mb-1">
+                        Registrar Contact
+                      </p>
+                      <a
+                        href={`tel:${college.Registrar_Contact.replace(
+                          /\s|-/g,
+                          "",
+                        )}`}
+                        className="text-base font-semibold text-[var(--foreground)] hover:text-[var(--primary)] transition-colors"
+                      >
+                        📞 {college.Registrar_Contact}
+                      </a>
+                    </div>
+                  )}
+                  {college?.Email && (
+                    <div className="p-4 bg-[var(--muted-background)] rounded-lg">
+                      <p className="text-sm text-[var(--muted-text)] mb-1">
+                        Email
+                      </p>
+                      <a
+                        href={`mailto:${college.Email}`}
+                        className="text-base font-semibold text-[var(--foreground)] hover:text-[var(--primary)] transition-colors break-all"
+                      >
+                        ✉️ {college.Email}
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
-        )}
+
+          {/* Sidebar */}
+          <aside className="w-full lg:w-80 flex-shrink-0 space-y-6">
+            <div className="sticky top-24 space-y-6">
+              <AdRenderer location="sidebar" />
+              <AdRenderer location="applications_open_section" />
+            </div>
+          </aside>
+        </div>
 
         {/* Ads and Recommended */}
         <GoogleAds />
@@ -675,6 +713,8 @@ export default function CollegePage() {
             <SimilarColleges collegeId={college._id} />
           </>
         )}
+        <StickyBottomAd />
+        <PopupAd />
       </div>
     </div>
   );

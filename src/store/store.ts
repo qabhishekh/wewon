@@ -6,6 +6,7 @@ import counselingReducer from "./counseling/counselingSlice";
 import couponReducer from "./coupon/couponSlice";
 import orderReducer from "./order/orderSlice";
 import examReducer from "./exam/examSlice";
+import adsReducer from "./ads/adsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     coupon: couponReducer,
     order: orderReducer,
     exam: examReducer,
+    ads: adsReducer,
   },
 });
 
