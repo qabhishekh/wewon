@@ -30,7 +30,6 @@ interface CollegeCardProps {
 }
 
 const CollegeCard = ({ college, handleKnowMore }: CollegeCardProps) => {
-  console.log(college);
   
   const [logoUrl, setLogoUrl] = useState<string | null>(
     college?.logoUrl || null,

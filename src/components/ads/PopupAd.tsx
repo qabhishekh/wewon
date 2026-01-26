@@ -10,11 +10,13 @@ const PopupAd = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    if (isVisible) return;
+
     const isHidden = sessionStorage.getItem(`hide_popup_${location}`);
     if (!isHidden && ads && ads.length > 0) {
       setIsVisible(true);
     }
-  }, [ads]);
+  }, [ads, isVisible, location]);
 
   if (!isVisible || !ads || ads.length === 0) return null;
 
@@ -27,7 +29,7 @@ const PopupAd = () => {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden animate-in fade-in zoom-in duration-300">
+      <div className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden animate-in fade-in zoom-in duration-300 px-4 py-2">
         <button
           onClick={handleClose}
           className="absolute top-4 right-4 z-10 p-2 bg-white/80 backdrop-blur rounded-full text-gray-800 hover:bg-white transition-colors shadow-sm"

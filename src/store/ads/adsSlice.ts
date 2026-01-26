@@ -1,4 +1,9 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  PayloadAction,
+  createSelector,
+} from "@reduxjs/toolkit";
 import { AdsState, IAdData } from "../types/ads.types";
 import { RootState } from "../store";
 import apiClient from "@/hooks/Axios";
@@ -53,8 +58,10 @@ const adsSlice = createSlice({
 export const selectAds = (state: RootState) => state.ads.ads;
 export const selectAdsLoading = (state: RootState) => state.ads.loading;
 
-export const selectAdByLocation = (state: RootState, location: string) => {
-  return state.ads.ads.filter((ad) => ad.location === location && ad.isActive);
-};
+export const selectAdByLocation = createSelector(
+  [selectAds, (_state: RootState, location: string) => location],
+  (ads: IAdData[], location: string) =>
+    ads.filter((ad) => ad.location === location && ad.isActive),
+);
 
 export default adsSlice.reducer;

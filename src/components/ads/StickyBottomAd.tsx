@@ -11,12 +11,14 @@ const StickyBottomAd = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    if (isVisible) return;
+
     // Check session storage
     const isHidden = sessionStorage.getItem(`hide_ad_${location}`);
     if (!isHidden && ads && ads.length > 0) {
       setIsVisible(true);
     }
-  }, []);
+  }, [ads, isVisible, location]);
 
   if (!isVisible || !ads || ads.length === 0) return null;
 
