@@ -6,7 +6,7 @@ Create a `.env.local` file in the root directory with the following variables:
 
 ```env
 # Razorpay Configuration
-NEXT_PUBLIC_RAZORPAY_KEY_ID=rzp_test_Rwgxe5AML0pUS4
+NEXT_PUBLIC_RAZORPAY_KEY_ID=rzp_test_S7FL3P9Lwnfpx3
 
 # API URL (adjust based on your backend server)
 NEXT_PUBLIC_API_URL=http://localhost:5000
@@ -17,8 +17,8 @@ NEXT_PUBLIC_API_URL=http://localhost:5000
 The backend should have the following environment variables in its `.env` file:
 
 ```env
-RAZORPAY_KEY_ID=rzp_test_Rwgxe5AML0pUS4
-RAZORPAY_KEY_SECRET=4Hl2gxgxekCaT4zb6ueHfqkl
+RAZORPAY_KEY_ID=rzp_test_S7FL3P9Lwnfpx3
+RAZORPAY_KEY_SECRET=yJr3Exham8HxUrSBgRhSFKUE
 ```
 
 ## Important Notes

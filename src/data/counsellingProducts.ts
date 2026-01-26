@@ -157,6 +157,7 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
     ],
   },
   {
+    _id: "697725a9b2228255068f771c",
     title: "UPTAC College Predictor",
     slug: "uptac-predictor",
     description:
@@ -181,7 +182,7 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
     // Frontend-specific fields
     icon: "🎯",
     category: PredictorCategory.STATE,
-    purchased: true,
+    purchased: false,
     displayFeatures: [
       "UP Engineering Colleges",
       "Round-wise Predictions",
