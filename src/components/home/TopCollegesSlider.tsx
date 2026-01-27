@@ -16,28 +16,36 @@ import { Autoplay } from "swiper/modules";
 // The "AIIMS" and "IIT Bombay" data is duplicated to ensure the loop is visible
 const colleges = [
   {
-    name: "AIIMS - New Delhi", // Duplicate for looping
-    imageUrl: "/herocolleges/Aiims.png", // Use your image path
+    name: "IIT BOMBAY",
+    imageUrl: "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769433143/zvbgp6s9nf7gwo7mtzyq.webp",
   },
   {
-    name: "Indian Institute of Technology, Bombay", // Duplicate for looping
-    imageUrl: "/herocolleges/iit.jpg", // Use your image path
+    name: "IIT DELHI",
+    imageUrl: "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769435304/lgxqzt1oxtzbxiw6nwdo.webp",
   },
   {
-    name: "National Institute of Technology, Trichy", // Duplicate for looping
-    imageUrl: "/herocolleges/nit.jpg", // Use your image path
+    name: "IIT KHARGPUR",
+    imageUrl: "/herocolleges/iit.jpg",
   },
   {
-    name: "AIIMS - New Delhi", // Duplicate for looping
-    imageUrl: "/herocolleges/Aiims.png", // Use your image path
+    name: "NIT ALLAHABAD",
+    imageUrl: "/herocolleges/nit.jpg",
   },
   {
-    name: "Indian Institute of Technology, Bombay", // Duplicate for looping
-    imageUrl: "/herocolleges/iit.jpg", // Use your image path
+    name: "IIT MANDI",
+    imageUrl: "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769442890/sbgcb3tggqzbbycm3eb4.webp",
   },
   {
-    name: "National Institute of Technology, Trichy", // Duplicate for looping
-    imageUrl: "/herocolleges/nit.jpg", // Use your image path
+    name: "IIT MADRAS",
+    imageUrl: "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769433935/caqfb43bygxwljmsle8a.webp",
+  },
+  {
+    name: "IIT KANPUR",
+    imageUrl: "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769434599/dpjct6kcuvto7yhlswep.webp",
+  },
+  {
+    name: "NIT AGARTALA",
+    imageUrl: "/herocolleges/nit.jpg",
   },
 ];
 

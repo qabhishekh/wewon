@@ -73,3 +73,53 @@ export const predictJEEEarly = (data: {
 }) => {
   return apiClient.post("/api/jee-early-predictor/predict", data);
 };
+
+// Predictor List API
+export interface PredictorListItem {
+  _id: string;
+  title: string;
+  slug: string;
+  description: string;
+  thumbnail?: string;
+  price: number;
+  discountPrice?: number;
+  features: {
+    collegePredictor: {
+      isEnabled: boolean;
+      usageLimit: number;
+      allowedPredictors?: string[];
+    };
+    hasMentorship?: boolean;
+    choiceFilling?: {
+      isEnabled: boolean;
+      usageLimit: number;
+    };
+    hasCourseContent?: boolean;
+  };
+  isActive: boolean;
+  createdAt: string;
+}
+
+export interface PredictorListResponse {
+  success: boolean;
+  count: number;
+  total: number;
+  data: PredictorListItem[];
+}
+
+export const fetchAllPredictors = async (params?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+}): Promise<PredictorListResponse> => {
+  const queryParams = new URLSearchParams();
+  if (params?.page) queryParams.append("page", params.page.toString());
+  if (params?.limit) queryParams.append("limit", params.limit.toString());
+  if (params?.search) queryParams.append("search", params.search);
+
+  const queryString = queryParams.toString();
+  const url = `/api/predictor/all${queryString ? `?${queryString}` : ""}`;
+
+  const response = await apiClient.get(url);
+  return response.data;
+};

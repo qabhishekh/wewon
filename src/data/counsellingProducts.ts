@@ -132,8 +132,8 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
     thumbnail: "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769516739/tmjrprmaxcl0mygj8djq.webp",
     description:
       "Predict colleges before official ranks! Enter your JEE Mains percentile to get estimated rank and college predictions for NITs, IIITs, and GFTIs.",
-    price: 399,
-    discountPrice: 399,
+    price: 1999,
+    discountPrice: 999,
     validityInDays: 365,
     features: {
       hasMentorship: false,

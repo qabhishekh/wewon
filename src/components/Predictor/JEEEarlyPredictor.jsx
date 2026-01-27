@@ -245,14 +245,14 @@ export default function JEEEarlyPredictor() {
                 priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
+              {/* <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
                 <h2 className="text-xl sm:text-2xl font-bold text-white">
                   {product.title}
                 </h2>
                 <p className="text-sm text-white/80 mt-1 line-clamp-2">
                   {product.description}
                 </p>
-              </div>
+              </div> */}
             </div>
           )}
           <div className="p-3 sm:p-6 bg-[var(--background)] border border-[var(--border)] rounded-lg sm:rounded-xl shadow-sm">

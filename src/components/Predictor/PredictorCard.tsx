@@ -44,19 +44,16 @@ const PredictorCard: React.FC<PredictorCardProps> = ({ predictor }) => {
         )}
         {/* Overlay with icon and title */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 p-4">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-2xl">{predictor.icon}</span>
-            <h3 className="text-lg font-bold text-white line-clamp-1">
-              {predictor.title}
-            </h3>
-          </div>
-        </div>
       </div>
 
       {/* Card Body */}
       <div className="p-5 flex-1 flex flex-col">
         {/* Description */}
+          <div className="flex items-center gap-2 mb-1">
+            <h3 className="text-lg font-bold text-[#0f3a67] line-clamp-1">
+              {predictor.title}
+            </h3>
+          </div>
         <p className="text-sm text-gray-600 line-clamp-2 mb-4">
           {predictor.description}
         </p>

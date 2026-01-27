@@ -42,7 +42,7 @@ export default function FilterColleges() {
     [],
   );
   const [appliedCities, setAppliedCities] = useState<string[]>([]);
-  const itemsPerPage = 10;
+  const itemsPerPage = 12;
 
   // Institute type options for ranking filters
   const instituteTypeOptions = [
@@ -638,7 +638,7 @@ export default function FilterColleges() {
         {/* Loading State */}
         {loading && (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {Array.from({ length: 6 }).map((_, index) => (
+            {Array.from({ length: 12 }).map((_, index) => (
               <div
                 key={index}
                 className="animate-pulse bg-gray-200 rounded-lg h-80"

@@ -1,75 +1,114 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PredictorCard from "./PredictorCard";
-import { getActivePredictors } from "@/data/counsellingProducts";
+import { fetchAllPredictors, PredictorListItem } from "@/network/predictor";
 import { PredictorCategory } from "@/store/types";
+import { Loader2 } from "lucide-react";
+
+// Map API response to PredictorProduct format for PredictorCard
+const mapToPredictorProduct = (item: PredictorListItem) => ({
+  _id: item._id,
+  title: item.title,
+  slug: item.slug,
+  description: item.description,
+  thumbnail: item.thumbnail,
+  price: item.price,
+  discountPrice: item.discountPrice,
+  validityInDays: 365,
+  features: {
+    hasMentorship: item.features.hasMentorship ?? false,
+    choiceFilling: item.features.choiceFilling ?? {
+      isEnabled: false,
+      usageLimit: 0,
+    },
+    collegePredictor: item.features.collegePredictor,
+    hasCourseContent: item.features.hasCourseContent ?? false,
+  },
+  totalMaterialCount: 0,
+  isActive: item.isActive,
+  // Frontend-specific fields with defaults
+  icon: "📊",
+  category: PredictorCategory.JEE,
+  purchased: false,
+  displayFeatures: [
+    "College Predictions",
+    "Category-wise Analysis",
+    "State Quota Insights",
+  ],
+});
 
 const PredictorsGrid: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [predictors, setPredictors] = useState<PredictorListItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const predictors = getActivePredictors();
+  useEffect(() => {
+    const loadPredictors = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await fetchAllPredictors({ limit: 50 });
+        if (response.success) {
+          setPredictors(response.data);
+        } else {
+          setError("Failed to load predictors");
+        }
+      } catch (err: any) {
+        console.error("Error fetching predictors:", err);
+        setError(err.message || "Failed to load predictors");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // Filter predictors by category
-  const filteredPredictors =
-    selectedCategory === "all"
-      ? predictors
-      : predictors.filter((p) => p.category === selectedCategory);
+    loadPredictors();
+  }, []);
 
-  // Get unique categories
-  const categories = [
-    "all",
-    ...Array.from(new Set(predictors.map((p) => p.category))),
-  ];
+  if (loading) {
+    return (
+      <div className="w-full flex items-center justify-center py-16">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="w-10 h-10 animate-spin text-[#0f3a67]" />
+          <p className="text-gray-500">Loading predictors...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="w-full text-center py-16">
+        <p className="text-red-500 text-lg mb-4">{error}</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="px-6 py-2 bg-[#0f3a67] text-white rounded-lg hover:bg-[#0a2847] transition-colors"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">
-      {/* Category Filter */}
-      {/* {categories.length > 2 && (
-        <div className="mb-8">
-          <div className="flex flex-wrap gap-3 justify-center">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 ${
-                  selectedCategory === category
-                    ? "bg-[#0f3a67] text-white shadow-lg"
-                    : "bg-white text-[#0f3a67] border-2 border-[#0f3a67] hover:bg-[#0f3a67] hover:text-white"
-                }`}
-              >
-                {category === "all" ? "All Predictors" : category}
-              </button>
-            ))}
-          </div>
-        </div>
-      )} */}
-
       {/* Predictors Grid */}
-      {filteredPredictors.length > 0 ? (
+      {predictors.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredPredictors.map((predictor) => (
-            <PredictorCard key={predictor.slug} predictor={predictor} />
+          {predictors.map((predictor) => (
+            <PredictorCard
+              key={predictor._id}
+              predictor={mapToPredictorProduct(predictor)}
+            />
           ))}
         </div>
       ) : (
         <div className="text-center py-16">
           <p className="text-gray-500 text-lg">
-            No predictors available in this category.
+            No predictors available at the moment.
           </p>
         </div>
       )}
-
-      {/* Info Section */}
-      {/* <div className="mt-12 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 text-center border border-blue-100">
-        <h3 className="text-xl font-bold text-gray-800 mb-3">
-          🎯 Free College Prediction Tools
-        </h3>
-        <p className="text-gray-600 mb-4">
-          All our college predictors are completely free! Click on any predictor
-          card above to get started with your college predictions.
-        </p>
-      </div> */}
     </div>
   );
 };
