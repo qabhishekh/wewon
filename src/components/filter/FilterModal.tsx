@@ -5,10 +5,14 @@ interface FilterModalProps {
   isOpen: boolean;
   onClose: () => void;
   handleApplyFilter: () => void;
-  selectedInstituteTypes: string[];
+  selectedInstituteType: string | null;
   onInstituteTypeChange: (value: string) => void;
-  selectedCities: string[];
-  onCityChange: (value: string) => void;
+  selectedLocation: string | null;
+  onLocationChange: (value: string) => void;
+  selectedCourse: string | null;
+  onCourseChange: (value: string) => void;
+  selectedBranch: string | null;
+  onBranchChange: (value: string) => void;
   onClearAllFilters: () => void;
 }
 
@@ -16,10 +20,14 @@ export default function FilterModal({
   isOpen,
   onClose,
   handleApplyFilter,
-  selectedInstituteTypes,
+  selectedInstituteType,
   onInstituteTypeChange,
-  selectedCities,
-  onCityChange,
+  selectedLocation,
+  onLocationChange,
+  selectedCourse,
+  onCourseChange,
+  selectedBranch,
+  onBranchChange,
   onClearAllFilters,
 }: FilterModalProps) {
   const [activeTab, setActiveTab] = useState("Location");
@@ -40,13 +48,8 @@ export default function FilterModal({
   const filterCategories = [
     "Location",
     "Course",
-    "Total Fees",
     "Institute Type",
-    "Ownership",
-    "Mode Of Study",
     "Specialization",
-    "Credential",
-    "Course Level",
   ];
 
   const filterData: {
@@ -104,14 +107,6 @@ export default function FilterModal({
       { label: "Fashion Design" },
       { label: "Architecture" },
     ],
-    TotalFees: [
-      { label: "Free", count: 2 },
-      { label: "< 1 Lakh", count: 310 },
-      { label: "1 - 2 Lakh", count: 1181 },
-      { label: "2 - 3 Lakh", count: 2036 },
-      { label: "3 - 5 Lakh", count: 1183 },
-      { label: "> 5 Lakh", count: 830 },
-    ],
     Specialization: [
       { label: "Finance" },
       { label: "Marketing" },
@@ -134,38 +129,6 @@ export default function FilterModal({
       { label: "E-Commerce" },
       { label: "Real Estate Management" },
     ],
-    Credential: [
-      { label: "Degree" },
-      { label: "Diploma" },
-      { label: "Certificate" },
-      { label: "PG Diploma" },
-      { label: "Advanced Diploma" },
-      { label: "Integrated Program" },
-      { label: "Dual Degree" },
-    ],
-    CourseLevel: [
-      { label: "UG", count: 4826 },
-      { label: "After 10th", count: 11 },
-      { label: "PG", count: 4 },
-    ],
-    ModeOfStudy: [
-      { label: "Full Time", count: 4829 },
-      { label: "Distance / Correspondence", count: 109 },
-      { label: "Online", count: 58 },
-      { label: "Part Time - Classroom", count: 38 },
-      { label: "Blend", count: 2 },
-    ],
-    Ownership: [
-      { label: "Government" },
-      { label: "Private" },
-      { label: "Government-Aided" },
-      { label: "Deemed University" },
-      { label: "Central University" },
-      { label: "State University" },
-      { label: "Private University" },
-      { label: "Autonomous" },
-      { label: "Public-Private Partnership" },
-    ],
   };
 
   const handleClearFilters = () => {
@@ -178,14 +141,14 @@ export default function FilterModal({
     const options = filterData[category.split(" ").join("")] || [];
     if (category === "Location" && searchLocation) {
       return options.filter((location) =>
-        location.label.toLowerCase().includes(searchLocation.toLowerCase())
+        location.label.toLowerCase().includes(searchLocation.toLowerCase()),
       );
     }
     if (category === "Specialization" && searchSpecialization) {
       return options.filter((specialization) =>
         specialization.label
           .toLowerCase()
-          .includes(searchSpecialization.toLowerCase())
+          .includes(searchSpecialization.toLowerCase()),
       );
     }
     return options;
@@ -375,15 +338,17 @@ export default function FilterModal({
                           className="flex items-center cursor-pointer group"
                         >
                           <input
-                            type="checkbox"
-                            checked={
-                              selectedInstituteTypes?.includes(option.value) ??
-                              false
-                            }
+                            type="radio"
+                            checked={selectedInstituteType === option.value}
                             onChange={() => onInstituteTypeChange(option.value)}
                             className="w-5 h-5 cursor-pointer max-sm:w-4 max-sm:h-4"
                             style={{
                               accentColor: "#0D3A66",
+                            }}
+                            onClick={() => {
+                              if (selectedInstituteType === option.value) {
+                                onInstituteTypeChange(option.value);
+                              }
                             }}
                           />
                           <span
@@ -395,52 +360,111 @@ export default function FilterModal({
                         </label>
                       ))
                     : activeTab === "Location"
-                    ? // Location filter with controlled state from parent
-                      getFilteredOptions(activeTab).map((option) => (
-                        <label
-                          key={option.label}
-                          className="flex items-center cursor-pointer group"
-                        >
-                          <input
-                            type="checkbox"
-                            checked={
-                              selectedCities?.includes(option.label) ?? false
-                            }
-                            onChange={() => onCityChange(option.label)}
-                            className="w-5 h-5 cursor-pointer max-sm:w-4 max-sm:h-4"
-                            style={{
-                              accentColor: "#0D3A66",
-                            }}
-                          />
-                          <span
-                            className="ml-3 text-sm font-medium group-hover:opacity-80 max-sm:text-xs max-sm:ml-2"
-                            style={{ color: "#0D3A66" }}
+                      ? // Location filter with controlled state from parent
+                        getFilteredOptions(activeTab).map((option) => (
+                          <label
+                            key={option.label}
+                            className="flex items-center cursor-pointer group"
                           >
-                            {option.label}
-                          </span>
-                        </label>
-                      ))
-                    : // Other filters (currently display only - not connected to API)
-                      getFilteredOptions(activeTab).map((option) => (
-                        <label
-                          key={option.label}
-                          className="flex items-center cursor-pointer group"
-                        >
-                          <input
-                            type="checkbox"
-                            className="w-5 h-5 cursor-pointer max-sm:w-4 max-sm:h-4"
-                            style={{
-                              accentColor: "#0D3A66",
-                            }}
-                          />
-                          <span
-                            className="ml-3 text-sm font-medium group-hover:opacity-80 max-sm:text-xs max-sm:ml-2"
-                            style={{ color: "#0D3A66" }}
-                          >
-                            {option.label}
-                          </span>
-                        </label>
-                      ))}
+                            <input
+                              type="radio"
+                              checked={selectedLocation === option.label}
+                              onChange={() => onLocationChange(option.label)}
+                              className="w-5 h-5 cursor-pointer max-sm:w-4 max-sm:h-4"
+                              style={{
+                                accentColor: "#0D3A66",
+                              }}
+                              onClick={() => {
+                                if (selectedLocation === option.label) {
+                                  onLocationChange(option.label);
+                                }
+                              }}
+                            />
+                            <span
+                              className="ml-3 text-sm font-medium group-hover:opacity-80 max-sm:text-xs max-sm:ml-2"
+                              style={{ color: "#0D3A66" }}
+                            >
+                              {option.label}
+                            </span>
+                          </label>
+                        ))
+                      : activeTab === "Course"
+                        ? getFilteredOptions(activeTab).map((option) => (
+                            <label
+                              key={option.label}
+                              className="flex items-center cursor-pointer group"
+                            >
+                              <input
+                                type="radio"
+                                checked={selectedCourse === option.label}
+                                onChange={() => onCourseChange(option.label)}
+                                className="w-5 h-5 cursor-pointer max-sm:w-4 max-sm:h-4"
+                                style={{
+                                  accentColor: "#0D3A66",
+                                }}
+                                onClick={() => {
+                                  if (selectedCourse === option.label) {
+                                    onCourseChange(option.label);
+                                  }
+                                }}
+                              />
+                              <span
+                                className="ml-3 text-sm font-medium group-hover:opacity-80 max-sm:text-xs max-sm:ml-2"
+                                style={{ color: "#0D3A66" }}
+                              >
+                                {option.label}
+                              </span>
+                            </label>
+                          ))
+                        : activeTab === "Specialization"
+                          ? getFilteredOptions(activeTab).map((option) => (
+                              <label
+                                key={option.label}
+                                className="flex items-center cursor-pointer group"
+                              >
+                                <input
+                                  type="radio"
+                                  checked={selectedBranch === option.label}
+                                  onChange={() => onBranchChange(option.label)}
+                                  className="w-5 h-5 cursor-pointer max-sm:w-4 max-sm:h-4"
+                                  style={{
+                                    accentColor: "#0D3A66",
+                                  }}
+                                  onClick={() => {
+                                    if (selectedBranch === option.label) {
+                                      onBranchChange(option.label);
+                                    }
+                                  }}
+                                />
+                                <span
+                                  className="ml-3 text-sm font-medium group-hover:opacity-80 max-sm:text-xs max-sm:ml-2"
+                                  style={{ color: "#0D3A66" }}
+                                >
+                                  {option.label}
+                                </span>
+                              </label>
+                            ))
+                          : // Other filters (currently display only - not connected to API)
+                            getFilteredOptions(activeTab).map((option) => (
+                              <label
+                                key={option.label}
+                                className="flex items-center cursor-pointer group"
+                              >
+                                <input
+                                  type="checkbox"
+                                  className="w-5 h-5 cursor-pointer max-sm:w-4 max-sm:h-4"
+                                  style={{
+                                    accentColor: "#0D3A66",
+                                  }}
+                                />
+                                <span
+                                  className="ml-3 text-sm font-medium group-hover:opacity-80 max-sm:text-xs max-sm:ml-2"
+                                  style={{ color: "#0D3A66" }}
+                                >
+                                  {option.label}
+                                </span>
+                              </label>
+                            ))}
                 </div>
               </div>
             </div>

@@ -12,6 +12,11 @@ export const fetchColleges = createAsyncThunk(
       searchQuery?: string;
       instituteTypes?: string[];
       cities?: string[];
+      states?: string[];
+      courses?: string[];
+      branches?: string[];
+      streams?: string[];
+      counselling?: string[];
     } = {},
     { rejectWithValue },
   ) => {
@@ -22,6 +27,11 @@ export const fetchColleges = createAsyncThunk(
         searchQuery = "",
         instituteTypes = [],
         cities = [],
+        states = [],
+        courses = [],
+        branches = [],
+        streams = [],
+        counselling = [],
       } = params;
 
       // Build query parameters
@@ -34,8 +44,7 @@ export const fetchColleges = createAsyncThunk(
         queryParams.append("search", searchQuery);
       }
 
-      // Add institute type filter (API expects 'Type')
-      // Append each type as a separate query param for multiple selections
+      // Add institute type filter
       if (instituteTypes.length > 0) {
         instituteTypes.forEach((type) => {
           queryParams.append("type", type);
@@ -46,6 +55,41 @@ export const fetchColleges = createAsyncThunk(
       if (cities.length > 0) {
         cities.forEach((city) => {
           queryParams.append("city", city);
+        });
+      }
+
+      // Add state filter
+      if (states.length > 0) {
+        states.forEach((state) => {
+          queryParams.append("state", state);
+        });
+      }
+
+      // Add course filter
+      if (courses.length > 0) {
+        courses.forEach((course) => {
+          queryParams.append("course", course);
+        });
+      }
+
+      // Add branch filter
+      if (branches.length > 0) {
+        branches.forEach((branch) => {
+          queryParams.append("branch", branch);
+        });
+      }
+
+      // Add stream filter
+      if (streams.length > 0) {
+        streams.forEach((stream) => {
+          queryParams.append("stream", stream);
+        });
+      }
+
+      // Add counselling filter
+      if (counselling.length > 0) {
+        counselling.forEach((c) => {
+          queryParams.append("counselling", c);
         });
       }
 

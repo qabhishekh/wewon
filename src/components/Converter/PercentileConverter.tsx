@@ -381,19 +381,6 @@ export default function PercentileConverter() {
                   {formatNumber(result.crlRank.max)}
                 </span>
               </div>
-
-              {/* Category Rank */}
-              {result.categoryRank && (
-                <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-[var(--border)]">
-                  <span className="text-sm font-medium text-[var(--muted-text)]">
-                    🏷️ {result.categoryRank.category} Rank
-                  </span>
-                  <span className="text-lg font-bold text-[var(--foreground)]">
-                    {formatNumber(result.categoryRank.min)} -{" "}
-                    {formatNumber(result.categoryRank.max)}
-                  </span>
-                </div>
-              )}
             </div>
 
             {/* Copy Button */}

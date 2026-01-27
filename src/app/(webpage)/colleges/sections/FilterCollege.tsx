@@ -33,15 +33,20 @@ export default function FilterColleges() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [debouncedSearch, setDebouncedSearch] = useState<string>("");
   // Pending filters (selected but not yet applied)
-  const [selectedInstituteTypes, setSelectedInstituteTypes] = useState<
-    string[]
-  >([]);
-  const [selectedCities, setSelectedCities] = useState<string[]>([]);
+  const [selectedInstituteType, setSelectedInstituteType] = useState<
+    string | null
+  >(null);
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(null); // Mixed cities/states
+  const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
+  const [selectedBranch, setSelectedBranch] = useState<string | null>(null);
+
   // Applied filters (used for API calls)
-  const [appliedInstituteTypes, setAppliedInstituteTypes] = useState<string[]>(
-    [],
-  );
-  const [appliedCities, setAppliedCities] = useState<string[]>([]);
+  const [appliedInstituteType, setAppliedInstituteType] = useState<
+    string | null
+  >(null);
+  const [appliedLocation, setAppliedLocation] = useState<string | null>(null);
+  const [appliedCourse, setAppliedCourse] = useState<string | null>(null);
+  const [appliedBranch, setAppliedBranch] = useState<string | null>(null);
   const itemsPerPage = 12;
 
   // Institute type options for ranking filters
@@ -65,31 +70,123 @@ export default function FilterColleges() {
 
   // Fetch colleges on mount and when page, search, or applied filters change
   useEffect(() => {
+    // Separate locations into cities and states
+    let cities: string[] = [];
+    let states: string[] = [];
+
+    if (appliedLocation) {
+      if (
+        [
+          "Maharashtra",
+          "Uttar Pradesh",
+          "Karnataka",
+          "Andhra Pradesh",
+          "Tamil Nadu",
+          "West Bengal",
+          "Rajasthan",
+          "Gujarat",
+          "Madhya Pradesh",
+        ].includes(appliedLocation)
+      ) {
+        states = [appliedLocation];
+      } else if (appliedLocation === "Delhi/NCR") {
+        states = ["Delhi"];
+      } else {
+        // It's a city (or at least treated as one for now based on previous logic exclusion)
+        // Actually, the previous logic defined what was NOT a city by exclusion.
+        // Let's keep consistent logic.
+        if (
+          ![
+            "Maharashtra",
+            "Uttar Pradesh",
+            "Karnataka",
+            "Andhra Pradesh",
+            "Tamil Nadu",
+            "West Bengal",
+            "Rajasthan",
+            "Gujarat",
+            "Madhya Pradesh",
+            "Delhi/NCR",
+          ].includes(appliedLocation)
+        ) {
+          cities = [appliedLocation];
+        }
+      }
+    }
+
     dispatch(
       fetchColleges({
         page: currentPage,
         limit: itemsPerPage,
         searchQuery: debouncedSearch,
-        instituteTypes: appliedInstituteTypes,
-        cities: appliedCities,
+        instituteTypes: appliedInstituteType ? [appliedInstituteType] : [],
+        cities,
+        states,
+        courses: appliedCourse ? [appliedCourse] : [],
+        branches: appliedBranch ? [appliedBranch] : [],
       }),
     );
   }, [
     dispatch,
     currentPage,
     debouncedSearch,
-    appliedInstituteTypes,
-    appliedCities,
+    appliedInstituteType,
+    appliedLocation,
+    appliedCourse,
+    appliedBranch,
   ]);
 
   const handlePageChange = (page: number) => {
+    let cities: string[] = [];
+    let states: string[] = [];
+
+    if (appliedLocation) {
+      if (
+        [
+          "Maharashtra",
+          "Uttar Pradesh",
+          "Karnataka",
+          "Andhra Pradesh",
+          "Tamil Nadu",
+          "West Bengal",
+          "Rajasthan",
+          "Gujarat",
+          "Madhya Pradesh",
+        ].includes(appliedLocation)
+      ) {
+        states = [appliedLocation];
+      } else if (appliedLocation === "Delhi/NCR") {
+        states = ["Delhi"];
+      } else {
+        if (
+          ![
+            "Maharashtra",
+            "Uttar Pradesh",
+            "Karnataka",
+            "Andhra Pradesh",
+            "Tamil Nadu",
+            "West Bengal",
+            "Rajasthan",
+            "Gujarat",
+            "Madhya Pradesh",
+            "Delhi/NCR",
+          ].includes(appliedLocation)
+        ) {
+          cities = [appliedLocation];
+        }
+      }
+    }
+
     dispatch(
       fetchColleges({
         page,
         limit: itemsPerPage,
         searchQuery: debouncedSearch,
-        instituteTypes: appliedInstituteTypes,
-        cities: appliedCities,
+        instituteTypes: appliedInstituteType ? [appliedInstituteType] : [],
+        cities,
+        states,
+        courses: appliedCourse ? [appliedCourse] : [],
+        branches: appliedBranch ? [appliedBranch] : [],
       }),
     );
   };
@@ -100,35 +197,59 @@ export default function FilterColleges() {
 
   const handleApplyFilter = () => {
     // Apply the pending filters
-    setAppliedInstituteTypes([...selectedInstituteTypes]);
-    setAppliedCities([...selectedCities]);
+    setAppliedInstituteType(selectedInstituteType);
+    setAppliedLocation(selectedLocation);
+    setAppliedCourse(selectedCourse);
+    setAppliedBranch(selectedBranch);
     setIsFilterOpen(false);
   };
 
   // Handle institute type filter change
   const handleInstituteTypeChange = (value: string) => {
-    setSelectedInstituteTypes((prev) =>
-      prev.includes(value)
-        ? prev.filter((type) => type !== value)
-        : [...prev, value],
-    );
+    setSelectedInstituteType((prev) => {
+      const next = prev === value ? null : value;
+      setAppliedInstituteType(next);
+      return next;
+    });
   };
 
-  // Handle city filter change
-  const handleCityChange = (value: string) => {
-    setSelectedCities((prev) =>
-      prev.includes(value)
-        ? prev.filter((city) => city !== value)
-        : [...prev, value],
-    );
+  // Handle location filter change (City/State)
+  const handleLocationChange = (value: string) => {
+    setSelectedLocation((prev) => {
+      const next = prev === value ? null : value;
+      setAppliedLocation(next);
+      return next;
+    });
+  };
+
+  // Handle course filter change
+  const handleCourseChange = (value: string) => {
+    setSelectedCourse((prev) => {
+      const next = prev === value ? null : value;
+      setAppliedCourse(next);
+      return next;
+    });
+  };
+
+  // Handle branch (specialization) filter change
+  const handleBranchChange = (value: string) => {
+    setSelectedBranch((prev) => {
+      const next = prev === value ? null : value;
+      setAppliedBranch(next);
+      return next;
+    });
   };
 
   // Clear all filters
   const handleClearAllFilters = () => {
-    setSelectedInstituteTypes([]);
-    setAppliedInstituteTypes([]);
-    setSelectedCities([]);
-    setAppliedCities([]);
+    setSelectedInstituteType(null);
+    setAppliedInstituteType(null);
+    setSelectedLocation(null);
+    setAppliedLocation(null);
+    setSelectedCourse(null);
+    setAppliedCourse(null);
+    setSelectedBranch(null);
+    setAppliedBranch(null);
     setSearchQuery("");
     setDebouncedSearch("");
   };
@@ -214,11 +335,17 @@ export default function FilterColleges() {
                       className="flex items-center cursor-pointer"
                     >
                       <input
-                        type="checkbox"
-                        checked={selectedCities.includes(location)}
-                        onChange={() => handleCityChange(location)}
+                        type="radio"
+                        checked={selectedLocation === location}
+                        onChange={() => handleLocationChange(location)}
                         className="w-4 h-4 cursor-pointer"
                         style={{ accentColor: "#0D3A66" }}
+                        onClick={() => {
+                          // Allow deselect on re-click of radio
+                          if (selectedLocation === location) {
+                            handleLocationChange(location);
+                          }
+                        }}
                       />
                       <span
                         className="ml-2 text-sm"
@@ -271,52 +398,22 @@ export default function FilterColleges() {
                       className="flex items-center cursor-pointer"
                     >
                       <input
-                        type="checkbox"
+                        type="radio"
+                        checked={selectedCourse === course}
+                        onChange={() => handleCourseChange(course)}
                         className="w-4 h-4 cursor-pointer"
                         style={{ accentColor: "#0D3A66" }}
+                        onClick={() => {
+                          if (selectedCourse === course) {
+                            handleCourseChange(course);
+                          }
+                        }}
                       />
                       <span
                         className="ml-2 text-sm"
                         style={{ color: "#0D3A66" }}
                       >
                         {course}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Total Fees Filter */}
-              <div className="p-5 border-b border-gray-200">
-                <h3
-                  className="text-sm font-semibold mb-3"
-                  style={{ color: "#0D3A66" }}
-                >
-                  Total Fees
-                </h3>
-                <div className="space-y-2">
-                  {[
-                    "Free",
-                    "< 1 Lakh",
-                    "1 - 2 Lakh",
-                    "2 - 3 Lakh",
-                    "3 - 5 Lakh",
-                    "> 5 Lakh",
-                  ].map((fee) => (
-                    <label
-                      key={fee}
-                      className="flex items-center cursor-pointer"
-                    >
-                      <input
-                        type="checkbox"
-                        className="w-4 h-4 cursor-pointer"
-                        style={{ accentColor: "#0D3A66" }}
-                      />
-                      <span
-                        className="ml-2 text-sm"
-                        style={{ color: "#0D3A66" }}
-                      >
-                        {fee}
                       </span>
                     </label>
                   ))}
@@ -338,93 +435,22 @@ export default function FilterColleges() {
                       className="flex items-center cursor-pointer"
                     >
                       <input
-                        type="checkbox"
-                        checked={selectedInstituteTypes.includes(option.value)}
+                        type="radio"
+                        checked={selectedInstituteType === option.value}
                         onChange={() => handleInstituteTypeChange(option.value)}
                         className="w-4 h-4 cursor-pointer"
                         style={{ accentColor: "#0D3A66" }}
+                        onClick={() => {
+                          if (selectedInstituteType === option.value) {
+                            handleInstituteTypeChange(option.value);
+                          }
+                        }}
                       />
                       <span
                         className="ml-2 text-sm"
                         style={{ color: "#0D3A66" }}
                       >
                         {option.label}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Ownership Filter */}
-              <div className="p-5 border-b border-gray-200">
-                <h3
-                  className="text-sm font-semibold mb-3"
-                  style={{ color: "#0D3A66" }}
-                >
-                  Ownership
-                </h3>
-                <div className="space-y-2">
-                  {[
-                    "Government",
-                    "Private",
-                    "Government-Aided",
-                    "Deemed University",
-                    "Central University",
-                    "State University",
-                    "Private University",
-                    "Autonomous",
-                    "Public-Private Partnership",
-                  ].map((ownership) => (
-                    <label
-                      key={ownership}
-                      className="flex items-center cursor-pointer"
-                    >
-                      <input
-                        type="checkbox"
-                        className="w-4 h-4 cursor-pointer"
-                        style={{ accentColor: "#0D3A66" }}
-                      />
-                      <span
-                        className="ml-2 text-sm"
-                        style={{ color: "#0D3A66" }}
-                      >
-                        {ownership}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Mode of Study Filter */}
-              <div className="p-5 border-b border-gray-200">
-                <h3
-                  className="text-sm font-semibold mb-3"
-                  style={{ color: "#0D3A66" }}
-                >
-                  Mode of Study
-                </h3>
-                <div className="space-y-2">
-                  {[
-                    "Full Time",
-                    "Distance / Correspondence",
-                    "Online",
-                    "Part Time - Classroom",
-                    "Blend",
-                  ].map((mode) => (
-                    <label
-                      key={mode}
-                      className="flex items-center cursor-pointer"
-                    >
-                      <input
-                        type="checkbox"
-                        className="w-4 h-4 cursor-pointer"
-                        style={{ accentColor: "#0D3A66" }}
-                      />
-                      <span
-                        className="ml-2 text-sm"
-                        style={{ color: "#0D3A66" }}
-                      >
-                        {mode}
                       </span>
                     </label>
                   ))}
@@ -472,9 +498,16 @@ export default function FilterColleges() {
                       className="flex items-center cursor-pointer"
                     >
                       <input
-                        type="checkbox"
+                        type="radio"
+                        checked={selectedBranch === spec}
+                        onChange={() => handleBranchChange(spec)}
                         className="w-4 h-4 cursor-pointer"
                         style={{ accentColor: "#0D3A66" }}
+                        onClick={() => {
+                          if (selectedBranch === spec) {
+                            handleBranchChange(spec);
+                          }
+                        }}
                       />
                       <span
                         className="ml-2 text-sm"
@@ -486,85 +519,10 @@ export default function FilterColleges() {
                   ))}
                 </div>
               </div>
-
-              {/* Credential Filter */}
-              <div className="p-5 border-b border-gray-200">
-                <h3
-                  className="text-sm font-semibold mb-3"
-                  style={{ color: "#0D3A66" }}
-                >
-                  Credential
-                </h3>
-                <div className="space-y-2">
-                  {[
-                    "Degree",
-                    "Diploma",
-                    "Certificate",
-                    "PG Diploma",
-                    "Advanced Diploma",
-                    "Integrated Program",
-                    "Dual Degree",
-                  ].map((cred) => (
-                    <label
-                      key={cred}
-                      className="flex items-center cursor-pointer"
-                    >
-                      <input
-                        type="checkbox"
-                        className="w-4 h-4 cursor-pointer"
-                        style={{ accentColor: "#0D3A66" }}
-                      />
-                      <span
-                        className="ml-2 text-sm"
-                        style={{ color: "#0D3A66" }}
-                      >
-                        {cred}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Course Level Filter */}
-              <div className="p-5 border-b border-gray-200">
-                <h3
-                  className="text-sm font-semibold mb-3"
-                  style={{ color: "#0D3A66" }}
-                >
-                  Course Level
-                </h3>
-                <div className="space-y-2">
-                  {["UG", "After 10th", "PG"].map((level) => (
-                    <label
-                      key={level}
-                      className="flex items-center cursor-pointer"
-                    >
-                      <input
-                        type="checkbox"
-                        className="w-4 h-4 cursor-pointer"
-                        style={{ accentColor: "#0D3A66" }}
-                      />
-                      <span
-                        className="ml-2 text-sm"
-                        style={{ color: "#0D3A66" }}
-                      >
-                        {level}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-              </div>
             </div>
 
             {/* Action Buttons */}
             <div className="p-5 border-t border-gray-200 bg-gray-50 space-y-2">
-              <button
-                onClick={handleApplyFilter}
-                className="w-full py-2.5 rounded-lg font-medium text-sm transition-all hover:opacity-90"
-                style={{ backgroundColor: "#0D3A66", color: "#ffffff" }}
-              >
-                Apply Filters
-              </button>
               <button
                 onClick={handleClearAllFilters}
                 className="w-full py-2.5 rounded-lg font-medium text-sm transition-all hover:bg-gray-100 border border-gray-300"
@@ -660,15 +618,62 @@ export default function FilterColleges() {
               {error}
             </p>
             <button
-              onClick={() =>
+              onClick={() => {
+                let cities: string[] = [];
+                let states: string[] = [];
+
+                if (appliedLocation) {
+                  if (
+                    [
+                      "Maharashtra",
+                      "Uttar Pradesh",
+                      "Karnataka",
+                      "Andhra Pradesh",
+                      "Tamil Nadu",
+                      "West Bengal",
+                      "Rajasthan",
+                      "Gujarat",
+                      "Madhya Pradesh",
+                    ].includes(appliedLocation)
+                  ) {
+                    states = [appliedLocation];
+                  } else if (appliedLocation === "Delhi/NCR") {
+                    states = ["Delhi"];
+                  } else {
+                    if (
+                      ![
+                        "Maharashtra",
+                        "Uttar Pradesh",
+                        "Karnataka",
+                        "Andhra Pradesh",
+                        "Tamil Nadu",
+                        "West Bengal",
+                        "Rajasthan",
+                        "Gujarat",
+                        "Madhya Pradesh",
+                        "Delhi/NCR",
+                      ].includes(appliedLocation)
+                    ) {
+                      cities = [appliedLocation];
+                    }
+                  }
+                }
+
                 dispatch(
                   fetchColleges({
                     page: currentPage,
                     limit: itemsPerPage,
                     searchQuery: debouncedSearch,
+                    instituteTypes: appliedInstituteType
+                      ? [appliedInstituteType]
+                      : [],
+                    cities,
+                    states,
+                    courses: appliedCourse ? [appliedCourse] : [],
+                    branches: appliedBranch ? [appliedBranch] : [],
                   }),
-                )
-              }
+                );
+              }}
               className="mt-4 px-6 py-2 rounded-lg transition-all hover:opacity-90"
               style={{ backgroundColor: "#0D3A66", color: "#ffffff" }}
             >
@@ -714,10 +719,14 @@ export default function FilterColleges() {
         isOpen={isFilterOpen}
         onClose={() => setIsFilterOpen(false)}
         handleApplyFilter={handleApplyFilter}
-        selectedInstituteTypes={selectedInstituteTypes}
+        selectedInstituteType={selectedInstituteType}
         onInstituteTypeChange={handleInstituteTypeChange}
-        selectedCities={selectedCities}
-        onCityChange={handleCityChange}
+        selectedLocation={selectedLocation}
+        onLocationChange={handleLocationChange}
+        selectedCourse={selectedCourse}
+        onCourseChange={handleCourseChange}
+        selectedBranch={selectedBranch}
+        onBranchChange={handleBranchChange}
         onClearAllFilters={handleClearAllFilters}
       />
     </div>
