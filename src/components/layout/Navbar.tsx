@@ -142,7 +142,7 @@ const Navbar = () => {
                 onClick={handleAuthClick}
                 className="px-6 py-2 bg-[var(--primary)] text-white font-semibold rounded-full hover:bg-[var(--accent)] transition-colors"
               >
-                Get started
+                Login/Register
               </button>
             )}
           </div>
@@ -235,7 +235,7 @@ const Navbar = () => {
                       }}
                       className="w-full px-6 py-3 bg-[var(--primary)] text-white font-semibold rounded-xl hover:bg-[var(--accent)] transition-colors"
                     >
-                      Get started
+                      Login / Register
                     </button>
                   )}
                 </div>
