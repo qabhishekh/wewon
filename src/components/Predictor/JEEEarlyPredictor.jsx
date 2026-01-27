@@ -7,7 +7,7 @@ import options from "./data/options.json";
 import JEEEarlyPredictionResults from "./JEEEarlyPredictionResults";
 import { toast } from "sonner";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { selectUser } from "@/store/auth/authSlice";
+import { selectIsAuthenticated, selectUser } from "@/store/auth/authSlice";
 import { fetchUserOrders } from "@/store/order/orderThunk";
 import { selectUserOrders } from "@/store/order/orderSlice";
 import { getPredictorBySlug } from "@/data/counsellingProducts";
@@ -18,7 +18,7 @@ const product = getPredictorBySlug(PRODUCT_SLUG);
 
 export default function JEEEarlyPredictor() {
   const dispatch = useAppDispatch();
-  const user = useAppSelector(selectUser);
+  const user = useAppSelector(selectIsAuthenticated);
   const userOrders = useAppSelector(selectUserOrders);
 
   const [formData, setFormData] = useState({
@@ -57,7 +57,6 @@ export default function JEEEarlyPredictor() {
       // Only fetch orders when user is logged in
       try {
         
-        console.log(user);
         
         await dispatch(fetchUserOrders()).unwrap();
       } catch (error) {

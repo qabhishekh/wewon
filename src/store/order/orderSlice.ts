@@ -37,9 +37,10 @@ const orderSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(createOrder.fulfilled, (state, action) => {
+      .addCase(createOrder.fulfilled, (state) => {
         state.loading = false;
-        state.currentOrder = action.payload;
+        // Note: createOrder now returns CreateOrderResponse (Razorpay order data)
+        // The actual Order will be set after payment verification
         state.error = null;
       })
       .addCase(createOrder.rejected, (state, action) => {
