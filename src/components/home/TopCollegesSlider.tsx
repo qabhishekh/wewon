@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -17,35 +18,48 @@ import { Autoplay } from "swiper/modules";
 const colleges = [
   {
     name: "IIT BOMBAY",
-    imageUrl: "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769433143/zvbgp6s9nf7gwo7mtzyq.webp",
+    imageUrl:
+      "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769433143/zvbgp6s9nf7gwo7mtzyq.webp",
+    url: "/indian-institute-of-technology-bombay",
   },
   {
     name: "IIT DELHI",
-    imageUrl: "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769435304/lgxqzt1oxtzbxiw6nwdo.webp",
+    imageUrl:
+      "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769435304/lgxqzt1oxtzbxiw6nwdo.webp",
+    url: "/indian-institute-of-technology-delhi",
   },
   {
-    name: "IIT KHARGPUR",
+    name: "IIT KHARAGPUR",
     imageUrl: "/herocolleges/iit.jpg",
+    url: "/indian-institute-of-technology-kharagpur",
   },
   {
     name: "NIT ALLAHABAD",
     imageUrl: "/herocolleges/nit.jpg",
+    url: "/motilal-nehru-national-institute-of-technology-allahabad",
   },
   {
     name: "IIT MANDI",
-    imageUrl: "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769442890/sbgcb3tggqzbbycm3eb4.webp",
+    imageUrl:
+      "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769442890/sbgcb3tggqzbbycm3eb4.webp",
+    url: "/indian-institute-of-technology-mandi",
   },
   {
     name: "IIT MADRAS",
-    imageUrl: "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769433935/caqfb43bygxwljmsle8a.webp",
+    imageUrl:
+      "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769433935/caqfb43bygxwljmsle8a.webp",
+    url: "/indian-institute-of-technology-madras",
   },
   {
     name: "IIT KANPUR",
-    imageUrl: "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769434599/dpjct6kcuvto7yhlswep.webp",
+    imageUrl:
+      "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769434599/dpjct6kcuvto7yhlswep.webp",
+    url: "/indian-institute-of-technology-kanpur",
   },
   {
     name: "NIT AGARTALA",
     imageUrl: "/herocolleges/nit.jpg",
+    url: "/motilal-nehru-national-institute-of-technology-agartala",
   },
 ];
 
@@ -81,24 +95,26 @@ const CollegesSlider = () => {
         >
           {colleges.map((college, index) => (
             <SwiperSlide key={index} className="rounded-2xl overflow-hidden">
-              <div className="relative w-full aspect-[3/2] rounded-2xl overflow-hidden shadow-lg">
-                <img
-                  src={college.imageUrl}
-                  alt={college.name}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
+              <Link href={`/colleges${college.url}`}>
+                <div className="relative w-full aspect-[3/2] rounded-2xl overflow-hidden shadow-lg cursor-pointer hover:opacity-95 transition-opacity">
+                  <img
+                    src={college.imageUrl}
+                    alt={college.name}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
 
-                {/* Gradient overlay for text readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                  {/* Gradient overlay for text readability */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
 
-                {/* College Name Text */}
-                <div className="absolute w-full bottom-0 left-0 p-6">
-                  <h3 className="text-white text-center text-sm font-semibold">
-                    {college.name}
-                  </h3>
+                  {/* College Name Text */}
+                  <div className="absolute w-full bottom-0 left-0 p-6">
+                    <h3 className="text-white text-center text-sm font-semibold">
+                      {college.name}
+                    </h3>
+                  </div>
                 </div>
-              </div>
+              </Link>
             </SwiperSlide>
           ))}
         </Swiper>

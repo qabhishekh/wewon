@@ -36,10 +36,10 @@ export default function Home() {
         <Recommended />
       </div>
       <div className="container mx-auto">
-        <FeatureCounselling />
+        {/* <FeatureCounselling /> */}
       </div>
       <div className="bg-[var(--muted-background)]">
-        <NewsSection />
+        {/* <NewsSection /> */}
       </div>
       <div className="container mx-auto">
         <StudentStoryTestimonial />
