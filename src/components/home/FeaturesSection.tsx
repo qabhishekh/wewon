@@ -7,8 +7,8 @@ import Sections from './sections';
 const features = [
   {
     icon: BrainCog,
-    title: "AI College Predictor",
-    description: "Advanced AI algorithms analyze your rank and predict your chances at top colleges with 95% accuracy",
+    title: "College Predictor",
+    description: "Advanced algorithms analyze your rank and predict your chances at top colleges with 95% accuracy",
     buttonText: "Predict Now",
     buttonLink: "/predictor",
     // Style for the 1st and 3rd cards
@@ -16,7 +16,7 @@ const features = [
   },
   {
     icon: TrendingUp,
-    title: "Rank Analysis",
+    title: "JEE Main Rank Predictor",
     description: "Detailed analysis of your rank performance across different categories and reservation quotas",
     buttonText: "View Analysis",
     buttonLink: "/percentile",

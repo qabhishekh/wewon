@@ -5,7 +5,40 @@ import MainHeading from "@/components/sections/MainHeading";
 import Recommended from "@/components/sections/Recommended";
 import React from "react";
 
+const isLaunchingSoon = true; // TOGGLE THIS BOOLEAN
+
 export default function page() {
+  if (isLaunchingSoon) {
+    return (
+      <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-4">
+        <div className="relative">
+          <div className="absolute -inset-4 bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] opacity-20 blur-2xl rounded-full animate-pulse" />
+          <h1 className="relative text-5xl md:text-7xl font-black tracking-tighter text-[var(--primary)] mb-4">
+            LAUNCHING <span className="text-[var(--accent)]">SOON...</span>
+          </h1>
+        </div>
+        <p className="max-w-xl text-lg md:text-xl text-gray-500 font-medium">
+          We're putting the finishing touches on our personalized career
+          counseling platform. Get ready to unlock your bright future!
+        </p>
+        <div className="mt-12 flex gap-4">
+          <div
+            className="w-2 h-2 rounded-full bg-[var(--primary)] animate-bounce"
+            style={{ animationDelay: "0ms" }}
+          />
+          <div
+            className="w-2 h-2 rounded-full bg-[var(--accent)] animate-bounce"
+            style={{ animationDelay: "150ms" }}
+          />
+          <div
+            className="w-2 h-2 rounded-full bg-[var(--primary)] animate-bounce"
+            style={{ animationDelay: "300ms" }}
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="container mx-auto px-4">

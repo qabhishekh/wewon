@@ -18,10 +18,9 @@ const topRowLinks = [
   {
     title: "Resources",
     links: [
-      { label: "College Predictor", href: "/tools/college-predictor" },
-      { label: "Rank Analysis", href: "/tools/rank-analysis" },
+      { label: "College Predictor", href: "/predictor" },
+      { label: "Rank Analysis", href: "/percentile" },
       { label: "Mentorship", href: "/mentorship" },
-      { label: "Exam Alerts", href: "/alerts" },
     ],
   },
 ];
@@ -30,38 +29,30 @@ const bottomRowLinks = [
   {
     title: "Colleges",
     links: [
-      { label: "Statewise Colleges", href: "/colleges/statewise" },
-      { label: "Colleges in Delhi NCR", href: "/colleges/delhi-ncr" },
-      { label: "Explore All IITs", href: "/colleges/iits" },
-      { label: "Explore All NITs", href: "/colleges/nits" },
-      { label: "Explore All IIITs", href: "/colleges/iiits" },
+      { label: "Statewise Colleges", href: "/colleges"},
+      { label: "Colleges in Delhi NCR", href: "/colleges"},
+      { label: "Explore All IITs", href: "/colleges"},
+      { label: "Explore All NITs", href: "/colleges"},
+      { label: "Explore All IIITs", href: "/colleges"},
     ],
   },
   {
     title: "Exams",
     links: [
-      { label: "JEE (Main)", href: "/exams/jee-main" },
-      { label: "JEE (Advanced)", href: "/exams/jee-advanced" },
-      { label: "BITSAT", href: "/exams/bitsat" },
-      { label: "MHT-CET", href: "/exams/mht-cet" },
+      { label: "JEE (Main)", href: "/exams" },
+      { label: "JEE (Advanced)", href: "/exams" },
+      { label: "BITSAT", href: "/exams" },
+      { label: "MHT-CET", href: "/exams" },
     ],
   },
   {
     title: "Tools",
     links: [
-      { label: "College Finder", href: "/tools/college-finder" },
+      { label: "Percentile Converter", href: "/percentile" },
       {
-        label: "JEE (Main) Rank Predictor",
-        href: "/tools/jee-main-rank-predictor",
-      },
-      {
-        label: "JEE (Main) College Predictor",
-        href: "/tools/jee-main-college-predictor",
-      },
-      {
-        label: "JEE (Advanced) College Predictor",
-        href: "/tools/jee-advanced-college-predictor",
-      },
+        label: "JEE Early College Predictor",
+        href: "/jee-early-predictor",
+      }
     ],
   },
 ];

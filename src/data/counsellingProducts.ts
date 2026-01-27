@@ -78,7 +78,7 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
       hasCourseContent: false,
     },
     totalMaterialCount: 0,
-    isActive: true,
+    isActive: false,
     // Frontend-specific fields
     icon: "🎓",
     category: PredictorCategory.JEE,
@@ -111,7 +111,7 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
       hasCourseContent: false,
     },
     totalMaterialCount: 0,
-    isActive: true,
+    isActive: false,
     // Frontend-specific fields
     icon: "🏆",
     category: PredictorCategory.JEE,
@@ -124,6 +124,7 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
     ],
   },
   {
+    _id: "69788981c6aafde7dfa7c289",
     title: "JEE Early Predictor",
     slug: "jee-early-predictor",
     description:
@@ -178,7 +179,7 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
       hasCourseContent: false,
     },
     totalMaterialCount: 0,
-    isActive: true,
+    isActive: false,
     // Frontend-specific fields
     icon: "🎯",
     category: PredictorCategory.STATE,
@@ -211,7 +212,7 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
       hasCourseContent: false,
     },
     totalMaterialCount: 0,
-    isActive: true,
+    isActive: false,
     // Frontend-specific fields
     icon: "🎓",
     category: PredictorCategory.STATE,
@@ -244,7 +245,7 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
       hasCourseContent: false,
     },
     totalMaterialCount: 0,
-    isActive: true,
+    isActive: false,
     // Frontend-specific fields
     icon: "🎓",
     category: PredictorCategory.STATE,
@@ -277,7 +278,7 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
       hasCourseContent: false,
     },
     totalMaterialCount: 0,
-    isActive: true,
+    isActive: false,
     // Frontend-specific fields
     icon: "🏛️",
     category: PredictorCategory.STATE,
@@ -310,7 +311,7 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
       hasCourseContent: false,
     },
     totalMaterialCount: 0,
-    isActive: true,
+    isActive: false,
     // Frontend-specific fields
     icon: "🎓",
     category: PredictorCategory.STATE,

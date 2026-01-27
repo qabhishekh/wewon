@@ -61,7 +61,7 @@ const PredictorsGrid: React.FC = () => {
       )}
 
       {/* Info Section */}
-      <div className="mt-12 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 text-center border border-blue-100">
+      {/* <div className="mt-12 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 text-center border border-blue-100">
         <h3 className="text-xl font-bold text-gray-800 mb-3">
           🎯 Free College Prediction Tools
         </h3>
@@ -69,7 +69,7 @@ const PredictorsGrid: React.FC = () => {
           All our college predictors are completely free! Click on any predictor
           card above to get started with your college predictions.
         </p>
-      </div>
+      </div> */}
     </div>
   );
 };

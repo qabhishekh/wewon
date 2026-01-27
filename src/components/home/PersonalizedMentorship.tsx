@@ -43,12 +43,7 @@ const PersonalizedMentorship = () => {
                 <p className="my-2 text-sm text-[var(--muted-text)]">
                   Predict your perfect college from rank.
                 </p>
-                <Button
-                  onClick={() => {
-                  }}
-                >
-                  Get Guidance
-                </Button>
+                <Button href="/counseling">Get Guidance</Button>
               </div>
               <div className="bg-white rounded-2xl shadow-lg p-6 flex gap-4 items-center">
                 <Globe
@@ -84,8 +79,9 @@ const PersonalizedMentorship = () => {
             <div className="relative md:max-w-xl rounded-2xl overflow-hidden shadow-2xl mx-auto">
               <div className="w-full aspect-[9/16] bg-black flex items-center justify-center">
                 {/* Responsive YouTube embed, no absolute positioning */}
+                {/* https://youtube.com/shorts/f8Tv8tFMNT4?feature=share */}
                 <iframe
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&rel=0&playsinline=1"
+                  src="https://www.youtube.com/embed/f8Tv8tFMNT4?autoplay=1&mute=1&rel=0&playsinline=1"
                   title="Mentorship session video"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
@@ -120,12 +116,7 @@ const PersonalizedMentorship = () => {
                 <p className="my-2 text-sm text-[var(--muted-text)]">
                   Get a professional Advice from our best teachers.
                 </p>
-                <Button
-                  onClick={() => {
-                  }}
-                >
-                  Book a Session
-                </Button>
+                <Button href="/counseling">Book a Session</Button>
               </div>
             </div>
           </div>
