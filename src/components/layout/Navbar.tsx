@@ -73,9 +73,9 @@ const Navbar = () => {
             <Image
               src="/logo.svg"
               alt="We Won Academy Logo"
-              width={70}
-              height={30}
-              className="w-auto object-contain"
+              width={150}
+              height={150}
+              className="w-auto object-cover"
             />
           </Link>
         </div>
@@ -169,9 +169,9 @@ const Navbar = () => {
                 <Image
                   src="/logo.svg"
                   alt="We Won Academy Logo"
-                  width={70}
-                  height={30}
-                  className="h-8 w-auto object-contain"
+                  width={120}
+                  height={60}
+                  className="h-12 w-auto object-contain"
                 />
                 <button
                   onClick={() => setIsOpen(false)}

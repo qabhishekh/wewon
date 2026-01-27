@@ -129,7 +129,7 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
     _id: "69788981c6aafde7dfa7c289",
     title: "JEE Early Predictor",
     slug: "jee-early-predictor",
-    thumbnail: "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769516739/tmjrprmaxcl0mygj8djq.webp",
+    thumbnail: "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769547522/w9bvpnxeovtkxxpnbixl.webp",
     description:
       "Predict colleges before official ranks! Enter your JEE Mains percentile to get estimated rank and college predictions for NITs, IIITs, and GFTIs.",
     price: 1999,

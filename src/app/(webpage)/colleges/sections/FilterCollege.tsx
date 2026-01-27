@@ -368,9 +368,9 @@ export default function FilterColleges() {
                 </h3>
                 <div className="space-y-2 max-h-40 overflow-y-auto">
                   {[
-                    "MBA/PGDM",
+                    "MBA",
                     "BBA",
-                    "B.Tech/B.E.",
+                    "B.Tech",
                     "M.Tech",
                     "B.Com",
                     "M.Com",

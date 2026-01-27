@@ -82,66 +82,74 @@ export default function CutoffFilterPage() {
     }
   }, [slug, dispatch]);
 
-  // Detect college type based on name
+  // Detect college type based on API Type field
   const detectCollegeType = useCallback((): CollegeType => {
-    const name = (college?.Name || "").toUpperCase();
+    const type = (college?.Type || "").toUpperCase();
 
-    // JAC Delhi colleges
-    if (
-      name.includes("DTU") ||
-      name.includes("DELHI TECHNOLOGICAL") ||
-      name.includes("NSUT") ||
-      name.includes("NETAJI SUBHAS") ||
-      name.includes("IGDTUW") ||
-      name.includes("INDIRA GANDHI DELHI") ||
-      name.includes("IIIT-D") ||
-      name.includes("IIIT DELHI") ||
-      name.includes("INDRAPRASTHA INSTITUTE OF INFORMATION")
-    ) {
-      return "JAC_DELHI";
+    // Map API Type field to our CollegeType
+    switch (type) {
+      case "IIT":
+      case "NIT":
+      case "IIIT":
+      case "GFTI":
+        return "JOSAA";
+      case "JAC_DELHI":
+        return "JAC_DELHI";
+      case "JAC_CHANDIGARH":
+        return "JAC_CHANDIGARH";
+      case "HBTU":
+        return "HBTU";
+      case "MMMUT":
+        return "MMMUT";
+      case "UPTAC":
+        return "UPTAC";
+      default:
+        // Fallback: check Name for legacy/unmapped colleges
+        const name = (college?.Name || "").toUpperCase();
+
+        if (
+          name.includes("DTU") ||
+          name.includes("DELHI TECHNOLOGICAL") ||
+          name.includes("NSUT") ||
+          name.includes("NETAJI SUBHAS") ||
+          name.includes("IGDTUW") ||
+          name.includes("INDIRA GANDHI DELHI") ||
+          name.includes("IIIT-D") ||
+          name.includes("IIIT DELHI")
+        ) {
+          return "JAC_DELHI";
+        }
+
+        if (
+          name.includes("UIET") ||
+          name.includes("CCET") ||
+          name.includes("CHANDIGARH COLLEGE OF ENGINEERING")
+        ) {
+          return "JAC_CHANDIGARH";
+        }
+
+        if (name.includes("HBTU") || name.includes("HARCOURT BUTLER")) {
+          return "HBTU";
+        }
+
+        if (name.includes("MMMUT") || name.includes("MADAN MOHAN")) {
+          return "MMMUT";
+        }
+
+        if (
+          name.includes("IIT") ||
+          name.includes("NIT") ||
+          name.includes("IIIT") ||
+          name.includes("GFTI") ||
+          name.includes("INDIAN INSTITUTE OF TECHNOLOGY") ||
+          name.includes("NATIONAL INSTITUTE OF TECHNOLOGY")
+        ) {
+          return "JOSAA";
+        }
+
+        return "UNKNOWN";
     }
-
-    // JAC Chandigarh colleges
-    if (
-      name.includes("UIET") ||
-      name.includes("CCET") ||
-      name.includes("CHANDIGARH COLLEGE OF ENGINEERING") ||
-      name.includes("DR. SSB UICET") ||
-      name.includes("PANJAB UNIVERSITY")
-    ) {
-      return "JAC_CHANDIGARH";
-    }
-
-    // HBTU
-    if (name.includes("HBTU") || name.includes("HARCOURT BUTLER")) {
-      return "HBTU";
-    }
-
-    // MMMUT
-    if (name.includes("MMMUT") || name.includes("MADAN MOHAN")) {
-      return "MMMUT";
-    }
-
-    // UPTAC (general UP colleges)
-    if (name.includes("UPTAC")) {
-      return "UPTAC";
-    }
-
-    // IIT/NIT/IIIT/GFTI
-    if (
-      name.includes("IIT") ||
-      name.includes("NIT") ||
-      name.includes("IIIT") ||
-      name.includes("GFTI") ||
-      name.includes("INDIAN INSTITUTE OF TECHNOLOGY") ||
-      name.includes("NATIONAL INSTITUTE OF TECHNOLOGY") ||
-      name.includes("INDIAN INSTITUTE OF INFORMATION TECHNOLOGY")
-    ) {
-      return "JOSAA";
-    }
-
-    return "UNKNOWN";
-  }, [college?.Name]);
+  }, [college?.Type, college?.Name]);
 
   const collegeType = detectCollegeType();
 
@@ -252,12 +260,13 @@ export default function CutoffFilterPage() {
       if (response.data.cutoffs && response.data.cutoffs.length > 0) {
         setCutoffResults(response.data.cutoffs);
 
-        // Extract unique rounds
+        // Extract unique rounds and set first one as default
         const rounds = [
           ...new Set(response.data.cutoffs.map((c: CutoffData) => c.Round)),
         ] as string[];
-        setAvailableRounds(rounds.sort());
-        setSelectedRound("all");
+        const sortedRounds = rounds.sort();
+        setAvailableRounds(sortedRounds);
+        setSelectedRound(sortedRounds[0] || "");
       } else {
         setCutoffResults([]);
         setAvailableRounds([]);
@@ -271,12 +280,22 @@ export default function CutoffFilterPage() {
     }
   };
 
-  // Filter results by round and sort by Quota
+  // Filter results by selected round, category, and gender, then sort by Quota
   const getFilteredResults = () => {
-    let results =
-      selectedRound === "all"
-        ? cutoffResults
-        : cutoffResults.filter((c) => c.Round === selectedRound);
+    let results = cutoffResults.filter((c) => {
+      // Filter by round
+      if (c.Round !== selectedRound) return false;
+
+      // Filter by category (Seat_Type)
+      if (selectedCategory && c.Seat_Type !== selectedCategory) return false;
+
+      // Filter by gender (for JOSAA type)
+      if (hasGender() && selectedGender && selectedGender !== "BOTH") {
+        if (c.Gender !== selectedGender) return false;
+      }
+
+      return true;
+    });
 
     // Sort by Quota (AI/HS/OS order)
     return results.sort((a, b) => (a.Quota || "").localeCompare(b.Quota || ""));
@@ -574,23 +593,8 @@ export default function CutoffFilterPage() {
             ) : cutoffResults.length > 0 ? (
               <>
                 {/* Round Tabs */}
-                {availableRounds.length > 1 && (
+                {availableRounds.length > 0 && (
                   <div className="flex flex-wrap gap-2 mb-6">
-                    <button
-                      onClick={() => setSelectedRound("all")}
-                      className={`px-4 py-2 rounded-lg font-medium text-sm transition-all ${
-                        selectedRound === "all"
-                          ? "text-white"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      }`}
-                      style={
-                        selectedRound === "all"
-                          ? { backgroundColor: "var(--primary)" }
-                          : {}
-                      }
-                    >
-                      All Rounds
-                    </button>
                     {availableRounds.map((round) => (
                       <button
                         key={round}

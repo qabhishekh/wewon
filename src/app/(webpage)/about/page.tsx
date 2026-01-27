@@ -196,8 +196,8 @@ const About = () => {
       <div className="container mx-auto">
         <GoogleAds />
         <OurImpact impacts={impacts} />
-        <FounderTeam team={team} />
-        <Interns interns={interns} />
+        {/* <FounderTeam team={team} />
+        <Interns interns={interns} /> */}
       </div>
     </>
   );
