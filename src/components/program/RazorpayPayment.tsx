@@ -77,18 +77,20 @@ export default function RazorpayPayment({
           productId,
           productType,
           couponCode,
-        })
+        }),
       ).unwrap();
 
       if (!orderResult || !orderResult.razorpayOrderId) {
-        throw new Error("Failed to create order");
+        throw new Error(
+          "Order created but missing payment details. Please contact support.",
+        );
       }
 
       // Step 2: Open Razorpay checkout
       const options: RazorpayOptions = {
         key: getRazorpayKey(),
-        amount: orderResult.finalAmount * 100, // Convert to paise
-        currency: "INR",
+        amount: orderResult.amount, // Already in paise from backend
+        currency: orderResult.currency || "INR",
         name: "We Won Academy",
         description: productName,
         order_id: orderResult.razorpayOrderId,
@@ -108,7 +110,7 @@ export default function RazorpayPayment({
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_payment_id: response.razorpay_payment_id,
                 razorpay_signature: response.razorpay_signature,
-              })
+              }),
             ).unwrap();
 
             toast.success("Payment successful!");

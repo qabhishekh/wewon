@@ -2,6 +2,15 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import apiClient from "@/hooks/Axios";
 import { Order, PaymentVerification } from "../types";
 
+// Response type from create-order API
+export interface CreateOrderResponse {
+  razorpayOrderId: string;
+  amount: number;
+  currency: string;
+  finalAmount: number;
+  productName: string;
+}
+
 // Create order
 export const createOrder = createAsyncThunk(
   "order/create",
@@ -11,27 +20,35 @@ export const createOrder = createAsyncThunk(
       productType: "counseling" | "mentorship";
       couponCode?: string;
     },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const response = await apiClient.post(
         "/api/payment/create-order",
-        orderData
+        orderData,
       );
 
       if (!response.data.success) {
         return rejectWithValue(
-          response.data.message || "Failed to create order"
+          response.data.message || "Failed to create order",
         );
       }
 
-      return response.data.data as Order;
+      // Map the backend response to our expected format
+      const data = response.data.data;
+      return {
+        razorpayOrderId: data.id, // Razorpay order ID from backend
+        amount: data.amount,
+        currency: data.currency,
+        finalAmount: data.amount / 100, // Convert from paise to rupees
+        productName: data.productName,
+      } as CreateOrderResponse;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to create order"
+        error.response?.data?.message || "Failed to create order",
       );
     }
-  }
+  },
 );
 
 // Verify payment
@@ -43,17 +60,17 @@ export const verifyPayment = createAsyncThunk(
 
       if (!response.data.success) {
         return rejectWithValue(
-          response.data.message || "Payment verification failed"
+          response.data.message || "Payment verification failed",
         );
       }
 
       return response.data.data as Order;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Payment verification failed"
+        error.response?.data?.message || "Payment verification failed",
       );
     }
-  }
+  },
 );
 
 // Fetch user orders
@@ -65,17 +82,17 @@ export const fetchUserOrders = createAsyncThunk(
 
       if (!response.data.success) {
         return rejectWithValue(
-          response.data.message || "Failed to fetch orders"
+          response.data.message || "Failed to fetch orders",
         );
       }
 
       return response.data.data as Order[];
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch user orders"
+        error.response?.data?.message || "Failed to fetch user orders",
       );
     }
-  }
+  },
 );
 
 // Download invoice
@@ -83,9 +100,12 @@ export const downloadInvoice = createAsyncThunk(
   "order/downloadInvoice",
   async (orderId: string, { rejectWithValue }) => {
     try {
-      const response = await apiClient.get(`/api/student/orders/${orderId}/invoice`, {
-        responseType: "blob",
-      });
+      const response = await apiClient.get(
+        `/api/student/orders/${orderId}/invoice`,
+        {
+          responseType: "blob",
+        },
+      );
 
       // Create download link
       const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -100,8 +120,8 @@ export const downloadInvoice = createAsyncThunk(
       return { success: true };
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to download invoice"
+        error.response?.data?.message || "Failed to download invoice",
       );
     }
-  }
+  },
 );

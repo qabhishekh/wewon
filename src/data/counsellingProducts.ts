@@ -60,6 +60,7 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
     _id: "69521fbfae39369012122fc7",
     title: "JEE Mains College Predictor",
     slug: "jee-mains-predictor",
+    thumbnail: "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769516739/tmjrprmaxcl0mygj8djq.webp",
     description:
       "Predict your college based on JEE Mains rank and preferences. Get accurate predictions for NITs, IIITs, and GFTIs.",
     price: 499,
@@ -93,6 +94,7 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
   {
     title: "JEE Advanced College Predictor",
     slug: "jee-advanced-predictor",
+    thumbnail: "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769516739/tmjrprmaxcl0mygj8djq.webp",
     description:
       "Predict your IIT based on JEE Advanced rank. Get detailed insights into IIT admissions and branch predictions.",
     price: 599,
@@ -127,10 +129,11 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
     _id: "69788981c6aafde7dfa7c289",
     title: "JEE Early Predictor",
     slug: "jee-early-predictor",
+    thumbnail: "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769516739/tmjrprmaxcl0mygj8djq.webp",
     description:
       "Predict colleges before official ranks! Enter your JEE Mains percentile to get estimated rank and college predictions for NITs, IIITs, and GFTIs.",
-    price: 0,
-    discountPrice: 0,
+    price: 10,
+    discountPrice: 10,
     validityInDays: 365,
     features: {
       hasMentorship: false,
@@ -149,7 +152,7 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
     // Frontend-specific fields
     icon: "📊",
     category: PredictorCategory.JEE,
-    purchased: true,
+    purchased: false,
     displayFeatures: [
       "Percentile to Rank Conversion",
       "NIT, IIIT & GFTI Predictions",
@@ -161,6 +164,7 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
     _id: "697725a9b2228255068f771c",
     title: "UPTAC College Predictor",
     slug: "uptac-predictor",
+    thumbnail: "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769516739/tmjrprmaxcl0mygj8djq.webp",
     description:
       "Predict colleges for UPTAC counseling. Get predictions for engineering colleges in Uttar Pradesh based on your rank.",
     price: 399,
@@ -194,6 +198,7 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
   {
     title: "MMMUT College Predictor",
     slug: "mmmut-predictor",
+    thumbnail: "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769516739/tmjrprmaxcl0mygj8djq.webp",
     description:
       "Predict colleges for MMMUT (Madan Mohan Malaviya University of Technology) counseling. Get predictions based on your rank and category.",
     price: 299,
@@ -227,6 +232,7 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
   {
     title: "HBTU College Predictor",
     slug: "hbtu-predictor",
+    thumbnail: "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769516739/tmjrprmaxcl0mygj8djq.webp",
     description:
       "Predict colleges for HBTU (Harcourt Butler Technical University) counseling. Get predictions for B.TECH and BS-MS programs based on your rank.",
     price: 299,
@@ -260,6 +266,7 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
   {
     title: "JAC Delhi College Predictor",
     slug: "jac-delhi-predictor",
+    thumbnail: "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769516739/tmjrprmaxcl0mygj8djq.webp",
     description:
       "Predict colleges for JAC Delhi counseling. Get predictions for DTU, NSUT, IIIT-D, and IGDTUW based on your JEE Mains rank.",
     price: 399,
@@ -293,6 +300,7 @@ export const PREDICTOR_PRODUCTS: PredictorProduct[] = [
   {
     title: "JAC Chandigarh College Predictor",
     slug: "jac-chandigarh-predictor",
+    thumbnail: "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1769516739/tmjrprmaxcl0mygj8djq.webp",
     description:
       "Predict colleges for JAC Chandigarh counseling. Get predictions for CCET, UIET, and Dr. SSB UICET based on your JEE Mains rank.",
     price: 399,

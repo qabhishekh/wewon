@@ -1,13 +1,26 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import GoogleAds from "../sections/GoogleAds";
+import Image from "next/image";
 import { predictJEEEarly } from "@/network/predictor";
 import options from "./data/options.json";
 import JEEEarlyPredictionResults from "./JEEEarlyPredictionResults";
 import { toast } from "sonner";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { selectUser } from "@/store/auth/authSlice";
+import { fetchUserOrders } from "@/store/order/orderThunk";
+import { selectUserOrders } from "@/store/order/orderSlice";
+import { getPredictorBySlug } from "@/data/counsellingProducts";
+import PredictorPaymentModal from "./PredictorPaymentModal";
+
+const PRODUCT_SLUG = "jee-early-predictor";
+const product = getPredictorBySlug(PRODUCT_SLUG);
 
 export default function JEEEarlyPredictor() {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
+  const userOrders = useAppSelector(selectUserOrders);
+
   const [formData, setFormData] = useState({
     percentile: "",
     category: "OPEN",
@@ -19,7 +32,54 @@ export default function JEEEarlyPredictor() {
 
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [hasPurchased, setHasPurchased] = useState(false);
+  const [checkingPurchase, setCheckingPurchase] = useState(true);
   const resultsRef = useRef(null);
+
+  // Check if user has purchased the product
+  useEffect(() => {
+    const checkPurchaseStatus = async () => {
+      // If product is free, consider it purchased
+      if (product && product.price === 0 && product.discountPrice === 0) {
+        setHasPurchased(true);
+        setCheckingPurchase(false);
+        return;
+      }
+
+      // If user is not logged in, don't fetch orders
+      if (!user) {
+        setHasPurchased(false);
+        setCheckingPurchase(false);
+        return;
+      }
+
+      // Only fetch orders when user is logged in
+      try {
+        
+        console.log(user);
+        
+        await dispatch(fetchUserOrders()).unwrap();
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      } finally {
+        setCheckingPurchase(false);
+      }
+    };
+
+    checkPurchaseStatus();
+  }, [user, dispatch]);
+
+  // Update hasPurchased when userOrders change
+  useEffect(() => {
+    if (product && product._id && userOrders.length > 0) {
+      const isPurchased = userOrders.some(
+        (order) =>
+          order.product?._id === product._id && order.status === "completed",
+      );
+      setHasPurchased(isPurchased);
+    }
+  }, [userOrders]);
 
   // Auto-scroll to results when they become available
   useEffect(() => {
@@ -90,29 +150,30 @@ export default function JEEEarlyPredictor() {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setResults(null);
-
+  const validateForm = () => {
     // Validate percentile
     const percentileNum = parseFloat(formData.percentile);
     if (isNaN(percentileNum) || percentileNum < 0 || percentileNum > 100) {
       toast.error("Please enter a valid percentile between 0 and 100");
-      setLoading(false);
-      return;
+      return false;
     }
 
     // Validate home state
     if (!formData.homeState) {
       toast.error("Please select your home state");
-      setLoading(false);
-      return;
+      return false;
     }
+
+    return true;
+  };
+
+  const fetchPredictions = async () => {
+    setLoading(true);
+    setResults(null);
 
     try {
       const payload = {
-        percentile: percentileNum,
+        percentile: parseFloat(formData.percentile),
         gender: formData.gender,
         category: formData.category,
         homeState: formData.homeState,
@@ -133,12 +194,68 @@ export default function JEEEarlyPredictor() {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    // Check if user is logged in
+    if (!user) {
+      toast.error("Please login to get predictions");
+      return;
+    }
+
+    // Check if user has purchased
+    if (
+      !hasPurchased &&
+      product &&
+      (product.price > 0 ||
+        (product.discountPrice && product.discountPrice > 0))
+    ) {
+      setShowPaymentModal(true);
+      return;
+    }
+
+    // User has purchased, fetch predictions
+    await fetchPredictions();
+  };
+
+  const handlePaymentSuccess = () => {
+    setHasPurchased(true);
+    setShowPaymentModal(false);
+    // Automatically fetch predictions after successful payment
+    fetchPredictions();
+  };
+
   return (
     <div className="container mx-auto px-2 sm:px-4 my-6 sm:my-10">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
         {/* Left Column: Steps */}
         <div className="flex flex-col justify-center space-y-3 sm:space-y-6">
-          <GoogleAds adSlot="1234567890" />
+          {/* Thumbnail Image - 16:9 ratio */}
+          {product?.thumbnail && (
+            <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-lg">
+              <Image
+                src={product.thumbnail}
+                alt={product.title}
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-white">
+                  {product.title}
+                </h2>
+                <p className="text-sm text-white/80 mt-1 line-clamp-2">
+                  {product.description}
+                </p>
+              </div>
+            </div>
+          )}
           <div className="p-3 sm:p-6 bg-[var(--background)] border border-[var(--border)] rounded-lg sm:rounded-xl shadow-sm">
             <h3 className="text-base sm:text-xl font-semibold text-[var(--foreground)]">
               Enter your JEE Mains Percentile
@@ -359,6 +476,16 @@ export default function JEEEarlyPredictor() {
           />
         )}
       </div>
+
+      {/* Payment Modal */}
+      {product && (
+        <PredictorPaymentModal
+          isOpen={showPaymentModal}
+          onClose={() => setShowPaymentModal(false)}
+          onPaymentSuccess={handlePaymentSuccess}
+          product={product}
+        />
+      )}
     </div>
   );
 }
