@@ -85,7 +85,7 @@ export default function page() {
                   <div className="flex items-center gap-3 bg-white rounded-xl px-4 py-3 shadow-sm">
                     <span className="text-xl">📚</span>
                     <span className="text-gray-700 font-medium">
-                      Focus on your studies
+                      For now use our college predictor
                     </span>
                   </div>
                   <div className="flex items-center gap-3 bg-white rounded-xl px-4 py-3 shadow-sm">

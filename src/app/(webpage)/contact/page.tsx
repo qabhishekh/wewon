@@ -31,11 +31,11 @@ const Page = () => {
   return (
     <div>
       <MainHeading top="Have Questions?" bottom="We’re Just a Message Away" />
-      {/* <ContactUs
+      <ContactUs
         formData={formData}
         setFormData={setFormData}
         onSubmit={handleSubmit}
-      /> */}
+      />
       {/* <GoogleMap /> */}
       <div className="pb-18 md:pb-24">
         <GoogleAds />

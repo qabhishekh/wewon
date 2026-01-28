@@ -142,11 +142,13 @@ export default function ExamDetailPage() {
     );
   }
 
-  // Mock data for sidebar (replace with real data when available)
+  // Hardcoded social links
   const socialLinks = {
-    youtube: "https://youtube.com",
-    telegram: "https://telegram.com",
-    instagram: "https://instagram.com",
+    youtube: "https://www.youtube.com/@WeWonAcademy/videos",
+    telegram: "https://t.me/wewonacademy",
+    instagram:
+      "https://www.instagram.com/aman.bhaiya_iiser?igsh=MWc5OTN6MGNsYjhkaw==",
+    whatsapp: "https://whatsapp.com/channel/0029VamIMTD9WtC9n8tEs21V",
   };
 
   const popularExams = [
@@ -163,20 +165,23 @@ export default function ExamDetailPage() {
     }) || [];
 
   // Group sections by their tab category (excluding extra sections)
-  const groupedSections = exam.sections?.reduce((acc, section) => {
-    const tabName = getSectionTab(section.sectionTitle);
+  const groupedSections = exam.sections?.reduce(
+    (acc, section) => {
+      const tabName = getSectionTab(section.sectionTitle);
 
-    // Skip sections that don't match any tab (extra sections)
-    if (tabName === null) {
+      // Skip sections that don't match any tab (extra sections)
+      if (tabName === null) {
+        return acc;
+      }
+
+      if (!acc[tabName]) {
+        acc[tabName] = [];
+      }
+      acc[tabName].push(section);
       return acc;
-    }
-
-    if (!acc[tabName]) {
-      acc[tabName] = [];
-    }
-    acc[tabName].push(section);
-    return acc;
-  }, {} as { [key: string]: typeof exam.sections });
+    },
+    {} as { [key: string]: typeof exam.sections },
+  );
 
   // Filter tabs to only show those that have sections
   const availableTabs = tabs.filter((tab) => {

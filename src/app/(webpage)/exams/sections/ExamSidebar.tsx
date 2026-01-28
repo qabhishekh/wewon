@@ -1,5 +1,5 @@
 import React from "react";
-import { Instagram, Youtube,Send } from "lucide-react";
+import { Instagram, Youtube, Send, MessageCircle } from "lucide-react";
 import Link from "next/link";
 
 interface PopularExam {
@@ -14,6 +14,7 @@ interface ExamSidebarProps {
     youtube?: string;
     telegram?: string;
     instagram?: string;
+    whatsapp?: string;
   };
   popularExams?: PopularExam[];
 }
@@ -78,6 +79,22 @@ export default function ExamSidebar({
                 </span>
               </a>
             )}
+
+            {socialLinks.whatsapp && (
+              <a
+                href={socialLinks.whatsapp}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 p-3 rounded-lg bg-[#25D366]/10 hover:bg-[#25D366]/20 transition-colors group"
+              >
+                <div className="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center text-white">
+                  <MessageCircle size={20} />
+                </div>
+                <span className="text-[#0D3A66] font-medium group-hover:underline">
+                  WhatsApp
+                </span>
+              </a>
+            )}
           </div>
         </div>
       )}
@@ -106,7 +123,7 @@ export default function ExamSidebar({
                         const parent = e.currentTarget.parentElement;
                         if (parent) {
                           parent.innerHTML = `<div class="text-lg font-bold text-gray-400">${exam.name.charAt(
-                            0
+                            0,
                           )}</div>`;
                         }
                       }}

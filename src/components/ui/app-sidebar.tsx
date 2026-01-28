@@ -3,7 +3,7 @@ import {
   ChevronUp,
   Home,
   BookOpen,
-  Heart,
+  ShoppingBag,
   User2,
   LogOut,
   GraduationCap,
@@ -53,9 +53,9 @@ export function AppSidebar() {
           icon: TrendingUp,
         },
         {
-          title: "Saved Colleges",
-          url: "/s/saved-colleges",
-          icon: Heart,
+          title: "My Orders",
+          url: "/s/orders",
+          icon: ShoppingBag,
         },
         {
           title: "My Profile",

@@ -102,7 +102,7 @@ export default function TestimonialSlider() {
                       {story.name}
                       <span className="text-white"> • {story.affiliation}</span>
                     </p>
-                    <blockquote className="mt-6 text-2xl md:text-3xl font-medium">
+                    <blockquote className="mt-6 text-xl md:text-xl font-medium">
                       “{story.quote}”
                     </blockquote>
                   </div>

@@ -46,13 +46,15 @@ export default function PercentileConverter() {
   // Promo modal state
   const [showPromoModal, setShowPromoModal] = useState(false);
 
-  // Show promo modal on page load
+  // Show promo modal after results are displayed
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowPromoModal(true);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
+    if (result) {
+      const timer = setTimeout(() => {
+        setShowPromoModal(true);
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [result]);
 
   // Auto-scroll to results when they become available
   useEffect(() => {
@@ -162,11 +164,13 @@ export default function PercentileConverter() {
     <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 my-10 px-4">
       {/* Left Column: Ad & Steps */}
       <div className="flex flex-col space-y-6">
-        {/* Coming soon Placeholder */}
-        <div className="flex items-center justify-center min-h-[250px] p-6 bg-[var(--muted-background)] border border-[var(--border)] rounded-xl shadow-sm">
-          <p className="text-2xl font-semibold text-[var(--muted-text)]">
-            Coming soon
-          </p>
+        {/* Percentile Image */}
+        <div className="rounded-xl overflow-hidden shadow-sm">
+          <img
+            src="/herocolleges/percentile.png"
+            alt="Percentile to Rank Converter"
+            className="w-full h-auto object-cover"
+          />
         </div>
 
         {/* Steps */}
