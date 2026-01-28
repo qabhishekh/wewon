@@ -14,7 +14,7 @@ import "swiper/css";
 // --- Your Testimonial Data ---
 const testimonials = [
   {
-    name: "Adarsh Upadhyay",
+    name: "Yashveer",
     affiliation: "IIIT Lucknow",
     quote:
       "I purchased We Won Academy's paid counselling package and it was worth every rupee. The team guided me through every step of JoSAA and CSAB counselling, explained cutoffs clearly, and suggested the best colleges based on my rank. The support felt very personalised.",
