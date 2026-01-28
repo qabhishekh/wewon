@@ -698,6 +698,133 @@ export default function CollegePage() {
           {/* Sidebar */}
           <aside className="w-full lg:w-80 flex-shrink-0 space-y-6">
             <div className="sticky top-24 space-y-6">
+              {/* Social Links Section */}
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <h3 className="text-xl font-bold text-[#0D3A66] mb-4">
+                  Connect With Us
+                </h3>
+                <div className="flex flex-col gap-3">
+                  {/* YouTube */}
+                  <a
+                    href="https://www.youtube.com/@WeWonAcademy/videos"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-3 rounded-lg bg-[#FF0000]/10 hover:bg-[#FF0000]/20 transition-colors group"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-[#FF0000] flex items-center justify-center text-white">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
+                        <path d="m10 15 5-3-5-3z" />
+                      </svg>
+                    </div>
+                    <span className="text-[#0D3A66] font-medium group-hover:underline">
+                      YouTube
+                    </span>
+                  </a>
+
+                  {/* Telegram */}
+                  <a
+                    href="https://t.me/wewonacademy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-3 rounded-lg bg-[#0088cc]/10 hover:bg-[#0088cc]/20 transition-colors group"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-[#0088cc] flex items-center justify-center text-white">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z" />
+                        <path d="m21.854 2.147-10.94 10.939" />
+                      </svg>
+                    </div>
+                    <span className="text-[#0D3A66] font-medium group-hover:underline">
+                      Telegram
+                    </span>
+                  </a>
+
+                  {/* Instagram */}
+                  <a
+                    href="https://www.instagram.com/aman.bhaiya_iiser?igsh=MWc5OTN6MGNsYjhkaw=="
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-3 rounded-lg bg-gradient-to-r from-[#833AB4]/10 via-[#FD1D1D]/10 to-[#F77737]/10 hover:from-[#833AB4]/20 hover:via-[#FD1D1D]/20 hover:to-[#F77737]/20 transition-colors group"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#F77737] flex items-center justify-center text-white">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <rect
+                          width="20"
+                          height="20"
+                          x="2"
+                          y="2"
+                          rx="5"
+                          ry="5"
+                        />
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+                      </svg>
+                    </div>
+                    <span className="text-[#0D3A66] font-medium group-hover:underline">
+                      Instagram
+                    </span>
+                  </a>
+
+                  {/* WhatsApp */}
+                  <a
+                    href="https://whatsapp.com/channel/0029VamIMTD9WtC9n8tEs21V"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-3 rounded-lg bg-[#25D366]/10 hover:bg-[#25D366]/20 transition-colors group"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center text-white">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+                      </svg>
+                    </div>
+                    <span className="text-[#0D3A66] font-medium group-hover:underline">
+                      WhatsApp
+                    </span>
+                  </a>
+                </div>
+              </div>
+
               <AdRenderer location="sidebar" />
               <AdRenderer location="applications_open_section" />
             </div>
