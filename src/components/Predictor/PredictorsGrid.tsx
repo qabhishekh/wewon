@@ -62,12 +62,13 @@ const PredictorsGrid: React.FC = () => {
   }, [isAuthenticated, dispatch]);
 
   // Check if a predictor is purchased
-  // Compare productId to predictor._id and check paymentStatus
-  const isPredictorPurchased = (predictorId: string): boolean => {
-    return userOrders.some(
-      (order) =>
-        order.productId === predictorId && order.paymentStatus === "completed",
-    );
+  // API response has order.product.slug and order.status
+  const isPredictorPurchased = (predictorSlug: string): boolean => {
+    return userOrders.some((order: any) => {
+      // The API returns product as an object with slug, not just productId
+      const orderProductSlug = order.product?.slug;
+      return orderProductSlug === predictorSlug && order.status === "completed";
+    });
   };
 
   useEffect(() => {
@@ -127,7 +128,7 @@ const PredictorsGrid: React.FC = () => {
               key={predictor._id}
               predictor={mapToPredictorProduct(
                 predictor,
-                isPredictorPurchased(predictor._id),
+                isPredictorPurchased(predictor.slug),
               )}
             />
           ))}

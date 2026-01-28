@@ -27,7 +27,7 @@ const AdRenderer: React.FC<AdRendererProps> = ({ location, className }) => {
 
   if (!ad) return null;
 
-  // 1. Google Ads (Specific logic if needed, or if location indicates)
+  // 1. Coming soon (Specific logic if needed, or if location indicates)
   if (location.startsWith("google_ad_")) {
     const slotId = ad.description;
     return (

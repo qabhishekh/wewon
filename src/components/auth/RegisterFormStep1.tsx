@@ -11,6 +11,8 @@ export default function RegisterFormStep1({
   setEmail,
   password,
   setPassword,
+  confirmPassword,
+  setConfirmPassword,
   phone,
   setPhone,
   onNext,
@@ -23,6 +25,8 @@ export default function RegisterFormStep1({
   setEmail: (email: string) => void;
   password: string;
   setPassword: (password: string) => void;
+  confirmPassword: string;
+  setConfirmPassword: (confirmPassword: string) => void;
   phone: string;
   setPhone: (phone: string) => void;
   onNext: () => void;
@@ -30,6 +34,7 @@ export default function RegisterFormStep1({
   error: string | null;
 }) {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,7 +43,13 @@ export default function RegisterFormStep1({
     if (error) toast.error(error);
 
     // Basic client-side validation
-    if (!name.trim() || !email.trim() || !password.trim() || !phone.trim()) {
+    if (
+      !name.trim() ||
+      !email.trim() ||
+      !password.trim() ||
+      !phone.trim() ||
+      !confirmPassword.trim()
+    ) {
       toast.error("Please fill in all fields.");
       return;
     }
@@ -52,6 +63,12 @@ export default function RegisterFormStep1({
     // ✅ Password length validation
     if (password.length < 6) {
       toast.error("Password must be at least 6 characters long.");
+      return;
+    }
+
+    // ✅ Confirm password validation
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match.");
       return;
     }
 
@@ -144,6 +161,38 @@ export default function RegisterFormStep1({
             className="absolute inset-y-0 right-0 pr-3 flex items-center text-[var(--muted-text)] hover:text-[var(--primary)]"
           >
             {showPassword ? (
+              <EyeOff className="h-5 w-5" />
+            ) : (
+              <Eye className="h-5 w-5" />
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Confirm Password */}
+      <div>
+        <label
+          htmlFor="confirmPassword"
+          className="block text-sm font-medium text-[var(--foreground)] mb-1.5"
+        >
+          Confirm Password
+        </label>
+        <div className="relative">
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            id="confirmPassword"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Confirm your Password"
+            className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)] pr-10"
+            required
+          />
+          <button
+            type="button"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            className="absolute inset-y-0 right-0 pr-3 flex items-center text-[var(--muted-text)] hover:text-[var(--primary)]"
+          >
+            {showConfirmPassword ? (
               <EyeOff className="h-5 w-5" />
             ) : (
               <Eye className="h-5 w-5" />

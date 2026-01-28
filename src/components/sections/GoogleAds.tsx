@@ -6,15 +6,12 @@ interface GoogleAdsProps {
 }
 
 export default function GoogleAds({
-  text = "Google Ads",
+  text = "Coming soon",
   backgroundColor = "#D1D5DB",
 }: GoogleAdsProps) {
   return (
     <div className="">
-      <div
-        className="w-full"
-        style={{ fontFamily: "Poppins, sans-serif" }}
-      >
+      <div className="w-full" style={{ fontFamily: "Poppins, sans-serif" }}>
         <div
           className="w-full rounded-3xl flex items-center justify-center"
           style={{

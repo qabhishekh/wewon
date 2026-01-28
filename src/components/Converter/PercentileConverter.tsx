@@ -162,10 +162,10 @@ export default function PercentileConverter() {
     <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 my-10 px-4">
       {/* Left Column: Ad & Steps */}
       <div className="flex flex-col space-y-6">
-        {/* Google Ads Placeholder */}
+        {/* Coming soon Placeholder */}
         <div className="flex items-center justify-center min-h-[250px] p-6 bg-[var(--muted-background)] border border-[var(--border)] rounded-xl shadow-sm">
           <p className="text-2xl font-semibold text-[var(--muted-text)]">
-            Google ADS
+            Coming soon
           </p>
         </div>
 
