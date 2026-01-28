@@ -38,8 +38,14 @@ export default function RegisterFormStep1({
     if (error) toast.error(error);
 
     // Basic client-side validation
-    if (!name.trim() || !email.trim() || !password.trim()) {
+    if (!name.trim() || !email.trim() || !password.trim() || !phone.trim()) {
       toast.error("Please fill in all fields.");
+      return;
+    }
+
+    // Phone number length validation (basic check for 10 digits)
+    if (phone.replace(/\D/g, "").length < 10) {
+      toast.error("Please enter a valid phone number (at least 10 digits).");
       return;
     }
 
@@ -92,14 +98,13 @@ export default function RegisterFormStep1({
         />
       </div>
 
-      {/* Phone Number (Optional) */}
+      {/* Phone Number */}
       <div>
         <label
           htmlFor="phone"
           className="block text-sm font-medium text-[var(--foreground)] mb-1.5"
         >
-          Phone Number{" "}
-          <span className="text-gray-400 font-normal">(Optional)</span>
+          Phone Number
         </label>
         <div className="relative">
           <input
@@ -109,6 +114,7 @@ export default function RegisterFormStep1({
             onChange={(e) => setPhone(e.target.value)}
             placeholder="Enter your phone number"
             className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)] pl-10"
+            required
           />
           <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[var(--muted-text)]" />
         </div>

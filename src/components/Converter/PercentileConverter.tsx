@@ -3,6 +3,8 @@ import { useState, useRef, useEffect } from "react";
 import { BarChart3, Calculator, Copy, Check } from "lucide-react";
 import { predictJEEMainRank } from "@/network/predictor";
 import { toast } from "sonner";
+import { useAppSelector } from "@/store/hooks";
+import { selectIsAuthenticated } from "@/store/auth/authSlice";
 
 const categories = [
   { value: "OPEN", label: "OPEN (General)" },
@@ -29,6 +31,7 @@ interface PredictionResult {
 }
 
 export default function PercentileConverter() {
+  const user = useAppSelector(selectIsAuthenticated);
   const [formData, setFormData] = useState({
     percentile: "",
     category: "OPEN",
@@ -37,6 +40,7 @@ export default function PercentileConverter() {
   const [result, setResult] = useState<PredictionResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const resultsRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to results when they become available
@@ -50,7 +54,7 @@ export default function PercentileConverter() {
   }, [result]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { id, value } = e.target;
 
@@ -76,6 +80,13 @@ export default function PercentileConverter() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Check if user is logged in
+    if (!user) {
+      setShowLoginModal(true);
+      return;
+    }
+
     setLoading(true);
     setResult(null);
 
@@ -97,7 +108,7 @@ export default function PercentileConverter() {
       console.error("Prediction error:", error);
       toast.error(
         error.response?.data?.message ||
-          "Failed to get prediction. Please try again."
+          "Failed to get prediction. Please try again.",
       );
     } finally {
       setLoading(false);
@@ -114,11 +125,11 @@ export default function PercentileConverter() {
     let text = `🎯 My JEE Main Prediction:\n`;
     text += `📊 Percentile: ${result.percentile}\n`;
     text += `📈 CRL Rank: ${formatNumber(result.crlRank.min)} - ${formatNumber(
-      result.crlRank.max
+      result.crlRank.max,
     )}\n`;
     if (result.categoryRank) {
       text += `🏷️ ${result.categoryRank.category} Rank: ${formatNumber(
-        result.categoryRank.min
+        result.categoryRank.min,
       )} - ${formatNumber(result.categoryRank.max)}\n`;
     }
     text += `\nCheck yours at: ${siteUrl}/percentile`;
@@ -407,6 +418,76 @@ export default function PercentileConverter() {
         <p className="text-center text-xs text-[var(--muted-text)] pt-4">
           Powered by official JEE Main 2025 candidate data
         </p>
+
+        {/* Login Required Modal */}
+        {showLoginModal && (
+          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 relative overflow-hidden animate-in fade-in zoom-in duration-200">
+              {/* Close Button */}
+              <button
+                onClick={() => setShowLoginModal(false)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+
+              <div className="text-center mb-6 mt-2">
+                <div className="w-16 h-16 bg-[var(--primary)]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="text-[var(--primary)]"
+                  >
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                    <polyline points="10 17 15 12 10 7"></polyline>
+                    <line x1="15" y1="12" x2="3" y2="12"></line>
+                  </svg>
+                </div>
+                <h2 className="text-xl font-bold text-gray-800 mb-2">
+                  Login Required
+                </h2>
+                <p className="text-sm text-gray-600">
+                  Please login to your account to get your personalized
+                  predictions.
+                </p>
+              </div>
+
+              <a
+                href="/auth"
+                className="block w-full py-3 px-4 bg-[var(--primary)] text-white font-semibold rounded-xl hover:bg-[var(--accent)] transition-colors text-center"
+              >
+                Login / Sign Up
+              </a>
+
+              <button
+                onClick={() => setShowLoginModal(false)}
+                className="block w-full py-3 px-4 mt-3 text-gray-500 font-medium rounded-xl hover:bg-gray-50 transition-colors text-center"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

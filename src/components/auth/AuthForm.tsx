@@ -48,7 +48,7 @@ export default function AuthForm() {
         name,
         email,
         password,
-        phone: phone || undefined,
+        phone,
       });
       // server should respond with message "OTP sent..."
       setRegisterStep(2);
@@ -72,7 +72,7 @@ export default function AuthForm() {
         name,
         email,
         password,
-        phone: phone || undefined,
+        phone,
       });
       // keep user on OTP step; show a small notice (alert used for brevity)
       toast.success("OTP resent to your email");

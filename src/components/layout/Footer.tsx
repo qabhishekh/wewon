@@ -125,12 +125,12 @@ const Footer = () => {
               title: "Support",
               links: [
                 {
-                  label: "Email: support@gmail.com",
-                  href: "mailto:support@gmail.com",
+                  label: "Email: collegeskhojoyt@gmail.com",
+                  href: "mailto:collegeskhojoyt@gmail.com",
                 },
                 {
-                  label: "Phone: +91-XXXX-XXXXXX",
-                  href: "tel:+911234567890",
+                  label: "Phone: +91-9532845978 (WhatsApp Only)",
+                  href: "tel:+919532845978",
                 },
                 { label: "Terms of Service", href: "/terms" },
                 { label: "Privacy Policy", href: "/privacy" },
