@@ -10,6 +10,7 @@ export default function LoginForm({
   password,
   setPassword,
   loading,
+  onForgotPassword,
 }: {
   handleLogin: () => void;
   email: string;
@@ -17,6 +18,7 @@ export default function LoginForm({
   password: string;
   setPassword: (v: string) => void;
   loading?: boolean;
+  onForgotPassword?: () => void;
 }) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -27,7 +29,6 @@ export default function LoginForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-
       {/* Email */}
       <div>
         <label
@@ -70,7 +71,11 @@ export default function LoginForm({
             onClick={() => setShowPassword(!showPassword)}
             className="absolute inset-y-0 right-0 pr-3 flex items-center text-[var(--muted-text)] hover:text-[var(--primary)]"
           >
-            {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+            {showPassword ? (
+              <EyeOff className="h-5 w-5" />
+            ) : (
+              <Eye className="h-5 w-5" />
+            )}
           </button>
         </div>
       </div>
@@ -88,12 +93,13 @@ export default function LoginForm({
             Remember me
           </label>
         </div>
-        <a
-          href="#"
+        <button
+          type="button"
+          onClick={onForgotPassword}
           className="font-medium text-[var(--primary)] hover:underline"
         >
           Forgot Password ?
-        </a>
+        </button>
       </div>
 
       {/* Login Button */}
@@ -103,7 +109,7 @@ export default function LoginForm({
           disabled={loading}
           className="w-full bg-[var(--primary)] text-white font-semibold p-3.5 rounded-lg shadow-md hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {loading && <Loader2 className="animate-spin inline-block mr-2" /> }
+          {loading && <Loader2 className="animate-spin inline-block mr-2" />}
           Login
         </button>
       </div>

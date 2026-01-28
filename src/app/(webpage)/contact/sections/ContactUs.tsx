@@ -65,10 +65,10 @@ export default function ContactUs({
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6">
             Get in Touch
           </h1>
-          <p className="text-base md:text-lg lg:text-xl mb-10 md:mb-14 opacity-90 max-w-xl mx-auto">
+          {/* <p className="text-base md:text-lg lg:text-xl mb-10 md:mb-14 opacity-90 max-w-xl mx-auto">
             Have a question? Need some help? Or just want to say hello? We'd
             love to hear from you!
-          </p>
+          </p> */}
 
           {/* Contact Info Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 md:mb-14">
