@@ -123,3 +123,11 @@ export const fetchAllPredictors = async (params?: {
   const response = await apiClient.get(url);
   return response.data;
 };
+
+// Fetch predictor by slug
+export const fetchPredictorBySlug = async (
+  slug: string,
+): Promise<PredictorListItem> => {
+  const response = await apiClient.get(`/api/predictor/${slug}`);
+  return response.data.data;
+};

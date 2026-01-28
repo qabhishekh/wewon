@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { predictJEEEarly } from "@/network/predictor";
+import { predictJEEEarly, fetchPredictorBySlug } from "@/network/predictor";
 import options from "./data/options.json";
 import JEEEarlyPredictionResults from "./JEEEarlyPredictionResults";
 import { toast } from "sonner";
@@ -10,11 +10,9 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { selectIsAuthenticated, selectUser } from "@/store/auth/authSlice";
 import { fetchUserOrders } from "@/store/order/orderThunk";
 import { selectUserOrders } from "@/store/order/orderSlice";
-import { getPredictorBySlug } from "@/data/counsellingProducts";
 import PredictorPaymentModal from "./PredictorPaymentModal";
 
 const PRODUCT_SLUG = "jee-early-predictor";
-const product = getPredictorBySlug(PRODUCT_SLUG);
 
 export default function JEEEarlyPredictor() {
   const dispatch = useAppDispatch();
@@ -36,7 +34,27 @@ export default function JEEEarlyPredictor() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [hasPurchased, setHasPurchased] = useState(false);
   const [checkingPurchase, setCheckingPurchase] = useState(true);
+  const [product, setProduct] = useState(null);
+  const [productLoading, setProductLoading] = useState(true);
   const resultsRef = useRef(null);
+
+  // Fetch product data dynamically
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setProductLoading(true);
+        const productData = await fetchPredictorBySlug(PRODUCT_SLUG);
+        setProduct(productData);
+      } catch (error) {
+        console.error("Error fetching product:", error);
+        toast.error("Failed to load predictor data");
+      } finally {
+        setProductLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, []);
 
   // Check if user has purchased the product
   useEffect(() => {
@@ -70,10 +88,10 @@ export default function JEEEarlyPredictor() {
 
   // Update hasPurchased when userOrders change
   useEffect(() => {
-    if (product && product._id && userOrders.length > 0) {
+    if (userOrders.length > 0) {
       const isPurchased = userOrders.some(
         (order) =>
-          order.product?._id === product._id && order.status === "completed",
+          order.product?.slug === PRODUCT_SLUG && order.status === "completed",
       );
       setHasPurchased(isPurchased);
     }
