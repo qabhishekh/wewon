@@ -39,7 +39,7 @@ const Navbar = () => {
 
   const navLinks = [
     { name: "Predictor", href: "/predictor" },
-    { name: "Counseling", href: "/counseling" },
+    { name: "Counselling", href: "/counselling" },
     { name: "Colleges", href: "/colleges" },
     { name: "Exams", href: "/exams" },
     { name: "About", href: "/about" },

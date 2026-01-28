@@ -36,7 +36,7 @@ export default function OTPForm({
 
   const handleKeyDown = (
     index: number,
-    e: React.KeyboardEvent<HTMLInputElement>
+    e: React.KeyboardEvent<HTMLInputElement>,
   ) => {
     const key = e.key;
     // Handle backspace: if current empty, move to previous
@@ -95,11 +95,9 @@ export default function OTPForm({
           Enter OTP
         </h2>
         <p className="text-sm text-[var(--muted-text)]">
-          We've sent a 6-digit code to your contact
+          Please check your email for OTP
         </p>
       </div>
-
-     
 
       <div className="flex justify-center gap-3">
         {otp.map((digit, index) => (

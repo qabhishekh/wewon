@@ -1,36 +1,79 @@
 "use client";
-import { ArrowLeft, ArrowRight } from 'lucide-react';
-import Sections from './sections'; // Assuming these are in the same folder
-import Heading from './heading'; // Assuming these are in the same folder
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import Sections from "./sections"; // Assuming these are in the same folder
+import Heading from "./heading"; // Assuming these are in the same folder
 
 // Import Swiper core and required modules
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
 
 //@ts-ignore
 // Import Swiper styles
-import 'swiper/css';
+import "swiper/css";
 
 // --- Your Testimonial Data ---
 const testimonials = [
   {
-    name: "ADITI SONI",
-    affiliation: "IIT Bombay",
-    quote: "The mentorship here gave me confidence and clarity for admissions.",
-    imageUrl: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1974&auto=format&fit=crop"
+    name: "Adarsh Upadhyay",
+    affiliation: "IIIT Lucknow",
+    quote:
+      "I purchased We Won Academy's paid counselling package and it was worth every rupee. The team guided me through every step of JoSAA and CSAB counselling, explained cutoffs clearly, and suggested the best colleges based on my rank. The support felt very personalised.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1974&auto=format&fit=crop",
   },
   {
-    name: "ROHAN MEHTA",
-    affiliation: "IIM Ahmedabad",
-    quote: "The application process was daunting, but the clear roadmap made it simple.",
-    imageUrl: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1974&auto=format&fit=crop"
+    name: "Rezen Pranav Kshitiz Tiga",
+    affiliation: "BIT Mesra",
+    quote:
+      "The paid counselling from We Won Academy was extremely useful for procedural clarity and choice-locking strategy. They answered my queries quickly and explained how to prioritise colleges effectively.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1974&auto=format&fit=crop",
   },
   {
-    name: "PRIYA SHARMA",
-    affiliation: "Stanford University",
-    quote: "I never thought I'd get in. The support was incredible from start to finish.",
-    imageUrl: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1974&auto=format&fit=crop"
-  }
+    name: "Ayush Wanjari",
+    affiliation: "IIITDM Jabalpur",
+    quote:
+      "I was very nervous about counselling, but We Won Academy's paid support gave me confidence and clarity. They explained trends and cutoffs in simple language and helped me avoid mistakes I could have made on my own.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1974&auto=format&fit=crop",
+  },
+  {
+    name: "Krishna",
+    affiliation: "IIT Patna",
+    quote:
+      "The paid counselling was completely worth the money. I was confused about college choices according to my rank, but We Won Academy guided me honestly and clearly, helping me make the right decision.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1974&auto=format&fit=crop",
+  },
+  {
+    name: "Kaif Ali",
+    affiliation: "IIT Bhilai",
+    quote:
+      "Nice experience. Aman Sir supports students very well throughout the counselling process.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1974&auto=format&fit=crop",
+  },
+  {
+    name: "Sirsha Das",
+    affiliation: "NIT Durgapur",
+    quote: "Very good and supportive counselling. Thank you very much.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1974&auto=format&fit=crop",
+  },
+  {
+    name: "Jatin Kumawat",
+    affiliation: "MNNIT Allahabad",
+    quote: "I just want to say that the counselling support is fully worth it.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1974&auto=format&fit=crop",
+  },
+  {
+    name: "Soubarno",
+    affiliation: "NIT Calicut",
+    quote: "Great experience. Mentors are very helpful and respond on time.",
+    imageUrl:
+      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1974&auto=format&fit=crop",
+  },
 ];
 
 export default function TestimonialSlider() {
@@ -44,8 +87,8 @@ export default function TestimonialSlider() {
           <Swiper
             modules={[Navigation]}
             navigation={{
-              prevEl: '.student-swiper-button-prev', // Custom class for prev button
-              nextEl: '.student-swiper-button-next', // Custom class for next button
+              prevEl: ".student-swiper-button-prev", // Custom class for prev button
+              nextEl: ".student-swiper-button-next", // Custom class for next button
             }}
             loop={true}
             className="rounded-2xl overflow-hidden"
@@ -53,7 +96,6 @@ export default function TestimonialSlider() {
             {testimonials.map((story) => (
               <SwiperSlide key={story.name}>
                 <div className="flex flex-col md:flex-row gap-4">
-                  
                   {/* Left Side: Testimonial Content */}
                   <div className="w-full bg-[var(--primary)] text-white p-8 md:p-16 flex flex-col justify-center items-center text-center rounded-2xl">
                     <p className="text-sm font-semibold text-[var(--accent)] tracking-wider uppercase">

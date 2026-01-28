@@ -411,7 +411,7 @@ export default function PercentileConverter() {
               </div>
 
               <a
-                href="/auth"
+                href="/auth?returnUrl=/percentile"
                 className="block w-full py-3 px-4 bg-[var(--primary)] text-white font-semibold rounded-xl hover:bg-[var(--accent)] transition-colors text-center"
               >
                 Login / Sign Up

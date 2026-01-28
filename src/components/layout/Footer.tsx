@@ -8,8 +8,6 @@ const topRowLinks = [
     title: "Company",
     links: [
       { label: "Home", href: "/" },
-      { label: "Blog", href: "/blog" },
-      { label: "Careers", href: "/careers" },
       { label: "About Us", href: "/about" },
       { label: "Counselling", href: "/counselling" },
       { label: "Contact Us", href: "/contact" },
@@ -20,7 +18,7 @@ const topRowLinks = [
     links: [
       { label: "College Predictor", href: "/predictor" },
       { label: "Rank Analysis", href: "/percentile" },
-      { label: "Mentorship", href: "/mentorship" },
+      { label: "Mentorship", href: "/counselling" },
     ],
   },
 ];
@@ -29,11 +27,11 @@ const bottomRowLinks = [
   {
     title: "Colleges",
     links: [
-      { label: "Statewise Colleges", href: "/colleges"},
-      { label: "Colleges in Delhi NCR", href: "/colleges"},
-      { label: "Explore All IITs", href: "/colleges"},
-      { label: "Explore All NITs", href: "/colleges"},
-      { label: "Explore All IIITs", href: "/colleges"},
+      { label: "Statewise Colleges", href: "/colleges" },
+      { label: "Colleges in Delhi NCR", href: "/colleges" },
+      { label: "Explore All IITs", href: "/colleges" },
+      { label: "Explore All NITs", href: "/colleges" },
+      { label: "Explore All IIITs", href: "/colleges" },
     ],
   },
   {
@@ -52,7 +50,7 @@ const bottomRowLinks = [
       {
         label: "JEE Early College Predictor",
         href: "/jee-early-predictor",
-      }
+      },
     ],
   },
 ];

@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import LoginForm from "./LoginForm";
 import RegisterFormStep1 from "./RegisterFormStep1";
 import OTPForm from "./OTPForm";
@@ -14,6 +14,8 @@ import { AppDispatch } from "@/store/store";
 
 export default function AuthForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const returnUrl = searchParams.get("returnUrl") || "/";
   const dispatch = useDispatch<AppDispatch>();
   const [activeTab, setActiveTab] = useState<"login" | "register">("login");
   const [registerStep, setRegisterStep] = useState<number>(1);
@@ -105,11 +107,11 @@ export default function AuthForm() {
         }
       }
 
-      // success -> navigate to dashboard (or desired route)
+      // success -> navigate to returnUrl or home
       toast.success(res?.data?.message || "Verification successful");
       setRegisterStep(1);
       setActiveTab("login");
-      router.push("/");
+      router.push(returnUrl);
     } catch (err: any) {
       toast.error(
         err?.response?.data?.message ||
@@ -133,7 +135,7 @@ export default function AuthForm() {
       if (token) {
         await dispatch(fetchUserProfile()).unwrap();
       }
-      router.push("/");
+      router.push(returnUrl);
     } catch (err: any) {
       toast.error(
         err?.response?.data?.message || err?.message || err || "Login failed",

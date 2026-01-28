@@ -102,7 +102,7 @@ export default function RegisterFormStep1({
           htmlFor="email"
           className="block text-sm font-medium text-[var(--foreground)] mb-1.5"
         >
-          Email Address
+          Email (Your 6 digit OTP will be sent to email)
         </label>
         <input
           type="email"

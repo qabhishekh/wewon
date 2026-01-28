@@ -557,7 +557,7 @@ export default function JEEEarlyPredictor() {
             </div>
 
             <a
-              href="/auth"
+              href="/auth?returnUrl=/predictor/jee-early-predictor"
               className="block w-full py-3 px-4 bg-[var(--primary)] text-white font-semibold rounded-xl hover:bg-[var(--accent)] transition-colors text-center"
             >
               Login / Sign Up
