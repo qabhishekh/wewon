@@ -1,6 +1,6 @@
 "use client";
 
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Phone } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -11,6 +11,8 @@ export default function RegisterFormStep1({
   setEmail,
   password,
   setPassword,
+  phone,
+  setPhone,
   onNext,
   loading,
   error,
@@ -21,6 +23,8 @@ export default function RegisterFormStep1({
   setEmail: (email: string) => void;
   password: string;
   setPassword: (password: string) => void;
+  phone: string;
+  setPhone: (phone: string) => void;
   onNext: () => void;
   loading: boolean;
   error: string | null;
@@ -86,6 +90,28 @@ export default function RegisterFormStep1({
           className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)]"
           required
         />
+      </div>
+
+      {/* Phone Number (Optional) */}
+      <div>
+        <label
+          htmlFor="phone"
+          className="block text-sm font-medium text-[var(--foreground)] mb-1.5"
+        >
+          Phone Number{" "}
+          <span className="text-gray-400 font-normal">(Optional)</span>
+        </label>
+        <div className="relative">
+          <input
+            type="tel"
+            id="phone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            placeholder="Enter your phone number"
+            className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)] pl-10"
+          />
+          <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[var(--muted-text)]" />
+        </div>
       </div>
 
       {/* Password */}

@@ -22,6 +22,7 @@ export default function AuthForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
 
   // Login form state (parent-managed)
   const [loginEmail, setLoginEmail] = useState("");
@@ -47,6 +48,7 @@ export default function AuthForm() {
         name,
         email,
         password,
+        phone: phone || undefined,
       });
       // server should respond with message "OTP sent..."
       setRegisterStep(2);
@@ -70,6 +72,7 @@ export default function AuthForm() {
         name,
         email,
         password,
+        phone: phone || undefined,
       });
       // keep user on OTP step; show a small notice (alert used for brevity)
       toast.success("OTP resent to your email");
@@ -240,6 +243,8 @@ export default function AuthForm() {
                     setEmail={setEmail}
                     password={password}
                     setPassword={setPassword}
+                    phone={phone}
+                    setPhone={setPhone}
                     onNext={handleNextStep}
                     loading={loading}
                     error={error}
