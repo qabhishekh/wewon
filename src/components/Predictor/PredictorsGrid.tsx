@@ -5,9 +5,16 @@ import PredictorCard from "./PredictorCard";
 import { fetchAllPredictors, PredictorListItem } from "@/network/predictor";
 import { PredictorCategory } from "@/store/types";
 import { Loader2 } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { selectIsAuthenticated } from "@/store/auth/authSlice";
+import { selectUserOrders } from "@/store/order/orderSlice";
+import { fetchUserOrders } from "@/store/order/orderThunk";
 
 // Map API response to PredictorProduct format for PredictorCard
-const mapToPredictorProduct = (item: PredictorListItem) => ({
+const mapToPredictorProduct = (
+  item: PredictorListItem,
+  isPurchased: boolean,
+) => ({
   _id: item._id,
   title: item.title,
   slug: item.slug,
@@ -30,7 +37,7 @@ const mapToPredictorProduct = (item: PredictorListItem) => ({
   // Frontend-specific fields with defaults
   icon: "📊",
   category: PredictorCategory.JEE,
-  purchased: false,
+  purchased: isPurchased,
   displayFeatures: [
     "College Predictions",
     "Category-wise Analysis",
@@ -39,9 +46,29 @@ const mapToPredictorProduct = (item: PredictorListItem) => ({
 });
 
 const PredictorsGrid: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const userOrders = useAppSelector(selectUserOrders);
+
   const [predictors, setPredictors] = useState<PredictorListItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Fetch user orders when authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(fetchUserOrders());
+    }
+  }, [isAuthenticated, dispatch]);
+
+  // Check if a predictor is purchased
+  // Compare productId to predictor._id and check paymentStatus
+  const isPredictorPurchased = (predictorId: string): boolean => {
+    return userOrders.some(
+      (order) =>
+        order.productId === predictorId && order.paymentStatus === "completed",
+    );
+  };
 
   useEffect(() => {
     const loadPredictors = async () => {
@@ -98,7 +125,10 @@ const PredictorsGrid: React.FC = () => {
           {predictors.map((predictor) => (
             <PredictorCard
               key={predictor._id}
-              predictor={mapToPredictorProduct(predictor)}
+              predictor={mapToPredictorProduct(
+                predictor,
+                isPredictorPurchased(predictor._id),
+              )}
             />
           ))}
         </div>

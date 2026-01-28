@@ -43,6 +43,17 @@ export default function PercentileConverter() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const resultsRef = useRef<HTMLDivElement>(null);
 
+  // Promo modal state
+  const [showPromoModal, setShowPromoModal] = useState(false);
+
+  // Show promo modal on page load
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPromoModal(true);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
   // Auto-scroll to results when they become available
   useEffect(() => {
     if (result && resultsRef.current) {
@@ -187,80 +198,7 @@ export default function PercentileConverter() {
           We never share your information. You can update details anytime.
         </p>
         {/* College Predictor Promo Card */}
-        {result && (
-          <div className="mt-6 relative bg-gradient-to-br from-white to-yellow-50 border border-yellow-200 rounded-xl p-6 shadow-sm overflow-hidden">
-            {/* Early Bird Offer Badge */}
-            <div className="absolute top-3 right-3 bg-yellow-400 text-yellow-900 text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
-              <span>✨</span> Early Bird Offer
-            </div>
-
-            {/* Icon */}
-            <div className="flex justify-center mb-4 mt-4">
-              <span className="flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full">
-                <svg
-                  className="w-8 h-8 text-[var(--primary)]"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 14l9-5-9-5-9 5 9 5z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-                  />
-                </svg>
-              </span>
-            </div>
-
-            {/* Text Content */}
-            <div className="text-center mb-4">
-              <h4 className="text-xl font-bold text-[var(--foreground)] mb-2">
-                What's Next? Check Your College Eligibility!
-              </h4>
-              <p className="text-sm text-[var(--muted-text)]">
-                Based on your predicted rank, see your chances for NITs, IIITs,
-                and GFTIs.
-              </p>
-            </div>
-
-            {/* Offer Banner */}
-            <div className="bg-yellow-100 border border-yellow-200 rounded-lg p-3 mb-4 text-center">
-              <p className="text-sm">
-                <span className="mr-1">🎉</span>
-                <span className="font-semibold text-yellow-700">
-                  Early Bird Offer:
-                </span>{" "}
-                <span className="text-[var(--foreground)]">
-                  Get full access to premium counselling data at a minimal price
-                </span>
-              </p>
-              <p className="text-xs text-yellow-600 mt-1">(Limited Time)</p>
-            </div>
-
-            {/* CTA Button */}
-            <a
-              href="/college-predictor"
-              className="w-full flex items-center justify-center gap-2 bg-[var(--primary)] text-white font-semibold p-3.5 rounded-lg shadow-md hover:opacity-90 transition-opacity"
-            >
-              Launch JEE Main College Predictor
-              <span className="text-lg">→</span>
-            </a>
-          </div>
-        )}
+        {/* Promo card moved to popup modal */}
       </div>
 
       {/* Right Column: Converter Form */}
@@ -485,6 +423,107 @@ export default function PercentileConverter() {
               >
                 Cancel
               </button>
+            </div>
+          </div>
+        )}
+        {/* Promo Modal */}
+        {showPromoModal && (
+          <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-0 relative overflow-hidden animate-in fade-in zoom-in duration-200">
+              {/* Close Button */}
+              <button
+                onClick={() => setShowPromoModal(false)}
+                className="absolute top-3 right-3 z-10 bg-white/50 hover:bg-white rounded-full p-1 text-gray-500 hover:text-gray-700 transition-all"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+
+              {/* Promo Content */}
+              <div className="relative bg-gradient-to-br from-white to-yellow-50 p-6">
+                {/* Early Bird Offer Badge */}
+                <div className="absolute top-4 left-4 bg-yellow-400 text-yellow-900 text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1 shadow-sm">
+                  <span>✨</span> Early Bird Offer
+                </div>
+
+                {/* Icon */}
+                <div className="flex justify-center mb-6 mt-8">
+                  <span className="flex items-center justify-center w-20 h-20 bg-blue-100 rounded-full shadow-inner">
+                    <svg
+                      className="w-10 h-10 text-[var(--primary)]"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 14l9-5-9-5-9 5 9 5z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
+                      />
+                    </svg>
+                  </span>
+                </div>
+
+                {/* Text Content */}
+                <div className="text-center mb-6">
+                  <h4 className="text-xl font-bold text-[var(--foreground)] mb-2 leading-tight">
+                    Check Your College Eligibility!
+                  </h4>
+                  <p className="text-sm text-[var(--muted-text)]">
+                    Based on your predicted rank, see your chances for NITs,
+                    IIITs, and GFTIs.
+                  </p>
+                </div>
+
+                {/* Offer Banner */}
+                <div className="bg-yellow-100/80 border border-yellow-200 rounded-xl p-3 mb-6 text-center">
+                  <p className="text-sm">
+                    <span className="mr-1">🎉</span>
+                    <span className="font-semibold text-yellow-700">
+                      Limited Time Offer:
+                    </span>{" "}
+                    <span className="text-[var(--foreground)] block text-xs mt-1">
+                      Get full access to premium counselling data at a minimal
+                      price
+                    </span>
+                  </p>
+                </div>
+
+                {/* CTA Button */}
+                <a
+                  href="/predictor"
+                  className="w-full flex items-center justify-center gap-2 bg-[var(--primary)] text-white font-semibold p-3.5 rounded-xl shadow-lg hover:opacity-90 transition-all transform hover:scale-[1.02]"
+                >
+                  Launch College Predictor
+                  <span className="text-lg">→</span>
+                </a>
+              </div>
             </div>
           </div>
         )}

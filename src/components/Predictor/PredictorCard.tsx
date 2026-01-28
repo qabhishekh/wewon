@@ -49,11 +49,11 @@ const PredictorCard: React.FC<PredictorCardProps> = ({ predictor }) => {
       {/* Card Body */}
       <div className="p-5 flex-1 flex flex-col">
         {/* Description */}
-          <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-lg font-bold text-[#0f3a67] line-clamp-1">
-              {predictor.title}
-            </h3>
-          </div>
+        <div className="flex items-center gap-2 mb-1">
+          <h3 className="text-lg font-bold text-[#0f3a67] line-clamp-1">
+            {predictor.title}
+          </h3>
+        </div>
         <p className="text-sm text-gray-600 line-clamp-2 mb-4">
           {predictor.description}
         </p>
@@ -77,7 +77,12 @@ const PredictorCard: React.FC<PredictorCardProps> = ({ predictor }) => {
         <div className="flex items-center justify-between gap-4">
           {/* Price Display */}
           <div>
-            {predictor.discountPrice && predictor.discountPrice > 0 ? (
+            {predictor.purchased ? (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-100 text-green-700 font-semibold text-sm rounded-full">
+                <Check size={14} />
+                Purchased
+              </span>
+            ) : predictor.discountPrice && predictor.discountPrice > 0 ? (
               <div className="flex items-baseline gap-2">
                 <span className="text-2xl font-bold text-[#0f3a67]">
                   ₹{predictor.discountPrice}
