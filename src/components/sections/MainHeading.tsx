@@ -63,7 +63,7 @@ const MainHeading = ({
       className={`text-2xl sm:text-3xl md:text-5xl font-bold text-[var(--primary)] leading-tight md:leading-tight pt-14 pb-2 text-${align} ${className}`}
     >
       <motion.span
-        initial={{ opacity: 0 }}
+        // initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
         style={{ whiteSpace: "pre" }}
@@ -75,7 +75,7 @@ const MainHeading = ({
       </motion.span>
       <br />
       <motion.span
-        initial={{ opacity: 0 }}
+        // initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
         style={{ whiteSpace: "pre" }}

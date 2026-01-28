@@ -9,7 +9,7 @@ const topRowLinks = [
     links: [
       { label: "Home", href: "/" },
       { label: "About Us", href: "/about" },
-      { label: "Counselling", href: "/counselling" },
+      { label: "Counselling", href: "/counseling" },
       { label: "Contact Us", href: "/contact" },
     ],
   },
@@ -18,7 +18,7 @@ const topRowLinks = [
     links: [
       { label: "College Predictor", href: "/predictor" },
       { label: "Rank Analysis", href: "/percentile" },
-      { label: "Mentorship", href: "/counselling" },
+      { label: "Mentorship", href: "/counseling" },
     ],
   },
 ];
