@@ -48,6 +48,92 @@ export default function FilterColleges() {
   const [appliedCourse, setAppliedCourse] = useState<string | null>(null);
   const [appliedBranch, setAppliedBranch] = useState<string | null>(null);
   const itemsPerPage = 12;
+  const maxRetries = 3;
+  const [retryCount, setRetryCount] = useState<number>(0);
+
+  // Auto-retry when error occurs
+  useEffect(() => {
+    if (
+      error &&
+      error === "Failed to fetch colleges" &&
+      retryCount < maxRetries
+    ) {
+      const retryTimer = setTimeout(() => {
+        let cities: string[] = [];
+        let states: string[] = [];
+
+        if (appliedLocation) {
+          if (
+            [
+              "Maharashtra",
+              "Uttar Pradesh",
+              "Karnataka",
+              "Andhra Pradesh",
+              "Tamil Nadu",
+              "West Bengal",
+              "Rajasthan",
+              "Gujarat",
+              "Madhya Pradesh",
+            ].includes(appliedLocation)
+          ) {
+            states = [appliedLocation];
+          } else if (appliedLocation === "Delhi/NCR") {
+            states = ["Delhi"];
+          } else {
+            if (
+              ![
+                "Maharashtra",
+                "Uttar Pradesh",
+                "Karnataka",
+                "Andhra Pradesh",
+                "Tamil Nadu",
+                "West Bengal",
+                "Rajasthan",
+                "Gujarat",
+                "Madhya Pradesh",
+                "Delhi/NCR",
+              ].includes(appliedLocation)
+            ) {
+              cities = [appliedLocation];
+            }
+          }
+        }
+
+        setRetryCount((prev) => prev + 1);
+        dispatch(
+          fetchColleges({
+            page: currentPage,
+            limit: itemsPerPage,
+            searchQuery: debouncedSearch,
+            instituteTypes: appliedInstituteType ? [appliedInstituteType] : [],
+            cities,
+            states,
+            courses: appliedCourse ? [appliedCourse] : [],
+            branches: appliedBranch ? [appliedBranch] : [],
+          }),
+        );
+      }, 2000); // Retry after 2 seconds
+
+      return () => clearTimeout(retryTimer);
+    }
+  }, [
+    error,
+    retryCount,
+    dispatch,
+    currentPage,
+    debouncedSearch,
+    appliedInstituteType,
+    appliedLocation,
+    appliedCourse,
+    appliedBranch,
+  ]);
+
+  // Reset retry count when successful fetch or filters change
+  useEffect(() => {
+    if (!error && colleges.length >= 0) {
+      setRetryCount(0);
+    }
+  }, [error, colleges]);
 
   // Institute type options for ranking filters
   const instituteTypeOptions = [

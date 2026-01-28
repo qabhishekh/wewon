@@ -380,7 +380,7 @@ export default function CollegePage() {
 
         {/* WhatsApp Channel Follow Banner */}
         <a
-          href="https://whatsapp.com/channel/0029VbAbvRB9cDDfJz1dS13L"
+          href="https://whatsapp.com/channel/0029VamIMTD9WtC9n8tEs21V"
           target="_blank"
           rel="noopener noreferrer"
           className="block mb-6 p-4 rounded-xl cursor-pointer transition-all duration-300 hover:scale-[1.01] hover:shadow-lg"
