@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { ChevronDown, ArrowLeft, Loader2 } from "lucide-react";
 import DynamicTable from "@/components/sections/DynamicTable";
@@ -66,14 +66,13 @@ export default function CutoffFilterPage() {
   const [isSubCategoryOpen, setIsSubCategoryOpen] = useState(false);
   const [isGenderOpen, setIsGenderOpen] = useState(false);
 
-  // State for results
-  const [cutoffResults, setCutoffResults] = useState<CutoffData[]>([]);
+  // State for results - store ALL cutoffs from API
+  const [allCutoffs, setAllCutoffs] = useState<CutoffData[]>([]);
   const [resultsLoading, setResultsLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
 
-  // State for round tabs
-  const [availableRounds, setAvailableRounds] = useState<string[]>([]);
-  const [selectedRound, setSelectedRound] = useState<string>("all");
+  // State for selected round
+  const [selectedRound, setSelectedRound] = useState<string>("");
 
   // Fetch college data on mount
   useEffect(() => {
@@ -236,74 +235,90 @@ export default function CutoffFilterPage() {
     return collegeType === "JOSAA";
   };
 
-  // Handle form submission
+  // Handle form submission - fetch all cutoffs for the year
   const handleSubmit = async () => {
-    if (!selectedYear || !selectedCategory || !college?.instituteId) return;
+    if (!selectedYear || !college?.instituteId) return;
 
     try {
       setResultsLoading(true);
       setHasSearched(true);
 
-      // Build query params
+      // Build query params - fetch ALL cutoffs for this institute and year
       const params = new URLSearchParams();
       params.set("instituteId", college.instituteId);
       params.set("year", selectedYear.toString());
-      params.set("Seat_Type", selectedCategory);
-      params.set("limit", "1000");
-
-      if (hasGender() && selectedGender && selectedGender !== "BOTH") {
-        params.set("Gender", selectedGender);
-      }
+      params.set("limit", "5000"); // Fetch more to ensure we get all data
 
       const response = await apiClient.get(`/api/cutoffs?${params.toString()}`);
 
       if (response.data.cutoffs && response.data.cutoffs.length > 0) {
-        setCutoffResults(response.data.cutoffs);
-
-        // Extract unique rounds and set first one as default
-        const rounds = [
-          ...new Set(response.data.cutoffs.map((c: CutoffData) => c.Round)),
-        ] as string[];
-        const sortedRounds = rounds.sort();
-        setAvailableRounds(sortedRounds);
-        setSelectedRound(sortedRounds[0] || "");
+        setAllCutoffs(response.data.cutoffs);
       } else {
-        setCutoffResults([]);
-        setAvailableRounds([]);
+        setAllCutoffs([]);
       }
     } catch (error) {
       console.error("Failed to fetch cutoffs:", error);
-      setCutoffResults([]);
-      setAvailableRounds([]);
+      setAllCutoffs([]);
     } finally {
       setResultsLoading(false);
     }
   };
 
-  // Filter results by selected round, category, and gender, then sort by Quota
-  const getFilteredResults = () => {
-    let results = cutoffResults.filter((c) => {
-      // Filter by round
-      if (c.Round !== selectedRound) return false;
+  // Filter cutoffs based on current filter selections
+  const filteredCutoffs = useMemo(() => {
+    let filtered = allCutoffs;
 
-      // Filter by category (Seat_Type)
-      if (selectedCategory && c.Seat_Type !== selectedCategory) return false;
+    // Filter by category (Seat_Type) - required
+    if (selectedCategory) {
+      filtered = filtered.filter((c) => c.Seat_Type === selectedCategory);
+    }
 
-      // Filter by gender (for JOSAA type)
-      if (hasGender() && selectedGender && selectedGender !== "BOTH") {
-        if (c.Gender !== selectedGender) return false;
-      }
+    // Filter by gender (for JOSAA type)
+    if (hasGender() && selectedGender && selectedGender !== "BOTH") {
+      filtered = filtered.filter((c) => c.Gender === selectedGender);
+    }
 
-      return true;
-    });
+    return filtered;
+  }, [allCutoffs, selectedCategory, selectedGender, collegeType]);
+
+  // Get available rounds based on filtered cutoffs
+  const availableRounds = useMemo(() => {
+    const rounds = [
+      ...new Set(filteredCutoffs.map((c) => c.Round)),
+    ] as string[];
+    return rounds.sort();
+  }, [filteredCutoffs]);
+
+  // Reset selected round when available rounds change
+  useEffect(() => {
+    if (
+      availableRounds.length > 0 &&
+      !availableRounds.includes(selectedRound)
+    ) {
+      setSelectedRound(availableRounds[0]);
+    } else if (availableRounds.length === 0) {
+      setSelectedRound("");
+    }
+  }, [availableRounds, selectedRound]);
+
+  // Get final results for display - filtered by selected round
+  const displayResults = useMemo(() => {
+    let results = filteredCutoffs;
+
+    // Filter by selected round
+    if (selectedRound) {
+      results = results.filter((c) => c.Round === selectedRound);
+    }
 
     // Sort by Quota (AI/HS/OS order)
     return results.sort((a, b) => (a.Quota || "").localeCompare(b.Quota || ""));
-  };
+  }, [filteredCutoffs, selectedRound]);
+
+  // Check if current filter combination has data
+  const hasDataForCurrentFilters = filteredCutoffs.length > 0;
 
   // Transform results for DynamicTable
-  const getTableData = () => {
-    const filtered = getFilteredResults();
+  const tableData = useMemo(() => {
     return {
       columns: [
         { key: "seatType", label: "Seat Type", align: "left" as const },
@@ -312,7 +327,7 @@ export default function CutoffFilterPage() {
         { key: "opening", label: "Opening Rank", align: "right" as const },
         { key: "closing", label: "Closing Rank", align: "right" as const },
       ],
-      data: filtered.map((c) => ({
+      data: displayResults.map((c) => ({
         seatType: c.Seat_Type || "-",
         quota: c.Quota || "-",
         program: `${c.Academic_Program_Name}${c.Gender ? ` (${c.Gender})` : ""}`,
@@ -320,9 +335,7 @@ export default function CutoffFilterPage() {
         closing: c.Closing_Rank?.toString() || "-",
       })),
     };
-  };
-
-  const tableData = getTableData();
+  }, [displayResults]);
 
   // Close all dropdowns when clicking outside
   const closeAllDropdowns = () => {
@@ -590,9 +603,25 @@ export default function CutoffFilterPage() {
                   Loading cutoff data...
                 </span>
               </div>
-            ) : cutoffResults.length > 0 ? (
+            ) : !selectedCategory ? (
+              <div className="p-6 bg-blue-50 rounded-xl border border-blue-200 text-center">
+                <p className="text-blue-600">
+                  Please select a category to view cutoff data.
+                </p>
+              </div>
+            ) : !hasDataForCurrentFilters ? (
+              <div className="p-6 bg-gray-50 rounded-xl border border-gray-200 text-center">
+                <p className="text-gray-500">
+                  No data available for the selected {selectedCategory}
+                  {hasGender() && selectedGender
+                    ? ` - ${selectedGender}`
+                    : ""}{" "}
+                  combination.
+                </p>
+              </div>
+            ) : (
               <>
-                {/* Round Tabs */}
+                {/* Round Tabs - only show rounds that have data */}
                 {availableRounds.length > 0 && (
                   <div className="flex flex-wrap gap-2 mb-6">
                     {availableRounds.map((round) => (
@@ -617,20 +646,24 @@ export default function CutoffFilterPage() {
                 )}
 
                 {/* Results Table */}
-                <div className="mb-2 text-lg font-semibold text-[var(--primary)]">
-                  4-Year B.E./B.Tech. Course
-                </div>
-                <DynamicTable
-                  columns={tableData.columns}
-                  data={tableData.data}
-                />
+                {displayResults.length > 0 ? (
+                  <>
+                    <div className="mb-2 text-lg font-semibold text-[var(--primary)]">
+                      4-Year B.E./B.Tech. Course
+                    </div>
+                    <DynamicTable
+                      columns={tableData.columns}
+                      data={tableData.data}
+                    />
+                  </>
+                ) : (
+                  <div className="p-6 bg-gray-50 rounded-xl border border-gray-200 text-center">
+                    <p className="text-gray-500">
+                      No data available for {selectedRound}.
+                    </p>
+                  </div>
+                )}
               </>
-            ) : (
-              <div className="p-6 bg-gray-50 rounded-xl border border-gray-200 text-center">
-                <p className="text-gray-500">
-                  No cutoff data found for the selected filters.
-                </p>
-              </div>
             )}
           </div>
         )}
