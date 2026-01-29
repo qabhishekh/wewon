@@ -423,6 +423,7 @@ export default function CollegePage() {
         <div className="flex flex-col lg:flex-row gap-8 relative z-20">
           {/* Main Content Area */}
           <div className="flex-1 min-w-0">
+            <AdRenderer location="above_overview" />
             {/* Overview Section */}
             <Overview
               collegeInfo={{
@@ -435,7 +436,6 @@ export default function CollegePage() {
                 address: college?.Address,
               }}
             />
-            <AdRenderer location="above_overview" />
 
             {/* Also Known As */}
             <AlsoKnownAs alternateNames={[]} />
