@@ -14,10 +14,72 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "We Won Academy",
-  description: "We Won Academy",
+  title: {
+    default: "Colleges Khojo - Find Top Engineering Colleges | We Won Academy",
+    template: "%s | Colleges Khojo by We Won Academy",
+  },
+  description:
+    "Colleges Khojo by We Won Academy helps students find and get admitted to top engineering colleges. Get personalized mentorship, college predictions, and counseling support for JEE, UPTAC, JOSAA, and more.",
+  keywords: [
+    "Colleges Khojo",
+    "engineering colleges",
+    "JEE counseling",
+    "JOSAA counseling",
+    "UPTAC counseling",
+    "college predictor",
+    "JEE Mains",
+    "JEE Advanced",
+    "college admissions",
+    "engineering admission",
+    "We Won Academy",
+    "college search India",
+  ],
+  authors: [{ name: "We Won Academy" }],
+  creator: "We Won Academy",
+  publisher: "We Won Academy",
+  metadataBase: new URL("https://collegeskhojo.com"),
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    siteName: "Colleges Khojo",
+    title: "Colleges Khojo - Find Top Engineering Colleges | We Won Academy",
+    description:
+      "Get personalized mentorship, college predictions, and counseling support for JEE, UPTAC, JOSAA admissions on Colleges Khojo.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "We Won Academy",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Colleges Khojo - Find Top Engineering Colleges | We Won Academy",
+    description:
+      "Get personalized mentorship, college predictions, and counseling support for JEE, UPTAC, JOSAA admissions on Colleges Khojo.",
+    images: ["/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   icons: {
     icon: "/logo.svg",
+    apple: "/logo.svg",
+  },
+  verification: {
+    // Add your verification codes when you have them
+    // google: "your-google-verification-code",
+    // yandex: "your-yandex-verification-code",
   },
 };
 

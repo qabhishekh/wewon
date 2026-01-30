@@ -512,7 +512,7 @@ export default function EditProfileModal({
                               updateExam(idx, "year", parseInt(e.target.value))
                             }
                             className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-[var(--primary)] outline-none"
-                            placeholder="2024"
+                            placeholder="2025"
                           />
                         </div>
                       </div>

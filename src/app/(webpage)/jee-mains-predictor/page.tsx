@@ -3,6 +3,14 @@ import CollegePredictor from "@/components/Predictor/CollegePredictor";
 import MainHeading from "@/components/sections/MainHeading";
 import Recommended from "@/components/sections/Recommended";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "JEE Mains College Predictor 2025 - Predict NITs, IIITs, & GFTIs",
+  description:
+    "Predict your chances of getting into NITs, IIITs, and GFTIs based on your JEE Mains rank. Get personalized college lists and admission chances.",
+};
+
 export default function page() {
   return (
     <>

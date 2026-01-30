@@ -3,6 +3,14 @@ import PredictorsGrid from "@/components/Predictor/PredictorsGrid";
 import MainHeading from "@/components/sections/MainHeading";
 import Recommended from "@/components/sections/Recommended";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "College Predictors 2025 - JEE Mains, UPTAC, JOSAA & More",
+  description:
+    "Explore our wide range of college predictors for JEE Mains, UPTAC, HBTU, MMMUT, and more. Find the best engineering colleges based on your rank.",
+};
+
 export default function page() {
   return (
     <>

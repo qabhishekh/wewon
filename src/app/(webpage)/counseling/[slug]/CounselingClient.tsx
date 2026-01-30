@@ -1,0 +1,475 @@
+"use client";
+import React, { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import {
+  selectSelectedProduct,
+  selectSelectedProductLoading,
+  selectSelectedProductError,
+} from "@/store/counseling/counselingSlice";
+import {
+  fetchCounselingProductBySlug,
+  toggleLikeProduct,
+} from "@/store/counseling/counselingThunk";
+import { selectUser, selectIsAuthenticated } from "@/store/auth/authSlice";
+import {
+  ArrowLeft,
+  CheckCircle,
+  PlayCircle,
+  Video,
+  FileText,
+  ExternalLink,
+} from "lucide-react";
+import ShareButton from "@/components/program/ShareButton";
+import TabNavigation from "@/components/program/TabNavigation";
+import ValidityBadge from "@/components/program/ValidityBadge";
+import LearningMaterialsSection from "@/components/program/LearningMaterialsSection";
+import LockedContentModal from "@/components/program/LockedContentModal";
+import CheckoutPage from "@/components/program/CheckoutPage";
+
+export default function CounselingClient() {
+  const params = useParams();
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const slug = params.slug as string;
+
+  const product = useAppSelector(selectSelectedProduct);
+  const loading = useAppSelector(selectSelectedProductLoading);
+  const error = useAppSelector(selectSelectedProductError);
+  const user = useAppSelector(selectUser);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+
+  const [activeTab, setActiveTab] = useState<string>("Overview");
+  const [showLockedModal, setShowLockedModal] = useState(false);
+  const [showCheckout, setShowCheckout] = useState(false);
+  const [isPurchased, setIsPurchased] = useState(false); // TODO: Check from backend
+
+  useEffect(() => {
+    if (slug) {
+      dispatch(fetchCounselingProductBySlug(slug));
+    }
+  }, [slug, dispatch]);
+
+  const handleLike = async () => {
+    if (product) {
+      await dispatch(toggleLikeProduct(product._id));
+    }
+  };
+
+  const handleBuyNow = () => {
+    if (!isAuthenticated) {
+      router.push("/auth");
+      return;
+    }
+    setShowCheckout(true);
+  };
+
+  const handleLockedContentClick = () => {
+    setShowLockedModal(true);
+  };
+
+  const handleLockedModalBuyNow = () => {
+    setShowLockedModal(false);
+    handleBuyNow();
+  };
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-300 rounded w-1/3 mb-4"></div>
+          <div className="h-64 bg-gray-300 rounded mb-6"></div>
+          <div className="h-6 bg-gray-300 rounded w-1/2 mb-4"></div>
+          <div className="h-4 bg-gray-300 rounded w-full mb-2"></div>
+          <div className="h-4 bg-gray-300 rounded w-full mb-2"></div>
+          <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error || !product) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-col items-center justify-center py-12">
+          <div className="text-red-500 text-xl font-semibold mb-4">
+            {error || "Product not found"}
+          </div>
+          <button
+            onClick={() => router.push("/counseling")}
+            className="px-6 py-2 bg-[var(--accent)] text-white rounded-lg hover:bg-[var(--primary)] transition-colors"
+          >
+            Back to Counseling
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Show checkout page if user clicked buy now
+  if (showCheckout) {
+    return (
+      <CheckoutPage
+        productId={product._id}
+        productName={product.title}
+        productType="counseling"
+        productPrice={product.discountPrice || product.price}
+        productSlug={product.slug}
+        onBack={() => setShowCheckout(false)}
+      />
+    );
+  }
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      {/* Top Bar: Back Button, Share, Like */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="inline-flex items-center gap-2 text-[var(--primary)] hover:text-[var(--accent)] transition-colors no-underline"></div>
+
+        <div className="flex items-center gap-3">
+          <ShareButton
+            title={product.title}
+            url={`/counseling/${product.slug}`}
+            description={product.description}
+          />
+        </div>
+      </div>
+
+      {/* Tabs */}
+      <div className="mb-8">
+        <TabNavigation
+          tabs={["Overview", "Content"]}
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+        />
+      </div>
+
+      {/* Tab Content */}
+      {activeTab === "Overview" && (
+        <>
+          {/* Hero Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            {/* Thumbnail */}
+            <div className="relative rounded-xl overflow-hidden shadow-lg">
+              <img
+                src={product.thumbnail}
+                alt={product.title}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.src =
+                    "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=800&auto=format&fit=crop";
+                }}
+              />
+            </div>
+
+            {/* Product Info */}
+            <div className="flex flex-col justify-center">
+              <h1 className="text-3xl md:text-4xl font-bold text-[var(--primary)] mb-4">
+                {product.title}
+              </h1>
+              <p className="text-gray-600 text-lg mb-6">
+                {product.description}
+              </p>
+
+              {/* Price and Validity */}
+              <div className="flex flex-wrap items-center gap-4 mb-6">
+                <div className="flex items-baseline gap-3">
+                  {product.discountPrice && (
+                    <span className="text-xl text-red-500 line-through">
+                      ₹{product.price.toLocaleString()}
+                    </span>
+                  )}
+                  <span className="text-3xl font-bold text-[var(--accent)]">
+                    ₹{(product.discountPrice || product.price).toLocaleString()}
+                  </span>
+                </div>
+                <ValidityBadge validityInDays={product.validityInDays} />
+              </div>
+
+              {/* Material Count */}
+              <div className="flex items-center gap-2 text-gray-600 mb-6">
+                <FileText size={20} />
+                <span>
+                  {product.totalMaterialCount} learning materials included
+                </span>
+              </div>
+
+              {/* Buy Button */}
+              {!isPurchased && (
+                <button
+                  onClick={handleBuyNow}
+                  className="w-full md:w-auto px-8 py-4 bg-[var(--accent)] text-white font-bold text-lg rounded-lg hover:bg-[var(--primary)] transition-colors shadow-lg"
+                >
+                  Buy Program Now
+                </button>
+              )}
+
+              {isPurchased && (
+                <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <p className="text-green-700 font-semibold">
+                    ✓ You have access to this program
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* About This Course */}
+          <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 mb-12">
+            <h2 className="text-2xl font-bold text-[var(--primary)] mb-4">
+              About This Course
+            </h2>
+            <p className="text-gray-700 leading-relaxed">
+              {product.description}
+            </p>
+          </div>
+
+          {/* Features Section */}
+          <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 mb-12">
+            <h2 className="text-2xl font-bold text-[var(--primary)] mb-6">
+              What You'll Get
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {product.features.choiceFilling.isEnabled && (
+                <div className="flex items-start gap-3">
+                  <CheckCircle
+                    className="text-green-500 flex-shrink-0 mt-1"
+                    size={24}
+                  />
+                  <div>
+                    <h3 className="font-semibold text-lg">
+                      Choice Filling Tool
+                    </h3>
+                    <p className="text-gray-600">
+                      {product.features.choiceFilling.usageLimit === -1
+                        ? "Unlimited usage"
+                        : `${product.features.choiceFilling.usageLimit} uses available`}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {product.features.collegePredictor.isEnabled && (
+                <div className="flex items-start gap-3">
+                  <CheckCircle
+                    className="text-green-500 flex-shrink-0 mt-1"
+                    size={24}
+                  />
+                  <div>
+                    <h3 className="font-semibold text-lg">College Predictor</h3>
+                    <p className="text-gray-600">
+                      {product.features.collegePredictor.usageLimit === -1
+                        ? "Unlimited usage"
+                        : `${product.features.collegePredictor.usageLimit} uses available`}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {product.features.hasMentorship && (
+                <div className="flex items-start gap-3">
+                  <CheckCircle
+                    className="text-green-500 flex-shrink-0 mt-1"
+                    size={24}
+                  />
+                  <div>
+                    <h3 className="font-semibold text-lg">Mentorship</h3>
+                    <p className="text-gray-600">
+                      One-on-one guidance from experts
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {product.features.hasCourseContent && (
+                <div className="flex items-start gap-3">
+                  <CheckCircle
+                    className="text-green-500 flex-shrink-0 mt-1"
+                    size={24}
+                  />
+                  <div>
+                    <h3 className="font-semibold text-lg">Course Content</h3>
+                    <p className="text-gray-600">
+                      Comprehensive study materials
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Free Overview Video */}
+          {product.content.landingPageHighlights.introVideo &&
+            product.content.landingPageHighlights.introVideo.url && (
+              <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 mb-12">
+                <h2 className="text-2xl font-bold text-[var(--primary)] mb-6">
+                  Free Overview Video
+                </h2>
+                <div className="mb-4">
+                  <h3 className="font-semibold text-lg text-gray-800 mb-2">
+                    {product.content.landingPageHighlights.introVideo.title}
+                  </h3>
+                  <p className="text-gray-600 mb-4">
+                    Watch the program overview
+                  </p>
+                </div>
+                <div
+                  className="relative w-full rounded-lg overflow-hidden shadow-lg"
+                  style={{ paddingBottom: "56.25%" }}
+                >
+                  {(() => {
+                    const videoUrl =
+                      product.content.landingPageHighlights.introVideo.url;
+
+                    // Check if it's a YouTube video
+                    if (
+                      videoUrl.includes("youtube.com") ||
+                      videoUrl.includes("youtu.be")
+                    ) {
+                      let videoId = "";
+                      if (videoUrl.includes("youtube.com/watch?v=")) {
+                        videoId = videoUrl.split("v=")[1]?.split("&")[0] || "";
+                      } else if (videoUrl.includes("youtu.be/")) {
+                        videoId =
+                          videoUrl.split("youtu.be/")[1]?.split("?")[0] || "";
+                      }
+                      return (
+                        <iframe
+                          className="absolute top-0 left-0 w-full h-full"
+                          src={`https://www.youtube.com/embed/${videoId}`}
+                          title={
+                            product.content.landingPageHighlights.introVideo
+                              .title
+                          }
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      );
+                    }
+
+                    // Check if it's a Vimeo video
+                    if (videoUrl.includes("vimeo.com")) {
+                      const videoId =
+                        videoUrl.split("vimeo.com/")[1]?.split("?")[0] || "";
+                      return (
+                        <iframe
+                          className="absolute top-0 left-0 w-full h-full"
+                          src={`https://player.vimeo.com/video/${videoId}`}
+                          title={
+                            product.content.landingPageHighlights.introVideo
+                              .title
+                          }
+                          allow="autoplay; fullscreen; picture-in-picture"
+                          allowFullScreen
+                        />
+                      );
+                    }
+
+                    // For direct video files (mp4, webm, etc.)
+                    return (
+                      <video
+                        className="absolute top-0 left-0 w-full h-full"
+                        controls
+                        preload="metadata"
+                      >
+                        <source src={videoUrl} type="video/mp4" />
+                        Your browser does not support the video tag.
+                      </video>
+                    );
+                  })()}
+                </div>
+              </div>
+            )}
+
+          {/* Learning Materials */}
+          <LearningMaterialsSection
+            totalMaterialCount={product.totalMaterialCount}
+            isPurchased={isPurchased}
+            onLockedClick={handleLockedContentClick}
+          />
+        </>
+      )}
+
+      {activeTab === "Content" && (
+        <>
+          {/* Curriculum Section */}
+          {product.content.curriculum &&
+            product.content.curriculum.length > 0 && (
+              <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                <h2 className="text-2xl font-bold text-[var(--primary)] mb-6">
+                  Course Curriculum
+                </h2>
+                <div className="space-y-6">
+                  {product.content.curriculum.map((section, index) => (
+                    <div
+                      key={section._id}
+                      className="border-b border-gray-200 pb-6 last:border-b-0"
+                    >
+                      <h3 className="text-xl font-semibold text-[var(--primary)] mb-4">
+                        {index + 1}. {section.sectionTitle}
+                      </h3>
+                      <div className="space-y-3">
+                        {section.resources.map((resource) => (
+                          <button
+                            key={resource._id}
+                            onClick={() =>
+                              !isPurchased && handleLockedContentClick()
+                            }
+                            disabled={isPurchased}
+                            className="w-full flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors text-left"
+                          >
+                            {resource.type === "video" && (
+                              <PlayCircle
+                                className="text-[var(--accent)] flex-shrink-0"
+                                size={24}
+                              />
+                            )}
+                            {resource.type === "pdf" && (
+                              <FileText
+                                className="text-[var(--accent)] flex-shrink-0"
+                                size={24}
+                              />
+                            )}
+                            {resource.type === "link" && (
+                              <ExternalLink
+                                className="text-[var(--accent)] flex-shrink-0"
+                                size={24}
+                              />
+                            )}
+                            <div className="flex-1">
+                              <h4 className="font-semibold text-gray-800">
+                                {resource.title}
+                              </h4>
+                              {resource.duration && (
+                                <p className="text-sm text-gray-600">
+                                  Duration: {Math.floor(resource.duration / 60)}{" "}
+                                  min
+                                </p>
+                              )}
+                            </div>
+                            {!isPurchased && (
+                              <div className="text-gray-400">🔒</div>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+        </>
+      )}
+
+      {/* Locked Content Modal */}
+      <LockedContentModal
+        isOpen={showLockedModal}
+        onClose={() => setShowLockedModal(false)}
+        onBuyNow={handleLockedModalBuyNow}
+        productTitle={product.title}
+      />
+    </div>
+  );
+}
