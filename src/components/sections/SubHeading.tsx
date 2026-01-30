@@ -12,7 +12,7 @@ const SubHeading = ({
   className?: string;
 }) => {
   return (
-    <h1 className={`text-2xl md:text-3xl font-bold text-[var(--primary)] leading-tight md:leading-tight pt-14 pb-2 text-${align} ${className}`}>
+    <h1 className={`text-2xl md:text-3xl font-bold text-[var(--primary)] leading-tight md:leading-tight pt-4 pb-2 text-${align} ${className}`}>
       {top && top}
       <br />
       <div className="text-xl">

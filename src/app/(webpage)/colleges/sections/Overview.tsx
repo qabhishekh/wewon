@@ -36,7 +36,7 @@ export default function Overview({ collegeInfo }: OverviewProps) {
   ].filter((row) => row.value);
 
   return (
-    <div className="py-8">
+    <div className="">
       <SubHeading
         align="left"
         top="Overview"

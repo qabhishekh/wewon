@@ -18,8 +18,7 @@ const MainHeading = ({
     >
       <span style={{ whiteSpace: "pre" }}>{top}</span>
       {bottom && (
-        <div className="text-xl md:text-4xl lg:text-5xl">
-          <br />
+        <div className="text-xl md:text-4xl lg:text-5xl my-2">
           <span style={{ whiteSpace: "pre" }}>{bottom}</span>
         </div>
       )}
