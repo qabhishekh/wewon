@@ -4,7 +4,7 @@ import MainHeading from "./MainHeading";
 import SearchBar from "./SearchBar";
 
 const HeroSection = () => {
-  const onSearch = () => {};
+
   return (
     <section className="text-white">
       {/* Headline */}
@@ -15,7 +15,6 @@ const HeroSection = () => {
 
       {/* Search Bar */}
       <SearchBar
-        onSearch={onSearch}
         placeholder={"Search for colleges, courses or exams"}
       />
     </section>

@@ -1,20 +1,30 @@
 "use client";
-import { Loader2, Loader2Icon } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const Loader = ({ manualLoading = false }: { manualLoading?: boolean }) => {
   const [isLoading, setIsLoading] = useState(true);
 
-  setTimeout(() => {
-    setIsLoading(false);
-  }, 1000);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   if (!isLoading && !manualLoading) return null;
+
   return (
     <div className="h-full w-full flex items-center justify-center fixed z-90 flex-col bg-white">
-      <Image src={"/logo.svg"} height={100} width={200} alt="" />
-      <h2 className="text-2xl font-semibold">We Won Acedemy</h2>
+      <Image
+        src={"/logo.svg"}
+        height={100}
+        width={200}
+        alt="We Won Academy Logo"
+      />
+      <h2 className="text-2xl font-semibold">We Won Academy</h2>
       <Loader2 className="animate-spin mt-4 w-8 h-8" />
     </div>
   );

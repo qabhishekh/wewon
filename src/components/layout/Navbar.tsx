@@ -42,6 +42,7 @@ const Navbar = () => {
     { name: "Counselling", href: "/counseling" },
     { name: "Colleges", href: "/colleges" },
     { name: "Exams", href: "/exams" },
+    { name: "News", href: "/news" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
   ];

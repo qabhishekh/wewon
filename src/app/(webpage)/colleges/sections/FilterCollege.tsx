@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Search, Filter } from "lucide-react";
 import Pagination from "@/components/sections/Pagination";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import CollegeCard from "@/components/cards/CollegeCard";
 import FilterModal from "@/components/filter/FilterModal";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -18,7 +18,11 @@ import {
 
 export default function FilterColleges() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
+
+  // Get initial search query from URL
+  const initialSearch = searchParams.get("search") || "";
 
   // Redux state
   const colleges = useAppSelector(selectColleges);
@@ -30,8 +34,8 @@ export default function FilterColleges() {
 
   // Local state
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [debouncedSearch, setDebouncedSearch] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>(initialSearch);
+  const [debouncedSearch, setDebouncedSearch] = useState<string>(initialSearch);
   // Pending filters (selected but not yet applied)
   const [selectedInstituteType, setSelectedInstituteType] = useState<
     string | null
