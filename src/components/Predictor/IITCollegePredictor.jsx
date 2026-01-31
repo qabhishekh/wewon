@@ -129,7 +129,7 @@ export default function IITCollegePredictor() {
       const categoryRankPattern = /^\d+P?$/;
       if (!categoryRankPattern.test(formData.categoryRank)) {
         toast.error(
-          "Category Rank must be a number or a number ending with 'P'"
+          "Category Rank must be a number or a number ending with 'P'",
         );
         setLoading(false);
         return;
@@ -358,7 +358,7 @@ export default function IITCollegePredictor() {
 
             {/* Footer Text */}
             <p className="text-center text-[10px] sm:text-xs text-[var(--muted-text)] pt-2">
-              Powered by real-time admissions data and official 2025 cutoff
+              Powered by real-time admissions data and official 2026 cutoff
             </p>
           </form>
         </div>

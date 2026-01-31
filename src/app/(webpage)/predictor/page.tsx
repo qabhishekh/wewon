@@ -6,7 +6,7 @@ import Recommended from "@/components/sections/Recommended";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "College Predictors 2025 - JEE Mains, UPTAC, JOSAA & More",
+  title: "College Predictors 2026 - JEE Mains, UPTAC, JOSAA & More",
   description:
     "Explore our wide range of college predictors for JEE Mains, UPTAC, HBTU, MMMUT, and more. Find the best engineering colleges based on your rank.",
 };

@@ -58,7 +58,9 @@ export default function EditProfileModal({
 }: EditProfileModalProps) {
   const [formData, setFormData] = useState<StudentProfileData>(profileData);
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<"academics" | "exams" | "preferences">("academics");
+  const [activeTab, setActiveTab] = useState<
+    "academics" | "exams" | "preferences"
+  >("academics");
   const [newState, setNewState] = useState("");
 
   if (!isOpen) return null;
@@ -120,7 +122,7 @@ export default function EditProfileModal({
       preferences: {
         ...formData.preferences,
         preferredStates: formData.preferences.preferredStates?.filter(
-          (s) => s !== state
+          (s) => s !== state,
         ),
       },
     });
@@ -252,7 +254,8 @@ export default function EditProfileModal({
                             ...formData.academics,
                             tenth: {
                               ...formData.academics.tenth,
-                              percentage: parseFloat(e.target.value) || undefined,
+                              percentage:
+                                parseFloat(e.target.value) || undefined,
                             },
                           },
                         })
@@ -354,7 +357,8 @@ export default function EditProfileModal({
                             ...formData.academics,
                             twelfth: {
                               ...formData.academics.twelfth,
-                              percentage: parseFloat(e.target.value) || undefined,
+                              percentage:
+                                parseFloat(e.target.value) || undefined,
                             },
                           },
                         })
@@ -434,7 +438,9 @@ export default function EditProfileModal({
                 <div className="text-center py-12 text-gray-500">
                   <Trophy className="w-16 h-16 mx-auto mb-4 text-gray-300" />
                   <p>No entrance exams added yet</p>
-                  <p className="text-sm mt-2">Click "Add Exam" to get started</p>
+                  <p className="text-sm mt-2">
+                    Click "Add Exam" to get started
+                  </p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -476,7 +482,7 @@ export default function EditProfileModal({
                               updateExam(
                                 idx,
                                 "score",
-                                parseFloat(e.target.value) || undefined
+                                parseFloat(e.target.value) || undefined,
                               )
                             }
                             className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-[var(--primary)] outline-none"
@@ -494,7 +500,7 @@ export default function EditProfileModal({
                               updateExam(
                                 idx,
                                 "rank",
-                                parseInt(e.target.value) || undefined
+                                parseInt(e.target.value) || undefined,
                               )
                             }
                             className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-[var(--primary)] outline-none"
@@ -512,7 +518,7 @@ export default function EditProfileModal({
                               updateExam(idx, "year", parseInt(e.target.value))
                             }
                             className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-[var(--primary)] outline-none"
-                            placeholder="2025"
+                            placeholder="2026"
                           />
                         </div>
                       </div>

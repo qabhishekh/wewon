@@ -33,7 +33,7 @@ export async function generateMetadata({
 
     if (data.success && data.data) {
       const college = data.data;
-      const displayYear = year || "2025";
+      const displayYear = year || "2026";
       return {
         title: `${college.Name} Cutoff ${displayYear} - Round-wise Opening & Closing Ranks`,
         description: `Check the detailed ${displayYear} cutoff ranks for ${college.Name} on Colleges Khojo. Filter by category, round, and branch to see opening and closing ranks.`,

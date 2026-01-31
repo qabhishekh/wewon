@@ -64,7 +64,7 @@ export default function CallToAction() {
           />
           <Heading text="We Won Academy" centered className="text-white" />
           <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-8 md:mb-10  px-2 max-w-3xl mx-auto mt-4 text-[var(--muted-text)]">
-            Use our College Predictor tool to explore the 2025 admission
+            Use our College Predictor tool to explore the 2026 admission
             cutoffs. Seeing the goalposts clearly is the first step to scoring
             the goal!
           </p>

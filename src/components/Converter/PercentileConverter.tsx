@@ -358,7 +358,7 @@ export default function PercentileConverter() {
 
         {/* Footer Text */}
         <p className="text-center text-xs text-[var(--muted-text)] pt-4">
-          Powered by official JEE Main 2025 candidate data
+          Powered by official JEE Main 2026 candidate data
         </p>
 
         {/* Login Required Modal */}

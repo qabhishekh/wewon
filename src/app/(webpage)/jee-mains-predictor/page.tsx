@@ -6,7 +6,7 @@ import Recommended from "@/components/sections/Recommended";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "JEE Mains College Predictor 2025 - Predict NITs, IIITs, & GFTIs",
+  title: "JEE Mains College Predictor 2026 - Predict NITs, IIITs, & GFTIs",
   description:
     "Predict your chances of getting into NITs, IIITs, and GFTIs based on your JEE Mains rank. Get personalized college lists and admission chances.",
 };

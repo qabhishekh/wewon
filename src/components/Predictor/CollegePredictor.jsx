@@ -414,7 +414,7 @@ export default function CollegePredictor() {
 
             {/* Footer Text */}
             <p className="text-center text-[10px] sm:text-xs text-[var(--muted-text)] pt-2">
-              Powered by real-time admissions data and official 2025 cutoff
+              Powered by real-time admissions data and official 2026 cutoff
             </p>
           </form>
         </div>

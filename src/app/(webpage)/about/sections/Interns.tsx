@@ -13,7 +13,7 @@ export default function Interns({ interns }: { interns: InternsMember[] }) {
       className="mx-auto p-6 lg:p-12"
       style={{ fontFamily: "Poppins, sans-serif" }}
     >
-      <SubHeading top={"2025 Selected Intern Students"} />
+      <SubHeading top={"2026 Selected Intern Students"} />
       <div className="mx-auto mt-14">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {interns.map((member, index) => (

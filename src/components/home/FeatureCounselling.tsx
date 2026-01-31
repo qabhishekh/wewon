@@ -6,7 +6,7 @@ import CounselingCard from "../cards/CounselingCard";
 
 const counsellingData = [
   {
-    title: "JEE Advanced Mentorship 2025",
+    title: "JEE Advanced Mentorship 2026",
     description:
       "Complete guidance for JEE Advanced preparation with expert mentors and proven strategies.",
     imageUrl:

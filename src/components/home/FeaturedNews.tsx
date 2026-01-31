@@ -27,7 +27,7 @@ const newsData = [
     id: 1,
     title:
       "UP Board Class 12 Hindi Question Paper with Answer Key Code 301 ZG Available",
-    date: "Oct 3, 2025",
+    date: "Oct 3, 2026",
     description:
       "UP Board Class 12 Hindi Question Paper With Answer Key Code 301 ZG Is Available For Download. The Exam Was Conducted By The Uttar Pradesh Board...",
     link: "#",
@@ -35,8 +35,8 @@ const newsData = [
   {
     id: 2,
     title:
-      "CBSE Class 10 Science Sample Paper 2025 Released with Marking Scheme",
-    date: "Oct 2, 2025",
+      "CBSE Class 10 Science Sample Paper 2026 Released with Marking Scheme",
+    date: "Oct 2, 2026",
     description:
       "The Central Board of Secondary Education has released the official sample paper for Class 10 Science examination along with detailed marking scheme...",
     link: "#",
@@ -44,17 +44,17 @@ const newsData = [
   {
     id: 3,
     title:
-      "JEE Main 2025 Registration Begins: Important Dates and Application Process",
-    date: "Oct 1, 2025",
+      "JEE Main 2026 Registration Begins: Important Dates and Application Process",
+    date: "Oct 1, 2026",
     description:
-      "National Testing Agency has announced the registration process for JEE Main 2025. Students can apply online through the official website...",
+      "National Testing Agency has announced the registration process for JEE Main 2026. Students can apply online through the official website...",
     link: "#",
   },
   {
     id: 4,
     title:
       "UP Board Class 12 Hindi Question Paper with Answer Key Code 301 ZG Available",
-    date: "Oct 3, 2025",
+    date: "Oct 3, 2026",
     description:
       "UP Board Class 12 Hindi Question Paper With Answer Key Code 301 ZG Is Available For Download. The Exam Was Conducted By The Uttar Pradesh Board...",
     link: "#",
@@ -62,8 +62,8 @@ const newsData = [
   {
     id: 5,
     title:
-      "CBSE Class 10 Science Sample Paper 2025 Released with Marking Scheme",
-    date: "Oct 2, 2025",
+      "CBSE Class 10 Science Sample Paper 2026 Released with Marking Scheme",
+    date: "Oct 2, 2026",
     description:
       "The Central Board of Secondary Education has released the official sample paper for Class 10 Science examination along with detailed marking scheme...",
     link: "#",
@@ -71,10 +71,10 @@ const newsData = [
   {
     id: 6,
     title:
-      "JEE Main 2025 Registration Begins: Important Dates and Application Process",
-    date: "Oct 1, 2025",
+      "JEE Main 2026 Registration Begins: Important Dates and Application Process",
+    date: "Oct 1, 2026",
     description:
-      "National Testing Agency has announced the registration process for JEE Main 2025. Students can apply online through the official website...",
+      "National Testing Agency has announced the registration process for JEE Main 2026. Students can apply online through the official website...",
     link: "#",
   },
 ];
@@ -87,7 +87,7 @@ const NewsSection = () => {
     <Sections>
       <div className="container mx-auto px-4 pt-4 sm:pt-12 sm:px-6 lg:px-8">
         {/* Section Header (Unchanged) */}
-        <Heading text="Latest News & Stories" centered/>
+        <Heading text="Latest News & Stories" centered />
 
         {/* Filter Chips (Unchanged) */}
         <div className="mt-8 flex gap-2 sm:gap-4 flex-wrap">

@@ -39,7 +39,7 @@ export default function Home() {
         {/* <FeatureCounselling /> */}
       </div>
       <div className="bg-[var(--muted-background)]">
-        {/* <NewsSection /> */}
+        <NewsSection />
       </div>
       <div className="container mx-auto">
         <StudentStoryTestimonial />
