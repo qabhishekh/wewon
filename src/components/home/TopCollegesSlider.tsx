@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -97,11 +98,12 @@ const CollegesSlider = () => {
             <SwiperSlide key={index} className="rounded-2xl overflow-hidden">
               <Link href={`/colleges${college.url}`}>
                 <div className="relative w-full aspect-[3/2] rounded-2xl overflow-hidden shadow-lg cursor-pointer hover:opacity-95 transition-opacity">
-                  <img
+                  <Image
                     src={college.imageUrl}
                     alt={college.name}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 80vw, (max-width: 768px) 45vw, (max-width: 1024px) 33vw, 25vw"
                   />
 
                   {/* Gradient overlay for text readability */}
