@@ -10,7 +10,7 @@ const HeroSection = () => {
       {/* Headline */}
       <MainHeading
         top={"Find Your Dream Engineering College"}
-        bottom={"Counseling & Mentorship with We Won Academy"}
+        bottom={"Counselling & Mentorship with We Won Academy"}
       />
 
       {/* Search Bar */}
