@@ -74,23 +74,6 @@ const HowItWorks = () => {
 
             {/* Happy Students Card (Absolutely Positioned) */}
             <div className="md:absolute bottom-4 left-1/4 w-auto bg-white p-3 rounded-2xl shadow-xl flex items-center space-x-3 z-30">
-              <div className="flex -space-x-3">
-                <img
-                  src="/avatar/Avatar.png"
-                  alt="avatar 1"
-                  className="w-10 h-10 rounded-full border-2 border-white object-cover"
-                />
-                <img
-                  src="/avatar/Avatar.png"
-                  alt="avatar 2"
-                  className="w-10 h-10 rounded-full border-2 border-white object-cover"
-                />
-                <img
-                  src="/avatar/Avatar.png"
-                  alt="avatar 3"
-                  className="w-10 h-10 rounded-full border-2 border-white object-cover"
-                />
-              </div>
               <div>
                 <p className="font-bold text-lg text-gray-900">1M+</p>
                 <p className="text-sm text-gray-500">Happy Students</p>
