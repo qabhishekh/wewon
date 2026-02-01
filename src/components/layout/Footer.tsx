@@ -139,8 +139,8 @@ const Footer = () => {
               title: "Support",
               links: [
                 {
-                  label: "Email: collegeskhojoyt@gmail.com",
-                  href: "mailto:collegeskhojoyt@gmail.com",
+                  label: "Email: wewonacademy@gmail.com",
+                  href: "mailto:wewonacademy@gmail.com",
                 },
                 {
                   label: "Phone: +91-9532845978 (WhatsApp Only)",

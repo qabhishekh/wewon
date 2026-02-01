@@ -21,7 +21,7 @@ export default function ContactUs({
   setFormData,
   onSubmit,
 }: ContactUsProps) {
-  const email = "collegeskhojoyt@gmail.com";
+  const email = "wewonacademy@gmail.com";
   const phone = "+91 9532845978";
   const address = "123 Student Lane, Jaipur, Rajasthan, India";
 
