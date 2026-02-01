@@ -3,6 +3,7 @@ import React from "react";
 import FilterExams from "./sections/FilterExams";
 import GoogleAds from "@/components/sections/GoogleAds";
 import Popular from "@/components/sections/Popular";
+import Recommended from "@/components/sections/Recommended";
 
 const page = () => {
   return (
@@ -19,6 +20,9 @@ const page = () => {
       </div>
       <div className="container mx-auto px-4">
         <Popular />
+      </div>
+      <div className="container mx-auto pb-16 sm:pb-24 px-4">
+        <Recommended />
       </div>
     </div>
   );

@@ -48,8 +48,12 @@ const AdRenderer: React.FC<AdRendererProps> = ({ location, className }) => {
   return (
     <div
       className={`ad-renderer-container location-${location} my-6 ${className || ""}`}
-      dangerouslySetInnerHTML={{ __html: ad.description }}
-    />
+    >
+      {ad.title && (
+        <h3 className="text-lg font-semibold text-gray-800 mb-3">{ad.title}</h3>
+      )}
+      <div dangerouslySetInnerHTML={{ __html: ad.description }} />
+    </div>
   );
 };
 

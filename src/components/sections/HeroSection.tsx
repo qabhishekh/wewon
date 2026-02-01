@@ -15,7 +15,7 @@ const HeroSection = () => {
 
       {/* Search Bar */}
       <SearchBar
-        placeholder={"Search for colleges, courses or exams"}
+        placeholder={"Search for colleges"}
       />
     </section>
   );

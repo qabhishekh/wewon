@@ -1,6 +1,6 @@
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
-
+import ScrollToTop from "@/components/ui/ScrollToTop";
 
 export default function WebpageLayout({
   children,
@@ -13,6 +13,7 @@ export default function WebpageLayout({
 
       {children}
       <Footer />
+      <ScrollToTop />
     </>
   );
 }

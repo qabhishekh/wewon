@@ -10,68 +10,66 @@ const Popular = () => {
 
   const PopularExams: Exam[] = [
     {
-      _id: "1",
-      examName: "JEE Advanced",
+      _id: "696b3937fee340d124bb3242",
+      examName: "IISER Aptitude Test(IISER AT)",
       logoUrl:
-        "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
-      websiteUrl: "",
-      tags: ["Engineering", "IIT"],
+        "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1768634591/sk9bp79sycjl2kkuzxls.webp",
+      websiteUrl: "/exams/696b3937fee340d124bb3242",
+      tags: ["IISER AT", "APTITUDE TEST"],
       sections: [
         {
-          sectionTitle: "About JEE Advanced",
+          sectionTitle: "About IISER AT",
           description:
-            "The IIT JEE Advanced exam is held annually for admission to the 23 IITs in India",
+            "IISER Aptitude Test for admission to BS-MS dual degree programs.",
         },
       ],
       isActive: true,
       createdAt: new Date().toISOString(),
     },
     {
-      _id: "2",
-      examName: "JEE Main",
+      _id: "696b33d452eb7d49413e1245",
+      examName: "National Entrance Screening Test(NEST)",
       logoUrl:
-        "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
-      websiteUrl: "",
-      tags: ["Engineering", "NIT"],
+        "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1768633201/nv7vrchcp9daacysi9tg.webp",
+      websiteUrl: "/exams/696b33d452eb7d49413e1245",
+      tags: ["NEST", "SCREENING TEST"],
+      sections: [
+        {
+          sectionTitle: "About NEST",
+          description: "Entrance exam for admission to NISER and UM-DAE CEBS.",
+        },
+      ],
+      isActive: true,
+      createdAt: new Date().toISOString(),
+    },
+    {
+      _id: "696b7b7f808db14e1ed4310c",
+      examName: "Indraprastha University Common Entrance Test (IPU CET)",
+      logoUrl:
+        "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1768651525/hmp0tmbezmdzdb2asug2.webp",
+      websiteUrl: "/exams/696b7b7f808db14e1ed4310c",
+      tags: ["Undergraduate", "Engineering"],
+      sections: [
+        {
+          sectionTitle: "About IPU CET",
+          description: "Common Entrance Test for admission to GGSIPU.",
+        },
+      ],
+      isActive: true,
+      createdAt: new Date().toISOString(),
+    },
+    {
+      _id: "696a511662473cc366b14891",
+      examName: "Joint Entrance Examination (Main)",
+      logoUrl:
+        "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1768575092/j9ubyv1hqxsbilxoqntg.webp",
+      websiteUrl: "/exams/696a511662473cc366b14891",
+      tags: ["JEE MAIN", "NTA"],
       sections: [
         {
           sectionTitle: "About JEE Main",
           description:
-            "The IIT JEE Advanced exam is held annually for admission to the 23 IITs in India",
-        },
-      ],
-      isActive: true,
-      createdAt: new Date().toISOString(),
-    },
-    {
-      _id: "3",
-      examName: "NEET",
-      logoUrl:
-        "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
-      websiteUrl: "",
-      tags: ["Medical", "MBBS"],
-      sections: [
-        {
-          sectionTitle: "About NEET",
-          description:
-            "The IIT JEE Advanced exam is held annually for admission to the 23 IITs in India",
-        },
-      ],
-      isActive: true,
-      createdAt: new Date().toISOString(),
-    },
-    {
-      _id: "4",
-      examName: "BITSAT",
-      logoUrl:
-        "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y29sbGVnZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900",
-      websiteUrl: "",
-      tags: ["Engineering", "BITS"],
-      sections: [
-        {
-          sectionTitle: "About BITSAT",
-          description:
-            "The IIT JEE Advanced exam is held annually for admission to the 23 IITs in India",
+            "Joint Entrance Examination for admission to NITs, IIITs, and CFTIs.",
         },
       ],
       isActive: true,

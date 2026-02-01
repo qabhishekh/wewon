@@ -152,8 +152,38 @@ export default function ExamClient() {
   };
 
   const popularExams = [
-    { id: "1", name: "Joint Entrance Examination (Main)", logoUrl: "" },
-    { id: "2", name: "Joint Entrance Examination (Advanced)", logoUrl: "" },
+    {
+      id: "696b3937fee340d124bb3242",
+      name: "IISER Aptitude Test(IISER AT)",
+      logoUrl:
+        "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1768634591/sk9bp79sycjl2kkuzxls.webp",
+      websiteUrl: "https://iiseradmission.in/",
+      tags: ["IISER AT", "APTITUDE TEST"],
+    },
+    {
+      id: "696b33d452eb7d49413e1245",
+      name: "National Entrance Screening Test(NEST)",
+      logoUrl:
+        "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1768633201/nv7vrchcp9daacysi9tg.webp",
+      websiteUrl: "https://www.nestexam.in/",
+      tags: ["NEST", "SCREENING TEST"],
+    },
+    {
+      id: "696b7b7f808db14e1ed4310c",
+      name: "Indraprastha University Common Entrance Test (IPU CET)",
+      logoUrl:
+        "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1768651525/hmp0tmbezmdzdb2asug2.webp",
+      websiteUrl: "https://ipu.admissions.nic.in/",
+      tags: ["Undergraduate"],
+    },
+    {
+      id: "696a511662473cc366b14891",
+      name: "Joint Entrance Examination (Main)",
+      logoUrl:
+        "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1768575092/j9ubyv1hqxsbilxoqntg.webp",
+      websiteUrl: "https://jeemain.nta.nic.in/",
+      tags: ["JEE MAIN", "NTA"],
+    },
   ];
 
   // Get sections that don't match any tab (extra sections)

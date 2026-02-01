@@ -7,6 +7,7 @@ import GoogleAds from "@/components/sections/GoogleAds";
 import Recommended from "@/components/sections/Recommended";
 import NearbyColleges from "@/components/sections/NearbyColleges";
 import SimilarColleges from "@/components/sections/SimilarColleges";
+import SidebarCollegeList from "@/components/sections/SidebarCollegeList";
 import PlacementStatistics from "../sections/PlacementStatistics";
 import CutOffsFilter from "../sections/CutOffs";
 import Rankings from "../sections/Rankings";
@@ -24,6 +25,9 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   fetchCollegeBySlug,
   fetchCollegeDetails,
+  fetchRecommendedColleges,
+  fetchNearbyColleges,
+  fetchSimilarColleges,
 } from "@/store/college/collegeThunk";
 import {
   selectSelectedCollege,
@@ -185,16 +189,40 @@ export default function CollegeClient() {
     }
   };
 
+  // Handle scroll to section if URL has hash
+  useEffect(() => {
+    const handleHashScroll = () => {
+      if (typeof window !== "undefined" && window.location.hash) {
+        const hash = decodeURIComponent(window.location.hash.substring(1));
+        const element = sectionRefs.current[hash];
+
+        if (element) {
+          setTimeout(() => {
+            const yOffset = 100; // Account for fixed header
+            const y =
+              element.getBoundingClientRect().top +
+              window.pageYOffset -
+              yOffset;
+            window.scrollTo({ top: y, behavior: "smooth" });
+          }, 1000); // Delay to ensure content is rendered
+        }
+      }
+    };
+
+    handleHashScroll();
+  }, [loading]); // Re-run when loading is done
+
+  // Fetch college data on mount by slug
   // Fetch college data on mount by slug
   useEffect(() => {
     if (slug && typeof slug === "string") {
-      dispatch(fetchCollegeBySlug(slug));
+      // Only fetch if we don't have the college or if it's a different college
+      if (!college || college.slug !== slug) {
+        dispatch(fetchCollegeBySlug(slug));
+      }
     }
-
-    return () => {
-      dispatch(clearCollegeDetails());
-    };
-  }, [slug, dispatch]);
+    // Removed cleanup: return () => { dispatch(clearCollegeDetails()); }; to prevent reloading on back navigation
+  }, [slug, dispatch, college]);
 
   // Fetch Ads
   useEffect(() => {
@@ -203,10 +231,20 @@ export default function CollegeClient() {
 
   // Fetch college details once college is loaded (using instituteId)
   useEffect(() => {
-    if (college?.instituteId) {
+    if (college?.instituteId && !collegeDetails) {
       dispatch(fetchCollegeDetails(college.instituteId));
     }
-  }, [college?.instituteId, dispatch]);
+  }, [college?.instituteId, dispatch, collegeDetails]);
+
+  // Fetch Recommended, Nearby, Similar Colleges
+  useEffect(() => {
+    dispatch(fetchRecommendedColleges(4));
+
+    if (college?._id) {
+      dispatch(fetchNearbyColleges(college._id));
+      dispatch(fetchSimilarColleges(college._id));
+    }
+  }, [college?._id, dispatch]);
 
   // Transform courses data to tabs format
   const transformCoursesToTabs = () => {
@@ -959,7 +997,7 @@ export default function CollegeClient() {
                       examName: "IISER Aptitude Test(IISER AT)",
                       logoUrl:
                         "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1768634591/sk9bp79sycjl2kkuzxls.webp",
-                      websiteUrl: "https://iiseradmission.in/",
+                      websiteUrl: "/exams/696b3937fee340d124bb3242",
                       tags: ["IISER AT", "APTITUDE TEST"],
                     },
                     {
@@ -967,7 +1005,7 @@ export default function CollegeClient() {
                       examName: "National Entrance Screening Test(NEST)",
                       logoUrl:
                         "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1768633201/nv7vrchcp9daacysi9tg.webp",
-                      websiteUrl: "https://www.nestexam.in/",
+                      websiteUrl: "/exams/696b33d452eb7d49413e1245",
                       tags: ["NEST", "SCREENING TEST"],
                     },
                     {
@@ -976,7 +1014,7 @@ export default function CollegeClient() {
                         "Indraprastha University Common Entrance Test (IPU CET)",
                       logoUrl:
                         "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1768651525/hmp0tmbezmdzdb2asug2.webp",
-                      websiteUrl: "https://ipu.admissions.nic.in/",
+                      websiteUrl: "/exams/696b7b7f808db14e1ed4310c",
                       tags: ["Undergraduate"],
                     },
                     {
@@ -984,7 +1022,7 @@ export default function CollegeClient() {
                       examName: "Joint Entrance Examination (Main)",
                       logoUrl:
                         "https://res.cloudinary.com/dtqjgv5aa/image/upload/v1768575092/j9ubyv1hqxsbilxoqntg.webp",
-                      websiteUrl: "https://jeemain.nta.nic.in/",
+                      websiteUrl: "/exams/696a511662473cc366b14891",
                       tags: ["JEE MAIN", "NTA"],
                     },
                   ].map((exam) => (
@@ -1063,12 +1101,41 @@ export default function CollegeClient() {
 
               <AdRenderer location="sidebar" />
               <AdRenderer location="applications_open_section" />
+
+              {/* Recommended Colleges */}
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <SidebarCollegeList type="recommended" limit={3} />
+              </div>
+
+              {/* Nearby Colleges */}
+              {college?._id && (
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                  <SidebarCollegeList
+                    type="nearby"
+                    collegeId={college._id}
+                    limit={3}
+                  />
+                </div>
+              )}
+
+              {/* Similar Colleges */}
+              {college?._id && (
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                  <SidebarCollegeList
+                    type="similar"
+                    collegeId={college._id}
+                    limit={3}
+                  />
+                </div>
+              )}
             </div>
           </aside>
         </div>
 
-        {/* Ads and Recommended */}
+        {/* Ads */}
         <GoogleAds />
+
+        {/* Full-width Recommended/Nearby/Similar Sections */}
         <Recommended />
         {college?._id && (
           <>
@@ -1076,6 +1143,7 @@ export default function CollegeClient() {
             <SimilarColleges collegeId={college._id} />
           </>
         )}
+
         <StickyBottomAd />
         <PopupAd />
       </div>

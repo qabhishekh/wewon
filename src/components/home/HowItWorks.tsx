@@ -92,7 +92,7 @@ const HowItWorks = () => {
                 />
               </div>
               <div>
-                <p className="font-bold text-lg text-gray-900">10K+</p>
+                <p className="font-bold text-lg text-gray-900">1M+</p>
                 <p className="text-sm text-gray-500">Happy Students</p>
               </div>
             </div>

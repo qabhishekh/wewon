@@ -6,8 +6,18 @@ import DynamicTable from "@/components/sections/DynamicTable";
 import SubHeading from "@/components/sections/SubHeading";
 import apiClient from "@/hooks/Axios";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { fetchCollegeBySlug } from "@/store/college/collegeThunk";
-import { selectSelectedCollege } from "@/store/college/collegeSlice";
+import {
+  selectSelectedCollege,
+  selectCollegeDetails,
+} from "@/store/college/collegeSlice";
+import {
+  fetchCollegeBySlug,
+  fetchCollegeDetails,
+} from "@/store/college/collegeThunk";
+import CollegeHero from "../../sections/CollegeHero";
+import useCollegeMedia from "@/hooks/useCollegeMedia";
+import AdRenderer from "@/components/ads/AdRenderer";
+import { fetchAds } from "@/store/ads/adsSlice";
 
 // Import options from predictor data files
 import josaaOptions from "@/components/Predictor/data/options.json";
@@ -31,6 +41,13 @@ interface CutoffData {
   Institute: string;
 }
 
+interface CutoffDetail {
+  _id: string;
+  Institute_Id: string;
+  Title: string;
+  Description: string;
+}
+
 type CollegeType =
   | "JOSAA"
   | "UPTAC"
@@ -52,6 +69,11 @@ export default function CutoffClient() {
   const dispatch = useAppDispatch();
 
   const college = useAppSelector(selectSelectedCollege);
+  const collegeDetails = useAppSelector(selectCollegeDetails);
+
+  // Fetch college media
+  const collegeId = college?._id || null;
+  const { logo, loading: mediaLoading } = useCollegeMedia(collegeId);
   const selectedYear = searchParams.get("year")
     ? parseInt(searchParams.get("year")!)
     : null;
@@ -74,12 +96,68 @@ export default function CutoffClient() {
   // State for selected round
   const [selectedRound, setSelectedRound] = useState<string>("");
 
+  // State for cutoff details
+  const [cutoffDetails, setCutoffDetails] = useState<CutoffDetail | null>(null);
+  const [cutoffDetailsLoading, setCutoffDetailsLoading] = useState(true);
+
   // Fetch college data on mount
   useEffect(() => {
     if (slug && typeof slug === "string") {
-      dispatch(fetchCollegeBySlug(slug));
+      // Only fetch if we don't have the college or if it's a different college
+      if (!college || college.slug !== slug) {
+        dispatch(fetchCollegeBySlug(slug));
+      }
     }
-  }, [slug, dispatch]);
+  }, [slug, dispatch, college]);
+
+  // Fetch college details once college is loaded (using instituteId) for social media etc
+  // Fetch college details once college is loaded (using instituteId) for social media etc
+  useEffect(() => {
+    if (college?.instituteId && !collegeDetails) {
+      dispatch(fetchCollegeDetails(college.instituteId));
+    }
+  }, [college?.instituteId, dispatch, collegeDetails]);
+
+  // Fetch ads on mount
+  useEffect(() => {
+    dispatch(fetchAds());
+  }, [dispatch]);
+
+  // Fetch cutoff notes/details
+  useEffect(() => {
+    const fetchCutoffDetails = async () => {
+      if (!college?.instituteId) return;
+
+      setCutoffDetailsLoading(true);
+      try {
+        const response = await apiClient.get(
+          `/api/cutoff-details/${college.instituteId}`,
+        );
+        if (response.data) {
+          setCutoffDetails(response.data);
+        } else {
+          setCutoffDetails(null);
+        }
+      } catch (error: any) {
+        if (error.response?.status === 404) {
+          // No details found, simple empty state
+          setCutoffDetails(null);
+        } else {
+          console.error("Failed to fetch cutoff details:", error);
+          setCutoffDetails(null);
+        }
+      } finally {
+        setCutoffDetailsLoading(false);
+      }
+    };
+
+    fetchCutoffDetails();
+  }, [college?.instituteId]);
+
+  const handleTabChange = (tabName: string) => {
+    // Navigate back to main college page with hash
+    router.push(`/colleges/${slug}#${encodeURIComponent(tabName)}`);
+  };
 
   // Detect college type based on API Type field
   const detectCollegeType = useCallback((): CollegeType => {
@@ -361,26 +439,90 @@ export default function CutoffClient() {
       className="min-h-screen bg-gray-50"
       style={{ fontFamily: "Poppins, sans-serif" }}
     >
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 md:px-12 py-4">
-          <button
-            onClick={() => router.back()}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors mb-4"
-          >
-            <ArrowLeft size={20} />
-            <span>Back to College</span>
-          </button>
-          <h1
-            className="text-2xl md:text-3xl font-bold"
-            style={{ color: "var(--primary)" }}
-          >
-            Cutoff {selectedYear} - {college?.Name}
-          </h1>
-        </div>
+      {/* Header / Hero */}
+      <div className="mx-auto">
+        <CollegeHero
+          name={college?.Name || ""}
+          location={`${college?.City || ""}, ${college?.State || ""}`}
+          logo={
+            logo ||
+            "https://images.unsplash.com/photo-1738464024478-2a60ac914513?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y29sbGVnZSUyMGxvZ298ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=900"
+          }
+          tags={[college?.Type || "", `Estd. ${college?.Est_Year || ""}`]}
+          tabs={[
+            "Admission Rules",
+            "Connectivity",
+            "Courses",
+            "Cutoffs",
+            "Facilities",
+            "Fees",
+            "Fee Waivers",
+            "Gallery",
+            "Placements",
+            "Rankings",
+            "Seat Matrix",
+          ]}
+          onTabChange={handleTabChange}
+          buttons={[
+            {
+              label: "Save",
+              icon: "Bookmark",
+              function: () => console.log("Saved!"),
+            },
+            {
+              label: "Brochure",
+              icon: "Download",
+              function: () => console.log("Downloading..."),
+            },
+          ]}
+          socialMedia={collegeDetails?.socialMedia}
+        />
+      </div>
+
+      <div className="container mx-auto px-4 md:px-12 py-4">
+        <button
+          onClick={() => router.back()}
+          className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors mb-4"
+        >
+          <ArrowLeft size={20} />
+          <span>Back</span>
+        </button>
+        <h1
+          className="text-2xl md:text-3xl font-bold mb-4"
+          style={{ color: "var(--primary)" }}
+        >
+          Detailed Cutoffs {selectedYear}
+        </h1>
       </div>
 
       <div className="container mx-auto px-4 md:px-12 py-8">
+        {/* Cutoff Notes Section */}
+        <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
+          <SubHeading top="Cutoff Notes" align="left" />
+          {cutoffDetailsLoading ? (
+            <div className="flex items-center gap-2 py-4">
+              <Loader2 className="w-5 h-5 animate-spin text-gray-500" />
+              <span className="text-gray-500">Loading notes...</span>
+            </div>
+          ) : cutoffDetails ? (
+            <div className="prose prose-sm md:prose-base max-w-none text-gray-700">
+              <h3 className="text-xl font-semibold mb-3 text-gray-800">
+                {cutoffDetails.Title}
+              </h3>
+              <div
+                dangerouslySetInnerHTML={{ __html: cutoffDetails.Description }}
+              />
+            </div>
+          ) : (
+            <p className="font-bold text-gray-700">No details available</p>
+          )}
+        </div>
+
+        {/* Ad Section - Below Cutoff Notes */}
+        <div className="mb-8">
+          <AdRenderer location="below_cutoff_notes" />
+        </div>
+
         {/* Filter Form */}
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
           <h2
