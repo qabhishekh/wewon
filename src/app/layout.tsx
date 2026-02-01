@@ -15,13 +15,13 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    default: "Colleges Khojo - Find Top Engineering Colleges | We Won Academy",
-    template: "%s | Colleges Khojo by We Won Academy",
+    default: "We Won Academy - Find Top Engineering Colleges",
+    template: "%s | We Won Academy",
   },
   description:
-    "Colleges Khojo by We Won Academy helps students find and get admitted to top engineering colleges. Get personalized mentorship, college predictions, and counseling support for JEE, UPTAC, JOSAA, and more.",
+    "We Won Academy helps students find and get admitted to top engineering colleges. Get personalized mentorship, college predictions, and counseling support for JEE, UPTAC, JOSAA, and more.",
   keywords: [
-    "Colleges Khojo",
+    "We Won Academy",
     "engineering colleges",
     "JEE counseling",
     "JOSAA counseling",
@@ -37,14 +37,14 @@ export const metadata: Metadata = {
   authors: [{ name: "We Won Academy" }],
   creator: "We Won Academy",
   publisher: "We Won Academy",
-  metadataBase: new URL("https://collegeskhojo.com"),
+  metadataBase: new URL("https://www.wewonacademy.com"),
   openGraph: {
     type: "website",
     locale: "en_IN",
-    siteName: "Colleges Khojo",
-    title: "Colleges Khojo - Find Top Engineering Colleges | We Won Academy",
+    siteName: "We Won Academy",
+    title: "We Won Academy - Find Top Engineering Colleges",
     description:
-      "Get personalized mentorship, college predictions, and counseling support for JEE, UPTAC, JOSAA admissions on Colleges Khojo.",
+      "Get personalized mentorship, college predictions, and counseling support for JEE, UPTAC, JOSAA admissions on We Won Academy.",
     images: [
       {
         url: "/og-image.png",
@@ -56,9 +56,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Colleges Khojo - Find Top Engineering Colleges | We Won Academy",
+    title: "We Won Academy - Find Top Engineering Colleges",
     description:
-      "Get personalized mentorship, college predictions, and counseling support for JEE, UPTAC, JOSAA admissions on Colleges Khojo.",
+      "Get personalized mentorship, college predictions, and counseling support for JEE, UPTAC, JOSAA admissions on We Won Academy.",
     images: ["/og-image.png"],
   },
   robots: {

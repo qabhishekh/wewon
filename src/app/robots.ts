@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/api/", "/auth/", "/c/", "/s/"],
       },
     ],
-    sitemap: "https://collegeskhojo.com/sitemap.xml",
+    sitemap: "https://www.wewonacademy.com/sitemap.xml",
   };
 }

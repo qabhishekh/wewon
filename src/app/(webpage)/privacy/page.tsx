@@ -8,7 +8,7 @@ const PrivacyPage = () => {
           Privacy Policy
         </h1>
         <p className="text-lg text-gray-600 mb-8">
-          Colleges Khojo (Associated with We Won Academy)
+          We Won Academy
         </p>
 
         <div className="space-y-8">

@@ -8,7 +8,7 @@ const TermsPage = () => {
           Terms and Conditions
         </h1>
         <p className="text-lg text-gray-600 mb-8">
-          Colleges Khojo (Associated with We Won Academy)
+          We Won Academy
         </p>
 
         <div className="space-y-8">
@@ -17,11 +17,11 @@ const TermsPage = () => {
               1. Mentor’s Authority
             </h2>
             <p className="text-gray-700 leading-relaxed">
-              Mentors associated with Colleges Khojo reserve the right to remove
+              Mentors associated with We Won Academy reserve the right to remove
               any student/subscriber from any counselling session, class, or
               course at their sole discretion. In such cases, the student shall
               not be entitled to any compensation, refund, or legal claim
-              against Colleges Khojo or We Won Academy.
+              against We Won Academy.
             </p>
           </section>
 
@@ -31,7 +31,7 @@ const TermsPage = () => {
             </h2>
             <p className="text-gray-700 leading-relaxed">
               All counselling material, study resources, videos, recordings, and
-              educational content provided by Colleges Khojo are strictly for
+              educational content provided by We Won Academy are strictly for
               personal use only. Any unauthorized copying, recording, sharing,
               forwarding, resale, or public distribution of content without
               written permission is strictly prohibited and may result in legal
@@ -44,12 +44,12 @@ const TermsPage = () => {
               3. Platform’s Liability
             </h2>
             <p className="text-gray-700 leading-relaxed">
-              Colleges Khojo acts as a platform connecting students with Mentors
+              We Won Academy acts as a platform connecting students with Mentors
               and counsellors. The platform is not responsible for the accuracy,
               outcomes, opinions, or advice shared by individual Mentors. Any
               disputes, claims, or legal liabilities arising from Mentor advice
               must be addressed directly with the respective Mentor, not
-              Colleges Khojo or We Won Academy.
+              We Won Academy.
             </p>
           </section>
 
@@ -59,7 +59,7 @@ const TermsPage = () => {
             </h2>
             <p className="text-gray-700 leading-relaxed">
               All subscriptions and payments must be made only through official
-              online payment gateways provided by Colleges Khojo. Offline
+              online payment gateways provided by We Won Academy. Offline
               payments, direct transfers, or payments made through unauthorized
               sources will be considered invalid and non-refundable.
             </p>

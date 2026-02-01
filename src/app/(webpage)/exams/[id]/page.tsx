@@ -30,10 +30,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       const exam = data.data;
       return {
         title: `${exam.examName} - Updates, Pattern, Syllabus & Application`,
-        description: `Get the latest updates on ${exam.examName} on Colleges Khojo. Check exam pattern, eligibility criteria, syllabus, important dates, and application process.`,
+        description: `Get the latest updates on ${exam.examName} on We Won Academy. Check exam pattern, eligibility criteria, syllabus, important dates, and application process.`,
         openGraph: {
-          title: `${exam.examName} | Colleges Khojo by We Won Academy`,
-          description: `Comprehensive guide for ${exam.examName} on Colleges Khojo: pattern, syllabus, and application details.`,
+          title: `${exam.examName} | We Won Academy`,
+          description: `Comprehensive guide for ${exam.examName} on We Won Academy: pattern, syllabus, and application details.`,
           images: ["/og-image.png"],
         },
       };

@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-    const baseUrl = "https://collegeskhojo.com";
+  const baseUrl = "https://www.wewonacademy.com";
 
-    const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
+  const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
@@ -24,9 +24,9 @@ export async function GET() {
   </sitemap>
 </sitemapindex>`;
 
-    return new NextResponse(sitemapIndex, {
-        headers: {
-            'Content-Type': 'text/xml',
-        },
-    });
+  return new NextResponse(sitemapIndex, {
+    headers: {
+      'Content-Type': 'text/xml',
+    },
+  });
 }

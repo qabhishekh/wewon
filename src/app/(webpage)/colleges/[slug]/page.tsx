@@ -30,10 +30,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       const college = data.data;
       return {
         title: `${college.Name} - Overview, Courses, Fees, Placements & Cutoffs`,
-        description: `Everything you need to know about ${college.Name}, ${college.City}, ${college.State} on Colleges Khojo. Check admission rules, course fees, placement statistics, rankings, and cutoff ranks.`,
+        description: `Everything you need to know about ${college.Name}, ${college.City}, ${college.State} on We Won Academy. Check admission rules, course fees, placement statistics, rankings, and cutoff ranks.`,
         openGraph: {
-          title: `${college.Name} | Colleges Khojo by We Won Academy`,
-          description: `Get detailed information about ${college.Name} including courses, fees, and placements on Colleges Khojo.`,
+          title: `${college.Name} | We Won Academy`,
+          description: `Get detailed information about ${college.Name} including courses, fees, and placements on We Won Academy.`,
           images: ["/og-image.png"],
         },
       };

@@ -8,7 +8,7 @@ const RefundPage = () => {
           Cancellation & Refund Policy
         </h1>
         <p className="text-lg text-gray-600 mb-8">
-          Colleges Khojo (Associated with We Won Academy)
+          We Won Academy
         </p>
 
         <div className="space-y-8">
@@ -30,7 +30,7 @@ const RefundPage = () => {
             </h2>
             <p className="text-gray-700 leading-relaxed">
               All cancellation requests must be raised only through the official
-              support channels of Colleges Khojo. Requests made via phone calls,
+              support channels of We Won Academy. Requests made via phone calls,
               social media, or unofficial communication will not be considered
               valid.
             </p>
@@ -72,7 +72,7 @@ const RefundPage = () => {
               5. Platform-Initiated Cancellation
             </h2>
             <p className="text-gray-700 leading-relaxed">
-              Colleges Khojo reserves the right to cancel or reschedule services
+              We Won Academy reserves the right to cancel or reschedule services
               due to technical issues, Mentor unavailability, or operational
               reasons. In such cases, an alternative session or appropriate
               resolution will be offered at the platform’s discretion.

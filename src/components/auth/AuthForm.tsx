@@ -71,8 +71,8 @@ export default function AuthForm() {
     } catch (err: any) {
       setError(
         err?.response?.data?.message ||
-          err?.message ||
-          "Registration request failed",
+        err?.message ||
+        "Registration request failed",
       );
     } finally {
       setLoading(false);
@@ -128,8 +128,8 @@ export default function AuthForm() {
     } catch (err: any) {
       toast.error(
         err?.response?.data?.message ||
-          err?.message ||
-          "OTP verification failed",
+        err?.message ||
+        "OTP verification failed",
       );
     } finally {
       setOtpLoading(false);
@@ -224,14 +224,14 @@ export default function AuthForm() {
     if (activeTab === "forgot-password") {
       return {
         title: "Reset Password",
-        subtitle: "to COLLEGES KHOJO",
+        subtitle: "to We Won Academy",
         description: "Don't worry, we'll help you get back into your account.",
       };
     }
     if (activeTab === "register") {
       return {
         title: "Start your journey",
-        subtitle: "to COLLEGES KHOJO",
+        subtitle: "to We Won Academy",
         description: (
           <>
             Register now to get expert college counselling, personalized
@@ -244,7 +244,7 @@ export default function AuthForm() {
     }
     return {
       title: "Welcome Back",
-      subtitle: "to COLLEGES KHOJO",
+      subtitle: "to We Won Academy",
       description: (
         <>
           Log in to continue your college counselling journey.
@@ -305,11 +305,10 @@ export default function AuthForm() {
                   setActiveTab("login");
                   setRegisterStep(1);
                 }}
-                className={`flex-1 py-3 px-6 rounded-xl cursor-pointer text-sm font-bold transition-colors z-10 relative ${
-                  activeTab === "login"
-                    ? "bg-white shadow-sm text-[var(--primary)]"
-                    : "text-gray-500 hover:text-gray-700"
-                }`}
+                className={`flex-1 py-3 px-6 rounded-xl cursor-pointer text-sm font-bold transition-colors z-10 relative ${activeTab === "login"
+                  ? "bg-white shadow-sm text-[var(--primary)]"
+                  : "text-gray-500 hover:text-gray-700"
+                  }`}
               >
                 Login
               </button>
@@ -317,11 +316,10 @@ export default function AuthForm() {
                 onClick={() => {
                   setActiveTab("register");
                 }}
-                className={`flex-1 py-3 px-6 rounded-xl cursor-pointer text-sm font-bold transition-colors z-10 relative ${
-                  activeTab === "register"
-                    ? "bg-white shadow-sm text-[var(--primary)]"
-                    : "text-gray-500 hover:text-gray-700"
-                }`}
+                className={`flex-1 py-3 px-6 rounded-xl cursor-pointer text-sm font-bold transition-colors z-10 relative ${activeTab === "register"
+                  ? "bg-white shadow-sm text-[var(--primary)]"
+                  : "text-gray-500 hover:text-gray-700"
+                  }`}
               >
                 Register
               </button>

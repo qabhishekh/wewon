@@ -6,7 +6,7 @@ export async function GET(
 ) {
     const { id: rawId } = await params;
     const id = rawId.replace(".xml", "");
-    const baseUrl = "https://collegeskhojo.com";
+    const baseUrl = "https://www.wewonacademy.com";
     const apiUrl =
         process.env.NEXT_PUBLIC_API_URL || "https://wewon-backend.vercel.app/";
 

@@ -9,8 +9,8 @@ const HeroSection = () => {
     <section className="text-white">
       {/* Headline */}
       <MainHeading
-        top={"Welcome to colleges khojo"}
-        bottom={"Associated with We Won Academy"}
+        top={"Find Your Dream Engineering College"}
+        bottom={"Counseling & Mentorship with We Won Academy"}
       />
 
       {/* Search Bar */}

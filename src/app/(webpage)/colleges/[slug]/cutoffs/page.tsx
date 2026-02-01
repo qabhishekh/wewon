@@ -36,10 +36,10 @@ export async function generateMetadata({
       const displayYear = year || "2026";
       return {
         title: `${college.Name} Cutoff ${displayYear} - Round-wise Opening & Closing Ranks`,
-        description: `Check the detailed ${displayYear} cutoff ranks for ${college.Name} on Colleges Khojo. Filter by category, round, and branch to see opening and closing ranks.`,
+        description: `Check the detailed ${displayYear} cutoff ranks for ${college.Name} on We Won Academy. Filter by category, round, and branch to see opening and closing ranks.`,
         openGraph: {
-          title: `${college.Name} Cutoff ${displayYear} | Colleges Khojo by We Won Academy`,
-          description: `Complete round-wise cutoff information for ${college.Name} on Colleges Khojo.`,
+          title: `${college.Name} Cutoff ${displayYear} | We Won Academy`,
+          description: `Complete round-wise cutoff information for ${college.Name} on We Won Academy.`,
           images: ["/og-image.png"],
         },
       };

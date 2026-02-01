@@ -32,9 +32,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         title: `${product.title} - Online Counseling & Mentorship Program`,
         description:
           product.description ||
-          `Join the ${product.title} on Colleges Khojo. Get expert mentorship, choice filling tools, and comprehensive guidance for engineering admissions.`,
+          `Join the ${product.title} on We Won Academy. Get expert mentorship, choice filling tools, and comprehensive guidance for engineering admissions.`,
         openGraph: {
-          title: `${product.title} | Colleges Khojo by We Won Academy`,
+          title: `${product.title} | We Won Academy`,
           description: product.description,
           images: [product.thumbnail || "/og-image.png"],
         },
