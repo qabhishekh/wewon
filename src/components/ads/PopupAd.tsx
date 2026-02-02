@@ -71,9 +71,7 @@ const PopupAd = () => {
           .popup-content p {
             margin: 0;
           }
-          .popup-content strong {
-            color: #1f2937;
-          }
+          
           .popup-content em {
             color: #ef4444;
             font-style: normal;
@@ -83,11 +81,10 @@ const PopupAd = () => {
           .popup-content a {
             display: inline-block;
             padding: 6px 16px;
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            background: red;
             color: white !important;
             text-decoration: none !important;
             border-radius: 6px;
-            font-weight: 600;
             font-size: 0.875rem;
             transition: all 0.2s ease;
           }

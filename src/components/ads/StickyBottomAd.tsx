@@ -38,7 +38,7 @@ const StickyBottomAd = () => {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 w-full z-50 bg-[var(--primary)] border-t border-gray-200 shadow-lg p-3 flex items-center justify-between md:justify-center gap-4">
+    <div className="fixed bottom-0 left-0 w-full z-50 bg-red-500 border-t border-gray-200 shadow-lg p-3 flex items-center justify-between md:justify-center gap-4">
       <div className="flex-1 md:flex-none flex items-center gap-4 text-sm md:text-base font-medium text-white">
         <div
           dangerouslySetInnerHTML={{ __html: content?.text || "" }}
@@ -56,7 +56,7 @@ const StickyBottomAd = () => {
 
       <button
         onClick={handleClose}
-        className="text-red-500 hover:text-gray-700 absolute right-4"
+        className="text-black hover:text-gray-700 absolute right-4"
       >
         <XMarkIcon className="h-5 w-5" />
       </button>

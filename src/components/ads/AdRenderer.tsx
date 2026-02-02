@@ -46,14 +46,45 @@ const AdRenderer: React.FC<AdRendererProps> = ({ location, className }) => {
   // are likely HTML or image banners.
 
   return (
-    <div
-      className={`ad-renderer-container location-${location} my-6 ${className || ""}`}
-    >
-      {ad.title && (
-        <h3 className="text-lg font-semibold text-gray-800 mb-3">{ad.title}</h3>
-      )}
-      <div dangerouslySetInnerHTML={{ __html: ad.description }} />
-    </div>
+    <>
+      <div
+        className={`ad-renderer-container location-${location} my-6 ${className || ""}`}
+      >
+        {ad.title && (
+          <h3 className="text-lg font-semibold text-gray-800 mb-3">
+            {ad.title}
+          </h3>
+        )}
+        <div dangerouslySetInnerHTML={{ __html: ad.description }} />
+      </div>
+      <style jsx>{`
+        /* Target links specifically inside tables within ad-renderer */
+        .ad-renderer-container :global(table a) {
+          display: inline-block;
+          padding: 6px 16px;
+          background-color: #ef4444;
+          color: white !important;
+          border-radius: 6px;
+          text-decoration: none !important;
+          font-weight: 500;
+          font-size: 0.875rem;
+          transition: opacity 0.2s;
+          line-height: normal; /* Reset line height */
+        }
+        .ad-renderer-container :global(table a:hover) {
+          opacity: 0.9;
+        }
+
+        /* Ensure links OUTSIDE tables in ad-renderer are treated normally - just in case */
+        .ad-renderer-container :global(a:not(table a)) {
+          display: inline;
+          padding: 0;
+          background-color: transparent;
+          border-radius: 0;
+          font-weight: inherit;
+        }
+      `}</style>
+    </>
   );
 };
 
