@@ -15,8 +15,8 @@ jobs:
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
         with:
-          host: 72.61.255.252
-          username: root
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /var/www/frontend
