@@ -158,6 +158,12 @@ export default function PlacementStatistics({
                     axisLine={{ stroke: "#E5E7EB" }}
                     tickLine={false}
                     interval={0}
+                    tickFormatter={(value) =>
+                      value
+                        .split(" ")
+                        .map((w: string) => w[0])
+                        .join("")
+                    }
                   />
                   <YAxis
                     label={{
