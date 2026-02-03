@@ -43,7 +43,7 @@ export default function CouponInput({
       validateCoupon({
         code: couponCode.toUpperCase(),
         productId,
-      })
+      }),
     );
   };
 
@@ -65,7 +65,7 @@ export default function CouponInput({
         Have a coupon code?
       </label>
 
-      <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row gap-2">
         <div className="relative flex-1">
           <input
             type="text"
@@ -78,8 +78,8 @@ export default function CouponInput({
               validatedCoupon
                 ? "border-green-500 bg-green-50 focus:ring-green-500"
                 : error
-                ? "border-red-500 bg-red-50 focus:ring-red-500"
-                : "border-gray-300 focus:ring-[var(--accent)]"
+                  ? "border-red-500 bg-red-50 focus:ring-red-500"
+                  : "border-gray-300 focus:ring-[var(--accent)]"
             }`}
           />
 
@@ -99,7 +99,7 @@ export default function CouponInput({
         {validatedCoupon ? (
           <button
             onClick={handleRemove}
-            className="px-6 py-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition-colors"
+            className="w-full sm:w-auto px-6 py-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition-colors"
           >
             Remove
           </button>
@@ -107,7 +107,7 @@ export default function CouponInput({
           <button
             onClick={handleApply}
             disabled={!couponCode.trim() || loading}
-            className="px-6 py-3 bg-[var(--accent)] text-white font-semibold rounded-lg hover:bg-[var(--primary)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            className="w-full sm:w-auto px-6 py-3 bg-[var(--accent)] text-white font-semibold rounded-lg hover:bg-[var(--primary)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {loading && <Loader2 size={18} className="animate-spin" />}
             Apply

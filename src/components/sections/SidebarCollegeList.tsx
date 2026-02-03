@@ -32,6 +32,7 @@ interface CollegeItem {
   State: string;
   Type: string;
   Est_Year: number;
+  logoUrl?: string;
 }
 
 const SidebarCollegeList: React.FC<SidebarCollegeListProps> = ({
@@ -161,9 +162,21 @@ const SidebarCollegeList: React.FC<SidebarCollegeListProps> = ({
             className="group flex items-center gap-3 p-2.5 rounded-xl hover:bg-gray-50 transition-all duration-200 border border-transparent hover:border-gray-100"
           >
             {/* College Logo/Icon */}
-            <div className="w-11 h-11 rounded-lg bg-gradient-to-br from-[#0D3A66] to-[#1a5490] flex items-center justify-center text-white font-bold text-sm flex-shrink-0 shadow-sm">
-              {college.Name.substring(0, 2).toUpperCase()}
-            </div>
+            {college.logoUrl ? (
+              <div className="w-11 h-11 rounded-lg overflow-hidden bg-white border border-gray-100 flex-shrink-0">
+                <Image
+                  src={college.logoUrl}
+                  alt={college.Name}
+                  width={44}
+                  height={44}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            ) : (
+              <div className="w-11 h-11 rounded-lg bg-gradient-to-br from-[#0D3A66] to-[#1a5490] flex items-center justify-center text-white font-bold text-sm flex-shrink-0 shadow-sm">
+                {college.Name.substring(0, 2).toUpperCase()}
+              </div>
+            )}
 
             {/* College Info */}
             <div className="flex-1 min-w-0">

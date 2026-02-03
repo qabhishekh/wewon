@@ -13,6 +13,7 @@ import Link from "next/link";
 
 // Alert type mapping
 const categoryTypeMap: { [key: string]: string } = {
+  "All News": "",
   "Exam Alerts": "exam",
   "College Alerts": "college",
   "Admission Alerts": "admission",
@@ -20,6 +21,7 @@ const categoryTypeMap: { [key: string]: string } = {
 };
 
 const categories = [
+  "All News",
   "Exam Alerts",
   "College Alerts",
   "Admission Alerts",
@@ -55,7 +57,7 @@ const formatDate = (dateString: string): string => {
 };
 
 const NewsSection = () => {
-  const [activeCategory, setActiveCategory] = useState("Exam Alerts");
+  const [activeCategory, setActiveCategory] = useState("All News");
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -68,7 +70,7 @@ const NewsSection = () => {
       try {
         const response = await apiClient.get("/api/alerts", {
           params: {
-            type: categoryTypeMap[activeCategory],
+            type: categoryTypeMap[activeCategory] || undefined,
             isActive: true,
             limit: 10,
           },

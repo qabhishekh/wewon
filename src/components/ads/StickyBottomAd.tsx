@@ -42,12 +42,12 @@ const StickyBottomAd = () => {
       <div className="flex-1 md:flex-none flex items-center gap-4 text-sm md:text-base font-medium text-white">
         <div
           dangerouslySetInnerHTML={{ __html: content?.text || "" }}
-          className="prose-sm"
+          className="prose-sm ad-renderer-container"
         />
         {content?.link && (
           <Link
             href={content?.link}
-            className="bg-blue-600 text-white px-4 py-1.5 rounded-full hover:bg-blue-700 transition-colors text-xs md:text-sm whitespace-nowrap"
+            className="bg-primary text-white px-4 py-1.5 rounded-full hover:opacity-90 transition-colors text-xs md:text-sm whitespace-nowrap"
           >
             {content?.btnText || "Action"}
           </Link>

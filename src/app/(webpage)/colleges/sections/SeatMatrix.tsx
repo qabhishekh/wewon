@@ -1,4 +1,5 @@
 import React from "react";
+import DynamicTable from "@/components/sections/DynamicTable";
 
 interface SeatMatrixEntry {
   _id: string;
@@ -21,13 +22,16 @@ const SeatMatrix: React.FC<SeatMatrixProps> = ({ seatMatrix }) => {
   }
 
   // Group by degree
-  const groupedByDegree = seatMatrix.reduce((acc, entry) => {
-    if (!acc[entry.Degree]) {
-      acc[entry.Degree] = [];
-    }
-    acc[entry.Degree].push(entry);
-    return acc;
-  }, {} as { [key: string]: SeatMatrixEntry[] });
+  const groupedByDegree = seatMatrix.reduce(
+    (acc, entry) => {
+      if (!acc[entry.Degree]) {
+        acc[entry.Degree] = [];
+      }
+      acc[entry.Degree].push(entry);
+      return acc;
+    },
+    {} as { [key: string]: SeatMatrixEntry[] },
+  );
 
   const getTrendColor = (trend: string) => {
     switch (trend.toLowerCase()) {
@@ -56,56 +60,39 @@ const SeatMatrix: React.FC<SeatMatrixProps> = ({ seatMatrix }) => {
               <h3 className="text-xl font-semibold">{degree}</h3>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">
-                      Branch
-                    </th>
-                    <th className="px-6 py-3 text-center text-sm font-bold text-gray-700 uppercase tracking-wider">
-                      Gender Neutral
-                    </th>
-                    <th className="px-6 py-3 text-center text-sm font-bold text-gray-700 uppercase tracking-wider">
-                      Female Only
-                    </th>
-                    <th className="px-6 py-3 text-center text-sm font-bold text-gray-700 uppercase tracking-wider">
-                      Total Seats
-                    </th>
-                    <th className="px-6 py-3 text-center text-sm font-bold text-gray-700 uppercase tracking-wider">
-                      Trend
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {entries.map((entry) => (
-                    <tr key={entry._id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                        {entry.Branch}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-700 text-center">
-                        {entry.Seats_Gender_Neutral}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-700 text-center">
-                        {entry.Seats_Female_Only}
-                      </td>
-                      <td className="px-6 py-4 text-sm font-semibold text-gray-900 text-center">
-                        {entry.Total_Seats}
-                      </td>
-                      <td className="px-6 py-4 text-center">
-                        <span
-                          className={`inline-flex px-3 py-1 text-xs font-semibold rounded-full ${getTrendColor(
-                            entry.Change_Trend
-                          )}`}
-                        >
-                          {entry.Change_Trend}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <DynamicTable
+              columns={[
+                { key: "Branch", label: "Branch", align: "left" },
+                {
+                  key: "Seats_Gender_Neutral",
+                  label: "Gender Neutral",
+                  align: "center",
+                },
+                {
+                  key: "Seats_Female_Only",
+                  label: "Female Only",
+                  align: "center",
+                },
+                { key: "Total_Seats", label: "Total Seats", align: "center" },
+                {
+                  key: "Change_Trend_Formatted",
+                  label: "Trend",
+                  align: "center",
+                },
+              ]}
+              data={entries.map((entry) => ({
+                ...entry,
+                Change_Trend_Formatted: (
+                  <span
+                    className={`inline-flex px-3 py-1 text-xs font-semibold rounded-full ${getTrendColor(
+                      entry.Change_Trend,
+                    )}`}
+                  >
+                    {entry.Change_Trend}
+                  </span>
+                ),
+              }))}
+            />
 
             {/* Summary */}
             <div className="bg-gray-50 px-6 py-4 border-t border-gray-200">

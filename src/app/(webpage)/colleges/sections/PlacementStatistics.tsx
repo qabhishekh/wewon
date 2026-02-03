@@ -134,78 +134,82 @@ export default function PlacementStatistics({
           {/* Year Tabs */}
 
           {/* Chart */}
-          <div className="w-full" style={{ minHeight: "400px" }}>
-            <ResponsiveContainer width="100%" height={500}>
-              <BarChart
-                data={activeYear.data}
-                margin={{ top: 30, right: 30, left: 0, bottom: 20 }}
-                barGap={8}
-              >
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="#E5E7EB"
-                  vertical={false}
-                />
-                <XAxis
-                  dataKey="branch"
-                  tick={{
-                    fill: "#6B7280",
-                    fontSize: 12,
-                    fontFamily: "Poppins",
-                  }}
-                  axisLine={{ stroke: "#E5E7EB" }}
-                  tickLine={false}
-                />
-                <YAxis
-                  label={{
-                    value: "No. of Students",
-                    angle: -90,
-                    position: "insideLeft",
-                    style: {
+          {/* Chart */}
+          <div className="w-full overflow-x-auto pb-4">
+            <div style={{ minWidth: "600px", height: "500px" }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={activeYear.data}
+                  margin={{ top: 30, right: 30, left: 0, bottom: 20 }}
+                  barGap={8}
+                >
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    stroke="#E5E7EB"
+                    vertical={false}
+                  />
+                  <XAxis
+                    dataKey="branch"
+                    tick={{
                       fill: "#6B7280",
+                      fontSize: 12,
                       fontFamily: "Poppins",
-                      fontSize: 14,
-                    },
-                  }}
-                  tick={{
-                    fill: "#6B7280",
-                    fontSize: 12,
-                    fontFamily: "Poppins",
-                  }}
-                  axisLine={{ stroke: "#E5E7EB" }}
-                  tickLine={false}
-                />
-                <Tooltip
-                  content={<CustomTooltip />}
-                  cursor={{ fill: "rgba(13, 58, 102, 0.05)" }}
-                />
-                <Legend
-                  wrapperStyle={{
-                    paddingTop: "20px",
-                    fontFamily: "Poppins",
-                    fontSize: "14px",
-                  }}
-                  iconType="square"
-                  iconSize={12}
-                />
-                <Bar
-                  dataKey="eligible"
-                  fill={primaryColor}
-                  name="Eligible"
-                  radius={[8, 8, 0, 0]}
-                  label={renderCustomBarLabel}
-                  maxBarSize={60}
-                />
-                <Bar
-                  dataKey="placed"
-                  fill={accentColor}
-                  name="Placed"
-                  radius={[8, 8, 0, 0]}
-                  label={renderCustomBarLabel}
-                  maxBarSize={60}
-                />
-              </BarChart>
-            </ResponsiveContainer>
+                    }}
+                    axisLine={{ stroke: "#E5E7EB" }}
+                    tickLine={false}
+                    interval={0}
+                  />
+                  <YAxis
+                    label={{
+                      value: "No. of Students",
+                      angle: -90,
+                      position: "insideLeft",
+                      style: {
+                        fill: "#6B7280",
+                        fontFamily: "Poppins",
+                        fontSize: 14,
+                      },
+                    }}
+                    tick={{
+                      fill: "#6B7280",
+                      fontSize: 12,
+                      fontFamily: "Poppins",
+                    }}
+                    axisLine={{ stroke: "#E5E7EB" }}
+                    tickLine={false}
+                  />
+                  <Tooltip
+                    content={<CustomTooltip />}
+                    cursor={{ fill: "rgba(13, 58, 102, 0.05)" }}
+                  />
+                  <Legend
+                    wrapperStyle={{
+                      paddingTop: "20px",
+                      fontFamily: "Poppins",
+                      fontSize: "14px",
+                    }}
+                    iconType="square"
+                    iconSize={12}
+                  />
+                  <Bar
+                    dataKey="eligible"
+                    fill={primaryColor}
+                    name="Eligible"
+                    radius={[8, 8, 0, 0]}
+                    label={renderCustomBarLabel}
+                    maxBarSize={60}
+                  />
+                  <Bar
+                    dataKey="placed"
+                    fill={accentColor}
+                    name="Placed"
+                    radius={[8, 8, 0, 0]}
+                    label={renderCustomBarLabel}
+                    maxBarSize={60}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </div>
 
           {/* Summary Stats */}

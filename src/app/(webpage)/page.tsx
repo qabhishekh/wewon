@@ -12,6 +12,7 @@ import CallToAction from "@/components/sections/CallToAction";
 import HeroSection from "@/components/sections/HeroSection";
 import Newsletter from "@/components/Newsletter";
 import Recommended from "@/components/sections/Recommended";
+import PopupAd from "@/components/ads/PopupAd";
 import Script from "next/script";
 
 // Organization Schema for We Won Academy
@@ -148,9 +149,7 @@ export default function Home() {
         {/* <TopColleges /> */}
         <Recommended />
       </div>
-      <div className="container mx-auto">
-        {/* <FeatureCounselling /> */}
-      </div>
+      <div className="container mx-auto">{/* <FeatureCounselling /> */}</div>
       <div className="bg-[var(--muted-background)]">
         <NewsSection />
       </div>
@@ -161,6 +160,11 @@ export default function Home() {
         <CallToAction />
       </div>
       <Newsletter />
+      <PopupAd
+        cooldownHours={12}
+        location="homepage_popup"
+        storageKey="popup_home_closed"
+      />
     </>
   );
 }

@@ -24,7 +24,7 @@ export default function DynamicTable({
     >
       <div className="bg-white rounded-2xl border border-[var(--border)] overflow-hidden">
         {/* Desktop Table View */}
-        <div className="hidden md:block overflow-x-auto">
+        <div className="overflow-x-auto">
           <table className="w-full">
             <thead style={{ backgroundColor: "#F9FAFB" }}>
               <tr>
@@ -35,8 +35,8 @@ export default function DynamicTable({
                       column.align === "center"
                         ? "text-center"
                         : column.align === "right"
-                        ? "text-right"
-                        : "text-left"
+                          ? "text-right"
+                          : "text-left"
                     } ${index === 0 ? "rounded-tl-2xl" : ""} ${
                       index === columns.length - 1 ? "rounded-tr-2xl" : ""
                     }`}
@@ -60,8 +60,8 @@ export default function DynamicTable({
                         column.align === "center"
                           ? "text-center"
                           : column.align === "right"
-                          ? "text-right"
-                          : "text-left"
+                            ? "text-right"
+                            : "text-left"
                       } ${
                         colIndex === 0
                           ? "font-medium text-gray-900"
@@ -75,41 +75,6 @@ export default function DynamicTable({
               ))}
             </tbody>
           </table>
-        </div>
-
-        {/* Mobile Card View */}
-        <div className="md:hidden">
-          {data.map((row, rowIndex) => (
-            <div
-              key={rowIndex}
-              className="p-4 border-b border-gray-100 last:border-b-0"
-            >
-              {columns.map((column, colIndex) => (
-                <div
-                  key={column.key}
-                  className={`flex justify-between items-center ${
-                    colIndex !== columns.length - 1 ? "mb-3" : ""
-                  }`}
-                >
-                  <span
-                    className="font-semibold text-sm"
-                    style={{ color: "var(--primary)" }}
-                  >
-                    {column.label}
-                  </span>
-                  <span
-                    className={`text-sm ${
-                      colIndex === 0
-                        ? "font-medium text-gray-900"
-                        : "text-gray-700"
-                    }`}
-                  >
-                    {row[column.key]}
-                  </span>
-                </div>
-              ))}
-            </div>
-          ))}
         </div>
       </div>
     </div>

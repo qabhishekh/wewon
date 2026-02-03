@@ -1145,7 +1145,11 @@ export default function CollegeClient() {
         )}
 
         <StickyBottomAd />
-        <PopupAd />
+        <PopupAd
+          cooldownHours={3}
+          location="popup"
+          storageKey="popup_college_closed"
+        />
       </div>
     </div>
   );

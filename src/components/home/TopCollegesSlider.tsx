@@ -60,7 +60,7 @@ const colleges = [
   {
     name: "NIT AGARTALA",
     imageUrl: "/herocolleges/nit.jpg",
-    url: "/motilal-nehru-national-institute-of-technology-agartala",
+    url: "/national-institute-of-technology-nit-agartala",
   },
 ];
 

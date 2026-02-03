@@ -4,6 +4,8 @@ import CollegeCard from "../cards/CollegeCard";
 import { useRouter } from "next/navigation";
 import SubHeading from "./SubHeading";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 import {
   selectRecommendedColleges,
   selectRecommendedLoading,
@@ -105,7 +107,16 @@ const Recommended = () => {
 
   return (
     <div>
-      <SubHeading top="Recommended Colleges" align={"left"} />
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <SubHeading top="Recommended Colleges" align={"left"} />
+        <Link
+          href="/colleges"
+          className="text-[var(--primary)] font-semibold hover:underline flex items-center gap-1"
+        >
+          Explore More Colleges
+          <ChevronRight className="w-4 h-4" />
+        </Link>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-14">
         {mappedColleges.map((college) => (
           <CollegeCard

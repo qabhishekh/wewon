@@ -4,15 +4,27 @@ import { useAppSelector } from "@/store/hooks";
 import { selectAdByLocation } from "@/store/ads/adsSlice";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 
-const PopupAd = () => {
-  const location = "popup";
+interface PopupAdProps {
+  location?: string;
+  cooldownHours?: number;
+  storageKey?: string;
+}
+
+const PopupAd: React.FC<PopupAdProps> = ({
+  location = "popup",
+  cooldownHours = 12,
+  storageKey,
+}) => {
+  // Use a default storage key if not provided, unique to location
+  const key = storageKey || `popup_closed_${location}`;
+
   const ads = useAppSelector((state) => selectAdByLocation(state, location));
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const closedTime = localStorage.getItem("popup_closed_timestamp");
+    const closedTime = localStorage.getItem(key);
     const now = Date.now();
-    const cooldown = 12 * 60 * 60 * 1000; // 12 hours
+    const cooldown = cooldownHours * 60 * 60 * 1000;
 
     if (closedTime && now - parseInt(closedTime) < cooldown) {
       return; // Still in cooldown
@@ -21,14 +33,14 @@ const PopupAd = () => {
     if (ads && ads.length > 0) {
       setIsVisible(true);
     }
-  }, [ads]);
+  }, [ads, cooldownHours, key]);
 
   if (!isVisible || !ads || ads.length === 0) return null;
 
   const ad = ads[0];
 
   const handleClose = () => {
-    localStorage.setItem("popup_closed_timestamp", Date.now().toString());
+    localStorage.setItem(key, Date.now().toString());
     setIsVisible(false);
   };
 
