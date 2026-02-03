@@ -209,7 +209,7 @@ body {
 }
 
 /* Style anchor tags as buttons - increase specificity */
-.ad-renderer-container a[href],
+.ad-renderer-container table a[href],
 .ad-renderer-container .apply-button {
   display: inline-flex !important;
   align-items: center;
@@ -226,7 +226,7 @@ body {
   min-width: 80px;
 }
 
-.ad-renderer-container a[href]:hover,
+.ad-renderer-container table a[href]:hover,
 .ad-renderer-container .apply-button:hover {
   background-color: #1a4a7a !important;
   transform: translateY(-1px);
