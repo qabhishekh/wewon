@@ -24,7 +24,8 @@ const PopupAd: React.FC<PopupAdProps> = ({
   useEffect(() => {
     const closedTime = localStorage.getItem(key);
     const now = Date.now();
-    const cooldown = cooldownHours * 60 * 60 * 1000;
+    const cooldown = cooldownHours;
+    // const cooldown = cooldownHours * 60 * 60 * 1000;
 
     if (closedTime && now - parseInt(closedTime) < cooldown) {
       return; // Still in cooldown
