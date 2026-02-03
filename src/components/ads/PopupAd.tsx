@@ -10,6 +10,14 @@ const PopupAd = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    const closedTime = localStorage.getItem("popup_closed_timestamp");
+    const now = Date.now();
+    const cooldown = 12 * 60 * 60 * 1000; // 12 hours
+
+    if (closedTime && now - parseInt(closedTime) < cooldown) {
+      return; // Still in cooldown
+    }
+
     if (ads && ads.length > 0) {
       setIsVisible(true);
     }
@@ -20,6 +28,7 @@ const PopupAd = () => {
   const ad = ads[0];
 
   const handleClose = () => {
+    localStorage.setItem("popup_closed_timestamp", Date.now().toString());
     setIsVisible(false);
   };
 
@@ -71,7 +80,7 @@ const PopupAd = () => {
           .popup-content p {
             margin: 0;
           }
-          
+
           .popup-content em {
             color: #ef4444;
             font-style: normal;

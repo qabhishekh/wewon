@@ -91,6 +91,7 @@ const collegeSlice = createSlice({
       })
       .addCase(fetchCollegeById.fulfilled, (state, action) => {
         state.selectedCollege = action.payload;
+        state.collegeDetailsLoading = false;
       })
       .addCase(fetchCollegeById.rejected, (state, action) => {
         state.collegeDetailsLoading = false;
@@ -106,6 +107,7 @@ const collegeSlice = createSlice({
       })
       .addCase(fetchCollegeBySlug.fulfilled, (state, action) => {
         state.selectedCollege = action.payload;
+        state.collegeDetailsLoading = false;
       })
       .addCase(fetchCollegeBySlug.rejected, (state, action) => {
         state.collegeDetailsLoading = false;
