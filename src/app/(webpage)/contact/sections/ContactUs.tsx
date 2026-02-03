@@ -56,7 +56,7 @@ export default function ContactUs({
       className="pt-8 md:pt-12 pb-8 md:pb-12 bg-background px-4 md:px-0"
       style={{ fontFamily: "Poppins, sans-serif" }}
     >
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-4xl">
         {/* Contact Info Card */}
         <div
           className="rounded-3xl p-8 md:p-12 lg:p-16 text-white text-center"

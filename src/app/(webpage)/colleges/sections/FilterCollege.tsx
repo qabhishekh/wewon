@@ -548,7 +548,7 @@ export default function FilterColleges() {
               </div>
 
               {/* Specialization Filter */}
-              <div className="p-5 border-b border-gray-200">
+              {/* <div className="p-5 border-b border-gray-200">
                 <h3
                   className="text-sm font-semibold mb-3"
                   style={{ color: "#0D3A66" }}
@@ -608,7 +608,7 @@ export default function FilterColleges() {
                     </label>
                   ))}
                 </div>
-              </div>
+              </div> */}
             </div>
 
             {/* Action Buttons */}

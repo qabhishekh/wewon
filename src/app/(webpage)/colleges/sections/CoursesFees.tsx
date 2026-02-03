@@ -33,7 +33,7 @@ interface CoursesFeesProps {
 export default function CoursesFees({ tabsData }: CoursesFeesProps) {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   console.log(tabsData);
-  
+
   const activeTab = tabsData[activeTabIndex];
 
   const handleTabChange = (index: number) => {
@@ -72,8 +72,8 @@ export default function CoursesFees({ tabsData }: CoursesFeesProps) {
           {/* Left Sidebar - Course Summary */}
           <div className="lg:col-span-3">
             <div
-              className="rounded-2xl p-6 text-white sticky top-6"
-              style={{ backgroundColor: "var(--primary)", minHeight: "550px" }}
+              className="rounded-2xl p-6 text-white sticky top-6 h-fit lg:min-h-[550px]"
+              style={{ backgroundColor: "var(--primary)" }}
             >
               <h2 className="text-2xl md:text-3xl font-bold mb-3">
                 {activeTab.name}
