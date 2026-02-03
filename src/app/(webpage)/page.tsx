@@ -159,7 +159,7 @@ export default function Home() {
       <div className="px-4">
         <CallToAction />
       </div>
-      {/* <Newsletter /> */}
+      <Newsletter />
       <PopupAd
         cooldownHours={12}
         location="homepage_popup"

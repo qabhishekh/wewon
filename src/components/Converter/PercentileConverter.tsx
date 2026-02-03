@@ -140,11 +140,6 @@ export default function PercentileConverter() {
     text += `📈 CRL Rank: ${formatNumber(result.crlRank.min)} - ${formatNumber(
       result.crlRank.max,
     )}\n`;
-    if (result.categoryRank) {
-      text += `🏷️ ${result.categoryRank.category} Rank: ${formatNumber(
-        result.categoryRank.min,
-      )} - ${formatNumber(result.categoryRank.max)}\n`;
-    }
     text += `\nCheck yours at: ${siteUrl}/percentile`;
     return text;
   };
