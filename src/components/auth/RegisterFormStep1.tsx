@@ -1,6 +1,6 @@
 "use client";
 
-import { Eye, EyeOff, Phone } from "lucide-react";
+import { Eye, EyeOff, Mail, Phone } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -15,6 +15,8 @@ export default function RegisterFormStep1({
   setConfirmPassword,
   phone,
   setPhone,
+  verificationMethod,
+  setVerificationMethod,
   onNext,
   loading,
   error,
@@ -29,6 +31,8 @@ export default function RegisterFormStep1({
   setConfirmPassword: (confirmPassword: string) => void;
   phone: string;
   setPhone: (phone: string) => void;
+  verificationMethod: "email" | "phone";
+  setVerificationMethod: (method: "email" | "phone") => void;
   onNext: () => void;
   loading: boolean;
   error: string | null;
@@ -47,15 +51,20 @@ export default function RegisterFormStep1({
       !name.trim() ||
       !email.trim() ||
       !password.trim() ||
-      !phone.trim() ||
       !confirmPassword.trim()
     ) {
       toast.error("Please fill in all fields.");
       return;
     }
 
+    // Phone number required for phone verification
+    if (verificationMethod === "phone" && !phone.trim()) {
+      toast.error("Phone number is required for phone verification.");
+      return;
+    }
+
     // Phone number length validation (basic check for 10 digits)
-    if (phone.replace(/\D/g, "").length < 10) {
+    if (phone.trim() && phone.replace(/\D/g, "").length < 10) {
       toast.error("Please enter a valid phone number (at least 10 digits).");
       return;
     }
@@ -102,7 +111,7 @@ export default function RegisterFormStep1({
           htmlFor="email"
           className="block text-sm font-medium text-[var(--foreground)] mb-1.5"
         >
-          Email (Your 6 digit OTP will be sent to email)
+          Email Address
         </label>
         <input
           type="email"
@@ -121,7 +130,10 @@ export default function RegisterFormStep1({
           htmlFor="phone"
           className="block text-sm font-medium text-[var(--foreground)] mb-1.5"
         >
-          Phone Number
+          Phone Number{" "}
+          {verificationMethod === "phone" && (
+            <span className="text-red-500">*</span>
+          )}
         </label>
         <div className="relative">
           <input
@@ -131,10 +143,47 @@ export default function RegisterFormStep1({
             onChange={(e) => setPhone(e.target.value)}
             placeholder="Enter your phone number"
             className="w-full p-3 border border-[var(--border)] rounded-lg shadow-sm focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition placeholder:text-[var(--muted-text)] pl-10"
-            required
+            required={verificationMethod === "phone"}
           />
           <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[var(--muted-text)]" />
         </div>
+      </div>
+
+      {/* Verification Method Toggle */}
+      <div>
+        <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+          Send OTP via
+        </label>
+        <div className="flex bg-gray-100/80 rounded-xl p-1 gap-1">
+          <button
+            type="button"
+            onClick={() => setVerificationMethod("email")}
+            className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-medium transition-all ${
+              verificationMethod === "email"
+                ? "bg-white shadow-sm text-[var(--primary)]"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            <Mail className="h-4 w-4" />
+            Email
+          </button>
+          <button
+            type="button"
+            onClick={() => setVerificationMethod("phone")}
+            className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-medium transition-all ${
+              verificationMethod === "phone"
+                ? "bg-white shadow-sm text-[var(--primary)]"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            <Phone className="h-4 w-4" />
+            Phone
+          </button>
+        </div>
+        <p className="text-xs text-[var(--muted-text)] mt-1.5">
+          Your 6-digit OTP will be sent to your{" "}
+          {verificationMethod === "email" ? "email" : "phone number"}
+        </p>
       </div>
 
       {/* Password */}

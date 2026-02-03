@@ -8,6 +8,7 @@ type OTPFormProps = {
 
   onResend?: () => Promise<void> | void;
   resendLoading?: boolean;
+  verificationMethod?: "email" | "phone";
 };
 
 export default function OTPForm({
@@ -16,6 +17,7 @@ export default function OTPForm({
 
   onResend,
   resendLoading,
+  verificationMethod = "email",
 }: OTPFormProps) {
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
@@ -95,7 +97,8 @@ export default function OTPForm({
           Enter OTP
         </h2>
         <p className="text-sm text-[var(--muted-text)]">
-          Please check your email for OTP
+          Please check your {verificationMethod === "email" ? "email" : "phone"}{" "}
+          for OTP
         </p>
       </div>
 

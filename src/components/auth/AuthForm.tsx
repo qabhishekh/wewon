@@ -34,6 +34,9 @@ export default function AuthForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [phone, setPhone] = useState("");
+  const [verificationMethod, setVerificationMethod] = useState<
+    "email" | "phone"
+  >("email");
 
   // Login form state (parent-managed)
   const [loginEmail, setLoginEmail] = useState("");
@@ -65,14 +68,15 @@ export default function AuthForm() {
         email,
         password,
         phone,
+        verificationMethod,
       });
       // server should respond with message "OTP sent..."
       setRegisterStep(2);
     } catch (err: any) {
       setError(
         err?.response?.data?.message ||
-        err?.message ||
-        "Registration request failed",
+          err?.message ||
+          "Registration request failed",
       );
     } finally {
       setLoading(false);
@@ -89,9 +93,12 @@ export default function AuthForm() {
         email,
         password,
         phone,
+        verificationMethod,
       });
       // keep user on OTP step; show a small notice (alert used for brevity)
-      toast.success("OTP resent to your email");
+      toast.success(
+        `OTP resent to your ${verificationMethod === "email" ? "email" : "phone"}`,
+      );
     } catch (err: any) {
       toast.error(
         err?.response?.data?.message || err?.message || "Resend failed",
@@ -105,10 +112,11 @@ export default function AuthForm() {
   const handleOTPSubmit = async (otp: string) => {
     setOtpLoading(true);
     try {
-      const res = await apiClient.post("/api/auth/verify-otp", {
-        email,
-        otp,
-      });
+      // Pass either email or phone based on verification method
+      const verifyPayload =
+        verificationMethod === "phone" ? { phone, otp } : { email, otp };
+
+      const res = await apiClient.post("/api/auth/verify-otp", verifyPayload);
 
       // Expected: { message, token, user }
       const token = res?.data?.token;
@@ -128,8 +136,8 @@ export default function AuthForm() {
     } catch (err: any) {
       toast.error(
         err?.response?.data?.message ||
-        err?.message ||
-        "OTP verification failed",
+          err?.message ||
+          "OTP verification failed",
       );
     } finally {
       setOtpLoading(false);
@@ -305,10 +313,11 @@ export default function AuthForm() {
                   setActiveTab("login");
                   setRegisterStep(1);
                 }}
-                className={`flex-1 py-3 px-6 rounded-xl cursor-pointer text-sm font-bold transition-colors z-10 relative ${activeTab === "login"
-                  ? "bg-white shadow-sm text-[var(--primary)]"
-                  : "text-gray-500 hover:text-gray-700"
-                  }`}
+                className={`flex-1 py-3 px-6 rounded-xl cursor-pointer text-sm font-bold transition-colors z-10 relative ${
+                  activeTab === "login"
+                    ? "bg-white shadow-sm text-[var(--primary)]"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
               >
                 Login
               </button>
@@ -316,10 +325,11 @@ export default function AuthForm() {
                 onClick={() => {
                   setActiveTab("register");
                 }}
-                className={`flex-1 py-3 px-6 rounded-xl cursor-pointer text-sm font-bold transition-colors z-10 relative ${activeTab === "register"
-                  ? "bg-white shadow-sm text-[var(--primary)]"
-                  : "text-gray-500 hover:text-gray-700"
-                  }`}
+                className={`flex-1 py-3 px-6 rounded-xl cursor-pointer text-sm font-bold transition-colors z-10 relative ${
+                  activeTab === "register"
+                    ? "bg-white shadow-sm text-[var(--primary)]"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
               >
                 Register
               </button>
@@ -362,6 +372,8 @@ export default function AuthForm() {
                     setConfirmPassword={setConfirmPassword}
                     phone={phone}
                     setPhone={setPhone}
+                    verificationMethod={verificationMethod}
+                    setVerificationMethod={setVerificationMethod}
                     onNext={handleNextStep}
                     loading={loading}
                     error={error}
@@ -373,6 +385,7 @@ export default function AuthForm() {
                     loading={otpLoading}
                     onResend={handleResend}
                     resendLoading={resendLoading}
+                    verificationMethod={verificationMethod}
                   />
                 )}
               </div>
