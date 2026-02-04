@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { X, Tag, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
@@ -121,8 +122,14 @@ export default function PredictorPaymentModal({
 
               {/* Header */}
               <div className="text-center mb-6">
-                <div className="w-16 h-16 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-3xl">{product.icon}</span>
+                <div className="w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <Image
+                    src="/logo.svg"
+                    alt="We Won Academy"
+                    width={64}
+                    height={64}
+                    className="object-contain"
+                  />
                 </div>
                 <h2 className="text-2xl font-bold text-gray-800 mb-1">
                   {product.title}

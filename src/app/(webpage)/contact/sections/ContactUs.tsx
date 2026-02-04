@@ -82,7 +82,7 @@ export default function ContactUs({
               </div>
               <div>
                 <p className="text-sm opacity-80 mb-1">Email Us</p>
-                <span className="text-base md:text-lg font-medium">
+                <span className="text-base md:text-lg font-medium break-all">
                   {email}
                 </span>
               </div>
