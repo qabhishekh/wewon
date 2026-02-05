@@ -8,7 +8,7 @@ const features = [
   {
     icon: BrainCog,
     title: "College Predictor",
-    description: "Advanced algorithms analyze your rank and predict your chances at top colleges with 95% accuracy",
+    description: "Advanced algorithms analyze your rank and predict your chances at top colleges with 99% accuracy",
     buttonText: "Predict Now",
     buttonLink: "/predictor",
     // Style for the 1st and 3rd cards
