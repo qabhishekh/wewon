@@ -38,7 +38,7 @@ const FeaturesSection = () => {
   return (
     <Sections>
       <div className="container mx-auto">
-        
+         
         {/* Section Header */}
         <div className="text-center mx-auto">
           <Heading text="Every Need for Your Admission Journey" />
