@@ -19,7 +19,7 @@ const features = [
     title: "JEE Main Rank Predictor",
     description: "Detailed analysis of your rank performance across different categories and reservation quotas",
     buttonText: "View Analysis",
-    buttonLink: "/percentile",
+    buttonLink: "/percentile", 
     // Style for the "featured" middle card
     className: "bg-white shadow-lg", 
   },
