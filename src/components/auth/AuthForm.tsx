@@ -239,7 +239,7 @@ export default function AuthForm() {
     if (activeTab === "register") {
       return {
         title: "Start your journey",
-        subtitle: "to We Won Academy",
+        subtitle: "with We Won Academy",
         description: (
           <>
             Register now to get expert college counselling, personalized
@@ -275,8 +275,8 @@ export default function AuthForm() {
             <img
               src={
                 activeTab === "login" || activeTab === "forgot-password"
-                  ? "/auth/login.png"
-                  : "/auth/register.png"
+                  ? "/auth/login.jpeg"
+                  : "/auth/register.jpeg"
               }
               alt={
                 activeTab === "login"
@@ -300,9 +300,6 @@ export default function AuthForm() {
                 {headerContent.subtitle}
               </span>
             </h2>
-            <p className="text-sm font-medium text-gray-400 mb-8 text-center lg:text-left uppercase tracking-wider">
-              Associated with We Won Academy
-            </p>
           </div>
 
           {/* Tab Switcher - Only show for login/register */}
