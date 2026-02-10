@@ -276,7 +276,7 @@ export default function AuthForm() {
               src={
                 activeTab === "login" || activeTab === "forgot-password"
                   ? "/auth/login.jpeg"
-                  : "/auth/register.jpeg"
+                  : "/auth/register.jpeg" 
               }
               alt={
                 activeTab === "login"
