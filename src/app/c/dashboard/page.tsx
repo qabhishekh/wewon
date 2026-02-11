@@ -3,26 +3,35 @@
 import { useAppSelector } from "@/store/hooks";
 import {
   Users,
-  Calendar,
+  Package,
   CheckCircle2,
   Sparkles,
   TrendingUp,
   Clock,
   Award,
+  ArrowRight,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import apiClient from "@/hooks/Axios";
+import Link from "next/link";
+
+interface AssignedProduct {
+  _id: string;
+  title: string;
+}
 
 interface DashboardData {
-  assignedStudents: number;
+  totalStudents: number;
+  assignedProductsCount: number;
+  assignedProducts: AssignedProduct[];
+  sessionsCompleted: number;
   pendingSessions: number;
-  completedSessions: number;
 }
 
 export default function Page() {
   const { user } = useAppSelector((state) => state.auth);
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(
-    null
+    null,
   );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -40,7 +49,7 @@ export default function Page() {
         }
       } catch (err: any) {
         setError(
-          err.response?.data?.message || "Error fetching dashboard data"
+          err.response?.data?.message || "Error fetching dashboard data",
         );
       } finally {
         setLoading(false);
@@ -92,31 +101,75 @@ export default function Page() {
             </h1>
           </div>
           <p className="text-blue-100 text-lg">
-            Here's an overview of your counseling activity.
+            Here&apos;s an overview of your counseling activity.
           </p>
         </div>
 
         {/* Stats Grid */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8">
-          {/* Assigned Students */}
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+          {/* Total Students */}
           <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow">
             <div className="flex items-center justify-between mb-4">
               <div className="p-3 bg-blue-500 rounded-xl">
                 <Users className="w-6 h-6 text-white" />
               </div>
               <span className="text-3xl font-bold text-blue-600">
-                {dashboardData?.assignedStudents || 0}
+                {dashboardData?.totalStudents || 0}
               </span>
             </div>
             <h3 className="text-sm font-semibold text-gray-600 mb-2">
-              Assigned Students
+              Total Students
             </h3>
             <p className="text-xs text-gray-500">
-              {dashboardData?.assignedStudents === 0
-                ? "No students assigned yet"
-                : `You are guiding ${dashboardData?.assignedStudents} student${
-                    dashboardData?.assignedStudents! > 1 ? "s" : ""
+              {dashboardData?.totalStudents === 0
+                ? "No students enrolled yet"
+                : `You are guiding ${dashboardData?.totalStudents} student${
+                    dashboardData?.totalStudents! > 1 ? "s" : ""
                   }`}
+            </p>
+          </div>
+
+          {/* Assigned Products */}
+          <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-indigo-500 rounded-xl">
+                <Package className="w-6 h-6 text-white" />
+              </div>
+              <span className="text-3xl font-bold text-indigo-600">
+                {dashboardData?.assignedProductsCount || 0}
+              </span>
+            </div>
+            <h3 className="text-sm font-semibold text-gray-600 mb-2">
+              Assigned Products
+            </h3>
+            <p className="text-xs text-gray-500">
+              {dashboardData?.assignedProductsCount === 0
+                ? "No products assigned yet"
+                : `Managing ${dashboardData?.assignedProductsCount} product${
+                    dashboardData?.assignedProductsCount! > 1 ? "s" : ""
+                  }`}
+            </p>
+          </div>
+
+          {/* Sessions Completed */}
+          <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-green-500 rounded-xl">
+                <CheckCircle2 className="w-6 h-6 text-white" />
+              </div>
+              <span className="text-3xl font-bold text-green-600">
+                {dashboardData?.sessionsCompleted || 0}
+              </span>
+            </div>
+            <h3 className="text-sm font-semibold text-gray-600 mb-2">
+              Sessions Completed
+            </h3>
+            <p className="text-xs text-gray-500">
+              {dashboardData?.sessionsCompleted === 0
+                ? "Start your first session"
+                : `Great work! ${dashboardData?.sessionsCompleted} session${
+                    dashboardData?.sessionsCompleted! > 1 ? "s" : ""
+                  } completed`}
             </p>
           </div>
 
@@ -141,29 +194,35 @@ export default function Page() {
                   } awaiting completion`}
             </p>
           </div>
-
-          {/* Completed Sessions */}
-          <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-green-500 rounded-xl">
-                <CheckCircle2 className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-3xl font-bold text-green-600">
-                {dashboardData?.completedSessions || 0}
-              </span>
-            </div>
-            <h3 className="text-sm font-semibold text-gray-600 mb-2">
-              Completed Sessions
-            </h3>
-            <p className="text-xs text-gray-500">
-              {dashboardData?.completedSessions === 0
-                ? "Start your first session"
-                : `Great work! ${dashboardData?.completedSessions} session${
-                    dashboardData?.completedSessions! > 1 ? "s" : ""
-                  } completed`}
-            </p>
-          </div>
         </div>
+
+        {/* Assigned Products List */}
+        {dashboardData?.assignedProducts &&
+          dashboardData.assignedProducts.length > 0 && (
+            <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 mb-8">
+              <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                <Package className="w-6 h-6 text-[#073d68]" />
+                Assigned Products
+              </h2>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {dashboardData.assignedProducts.map((product) => (
+                  <div
+                    key={product._id}
+                    className="flex items-center justify-between p-4 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl border border-indigo-100"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Package className="w-5 h-5 text-white" />
+                      </div>
+                      <span className="font-semibold text-gray-800">
+                        {product.title}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
         {/* Quick Insights */}
         <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
@@ -176,25 +235,31 @@ export default function Page() {
               <div className="p-2 bg-blue-500 rounded-lg flex-shrink-0">
                 <Users className="w-5 h-5 text-white" />
               </div>
-              <div>
+              <div className="flex-1">
                 <h4 className="font-semibold text-gray-800 mb-1">
                   Student Management
                 </h4>
                 <p className="text-sm text-gray-600">
-                  {dashboardData?.assignedStudents === 0
-                    ? "You don't have any assigned students yet. Students will appear here once they are assigned to you."
+                  {dashboardData?.totalStudents === 0
+                    ? "You don't have any enrolled students yet. Students will appear here once they purchase your assigned products."
                     : `You are currently managing ${
-                        dashboardData?.assignedStudents
+                        dashboardData?.totalStudents
                       } student${
-                        dashboardData?.assignedStudents! > 1 ? "s" : ""
+                        dashboardData?.totalStudents! > 1 ? "s" : ""
                       }. Keep up the great mentorship!`}
                 </p>
               </div>
+              <Link
+                href="/c/students"
+                className="flex items-center gap-1 text-sm font-semibold text-blue-600 hover:text-blue-800 whitespace-nowrap"
+              >
+                View <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
 
             <div className="flex items-start gap-4 p-4 bg-yellow-50 rounded-xl">
               <div className="p-2 bg-yellow-500 rounded-lg flex-shrink-0">
-                <Calendar className="w-5 h-5 text-white" />
+                <Clock className="w-5 h-5 text-white" />
               </div>
               <div>
                 <h4 className="font-semibold text-gray-800 mb-1">
@@ -221,12 +286,12 @@ export default function Page() {
                   Your Performance
                 </h4>
                 <p className="text-sm text-gray-600">
-                  {dashboardData?.completedSessions === 0
+                  {dashboardData?.sessionsCompleted === 0
                     ? "Start your counseling journey by completing your first session!"
                     : `Excellent work! You've successfully completed ${
-                        dashboardData?.completedSessions
+                        dashboardData?.sessionsCompleted
                       } session${
-                        dashboardData?.completedSessions! > 1 ? "s" : ""
+                        dashboardData?.sessionsCompleted! > 1 ? "s" : ""
                       }. Your students appreciate your guidance.`}
                 </p>
               </div>

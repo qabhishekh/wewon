@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Search, Loader2, Calendar, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import MainHeading from "@/components/sections/MainHeading";
 import Pagination from "@/components/sections/Pagination";
 import apiClient from "@/hooks/Axios";
@@ -29,6 +30,8 @@ interface Alert {
   message: string;
   type: string;
   link: string;
+  thumbnail?: string;
+  slug: string;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
@@ -211,9 +214,22 @@ export default function NewsPage() {
             {filteredAlerts.map((alert) => (
               <Link
                 key={alert._id}
-                href={alert.link || `/news/${alert._id}`}
+                href={alert.link || `/news/${alert.slug}`}
                 className="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:border-[var(--primary)]/20 transition-all duration-300"
               >
+                {/* Thumbnail */}
+                {alert.thumbnail && (
+                  <div className="relative w-full h-48">
+                    <Image
+                      src={alert.thumbnail}
+                      alt={alert.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  </div>
+                )}
+
                 {/* Card Header */}
                 <div className="p-6">
                   {/* Type Badge */}

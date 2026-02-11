@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Calendar, ArrowLeft, Share2, Loader2, Tag, Clock } from "lucide-react";
 import MainHeading from "@/components/sections/MainHeading";
 import apiClient from "@/hooks/Axios";
@@ -12,6 +13,8 @@ interface Alert {
   message: string;
   type: string;
   link: string;
+  thumbnail?: string;
+  slug: string;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
@@ -77,7 +80,7 @@ const stripHtml = (html: string): string => {
 
 export default function SingleNewsPage() {
   const params = useParams();
-  const id = params.id as string;
+  const slug = params.slug as string;
 
   const [alert, setAlert] = useState<Alert | null>(null);
   const [relatedAlerts, setRelatedAlerts] = useState<Alert[]>([]);
@@ -86,13 +89,13 @@ export default function SingleNewsPage() {
 
   useEffect(() => {
     const fetchAlert = async () => {
-      if (!id) return;
+      if (!slug) return;
 
       setLoading(true);
       setError(null);
 
       try {
-        // Fetch all alerts and find the one with matching ID
+        // Fetch all alerts and find the one with matching slug
         const response = await apiClient.get("/api/alerts", {
           params: {
             isActive: true,
@@ -101,14 +104,14 @@ export default function SingleNewsPage() {
         });
 
         const allAlerts = response.data?.data || [];
-        const foundAlert = allAlerts.find((a: Alert) => a._id === id);
+        const foundAlert = allAlerts.find((a: Alert) => a.slug === slug);
 
         if (foundAlert) {
           setAlert(foundAlert);
 
           // Get related alerts of same type (excluding current)
           const related = allAlerts
-            .filter((a: Alert) => a._id !== id && a.type === foundAlert.type)
+            .filter((a: Alert) => a.slug !== slug && a.type === foundAlert.type)
             .slice(0, 3);
           setRelatedAlerts(related);
         } else {
@@ -123,7 +126,7 @@ export default function SingleNewsPage() {
     };
 
     fetchAlert();
-  }, [id]);
+  }, [slug]);
 
   const handleShare = async () => {
     if (navigator.share && alert) {
@@ -140,7 +143,6 @@ export default function SingleNewsPage() {
     } else {
       // Fallback: copy to clipboard
       navigator.clipboard.writeText(window.location.href);
-      // You could add a toast notification here
     }
   };
 
@@ -196,6 +198,20 @@ export default function SingleNewsPage() {
           {/* Main Content */}
           <div className="lg:col-span-2">
             <article className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+              {/* Thumbnail */}
+              {alert.thumbnail && (
+                <div className="relative w-full h-64 sm:h-80">
+                  <Image
+                    src={alert.thumbnail}
+                    alt={alert.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 66vw"
+                    priority
+                  />
+                </div>
+              )}
+
               {/* Article Header */}
               <div className="p-6 sm:p-8 border-b border-gray-100">
                 {/* Type Badge */}
@@ -276,9 +292,20 @@ export default function SingleNewsPage() {
                   {relatedAlerts.map((relatedAlert) => (
                     <Link
                       key={relatedAlert._id}
-                      href={`/news/${relatedAlert._id}`}
+                      href={`/news/${relatedAlert.slug}`}
                       className="block p-4 rounded-xl bg-gray-50 hover:bg-[var(--primary)]/5 transition-colors group"
                     >
+                      {relatedAlert.thumbnail && (
+                        <div className="relative w-full h-28 mb-3 rounded-lg overflow-hidden">
+                          <Image
+                            src={relatedAlert.thumbnail}
+                            alt={relatedAlert.title}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 1024px) 100vw, 33vw"
+                          />
+                        </div>
+                      )}
                       <h4 className="font-semibold text-gray-800 line-clamp-2 group-hover:text-[var(--primary)] transition-colors">
                         {relatedAlert.title}
                       </h4>

@@ -8,6 +8,7 @@ import {
   LogOut,
   GraduationCap,
   TrendingUp,
+  BarChart3,
 } from "lucide-react";
 
 import {
@@ -65,12 +66,25 @@ export function AppSidebar() {
       ]
     : [
         {
-          title: "Home",
-          url: `/${user?.userId?.role === "student" ? "s" : "c"}/dashboard`,
+          title: "Dashboard",
+          url: "/c/dashboard",
           icon: Home,
         },
-        { title: "Students", url: "#", icon: GraduationCap },
-        { title: "Resources", url: "#", icon: BookOpen },
+        {
+          title: "Students",
+          url: "/c/students",
+          icon: GraduationCap,
+        },
+        {
+          title: "Predictors",
+          url: "/c/predictors",
+          icon: BarChart3,
+        },
+        {
+          title: "My Profile",
+          url: "/c/profile",
+          icon: User2,
+        },
       ];
 
   const handleLogout = () => {

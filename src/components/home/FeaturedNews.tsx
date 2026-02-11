@@ -34,6 +34,8 @@ interface Alert {
   message: string;
   type: string;
   link: string;
+  thumbnail?: string;
+  slug: string;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
@@ -166,6 +168,7 @@ const NewsSection = () => {
                 <SwiperSlide key={alert._id} className="h-auto">
                   <NewsCard
                     id={alert._id}
+                    slug={alert.slug}
                     title={alert.title}
                     date={formatDate(alert.createdAt)}
                     description={
@@ -175,7 +178,8 @@ const NewsSection = () => {
                             .replace(/<[^>]*>/g, "")
                             .substring(0, 150) + "..."
                     }
-                    link={alert.link || `/news/${alert._id}`}
+                    link={alert.link || `/news/${alert.slug}`}
+                    thumbnail={alert.thumbnail}
                   />
                 </SwiperSlide>
               ))}
