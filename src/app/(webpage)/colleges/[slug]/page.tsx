@@ -8,10 +8,10 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const apiUrl =
-    process.env.NEXT_PUBLIC_API_URL || "https://wewon-backend.vercel.app/";
+    process.env.NEXT_PUBLIC_API_URL || "https://wewon-backend.vercel.app";
 
   try {
-    const response = await fetch(`${apiUrl}api/colleges/slug/${slug}`, {
+    const response = await fetch(`${apiUrl}/api/colleges/slug/${slug}`, {
       next: { revalidate: 3600 },
     });
 
